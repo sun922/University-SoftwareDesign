@@ -48,6 +48,7 @@
 - 참고 사이트
   - 서울대학교 컴퓨터공학부 홈페이지(https://cse.snu.ac.kr/)
   - KAIST 전산학부 홈페이지(https://cs.kaist.ac.kr/)
+  - ![kaist](https://github.com/HBNU-COME2105/webtf-faier-team-2/blob/main/1.%20Requirement%20Analysis/Figures/kaist.png?raw=true)
 
 ---
 
