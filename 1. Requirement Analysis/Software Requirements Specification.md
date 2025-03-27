@@ -47,8 +47,10 @@
 - 학교 로고 기반의 색상 통일성 유지
 - 참고 사이트
   - 서울대학교 컴퓨터공학부 홈페이지(https://cse.snu.ac.kr/)
+   ![서울대 참고 이미지](https://github.com/HBNU-COME2105/webtf-faier-team-2/blob/main/1.%20Requirement%20Analysis/Figures/%EC%84%9C%EC%9A%B8%EB%8C%80.png?raw=true)
+
   - KAIST 전산학부 홈페이지(https://cs.kaist.ac.kr/)
-  - ![kaist](https://github.com/HBNU-COME2105/webtf-faier-team-2/blob/main/1.%20Requirement%20Analysis/Figures/kaist.png?raw=true)
+    ![kaist](https://github.com/HBNU-COME2105/webtf-faier-team-2/blob/main/1.%20Requirement%20Analysis/Figures/kaist.png?raw=true)
 
 ---
 
