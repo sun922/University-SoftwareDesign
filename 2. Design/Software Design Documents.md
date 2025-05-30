@@ -315,3 +315,34 @@
 - **유지보수 용이성**: 각 기능이 독립적으로 배포 및 수정 가능
 - **데이터베이스 정규화**: 게시글, 사용자, 댓글, 관리자 테이블로 구분된 스키마 적용
 - **UI 컴포넌트 재사용성**: 각 기능별 화면이 유사한 구성 요소 기반으로 작성됨
+
+```mermaid
+         classDiagram
+    class User {
+        +viewDepartmentIntro()
+    }
+
+    class DepartmentIntro {
+        -vision: String
+        -history: String
+        -members: String
+        -logoImage: Image
+        -campusImage: Image
+        +getVision()
+        +getHistory()
+        +getMembers()
+        +getLogoImage()
+        +getCampusImage()
+    }
+
+    class Admin {
+        +registerContent()
+        +updateContent()
+    }
+
+    User --> DepartmentIntro : 열람
+    Admin ..|> User : 권한 포함 (관리자도 사용자)
+    Admin --> DepartmentIntro : 콘텐츠 등록/수정
+
+    %% 모바일에서 가독성 높은 단락 구조는 UI/스타일 영역이라 클래스 다이어그램에서 제외 가능
+```
