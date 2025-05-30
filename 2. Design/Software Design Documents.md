@@ -341,7 +341,7 @@ classDiagram
       DepartmentRepository <|-- DepartmentService
       DepartmentService <|-- DepartmentController
     }
-
+'''mermaid
     %%── Professor 기능(FPR) ───────────────────────────────────────────
     package com.hbnu.professor {
       class Professor {
@@ -367,7 +367,8 @@ classDiagram
       ProfessorRepository <|-- ProfessorService
       ProfessorService <|-- ProfessorController
     }
-
+    '''
+'''mermaid
     %%── Curriculum 기능(FCC) ──────────────────────────────────────────
     package com.hbnu.curriculum {
       class Course {
@@ -389,7 +390,8 @@ classDiagram
       CurriculumRepository <|-- CurriculumService
       CurriculumService <|-- CurriculumController
     }
-
+    '''
+'''mermaid
     %%── Notice & News 기능(FNN) ─────────────────────────────────────
     package com.hbnu.notice {
       class Notice {
@@ -416,7 +418,8 @@ classDiagram
       NoticeRepository <|-- NoticeService
       NoticeService <|-- NoticeController
     }
-
+'''
+'''mermaid
     %%── Research 기능(FRS) ────────────────────────────────────────────
     package com.hbnu.research {
       class ResearchResult {
@@ -438,7 +441,8 @@ classDiagram
       ResearchRepository <|-- ResearchService
       ResearchService <|-- ResearchController
     }
-
+'''
+'''mermaid
     %%── Admission 기능(FAD) ───────────────────────────────────────────
     package com.hbnu.admission {
       class AdmissionInfo {
@@ -459,7 +463,8 @@ classDiagram
       AdmissionRepository <|-- AdmissionService
       AdmissionService <|-- AdmissionController
     }
-
+'''
+'''mermaid
     %%── Community 기능(FCM) ──────────────────────────────────────────
     package com.hbnu.community {
       class Post {
@@ -497,7 +502,8 @@ classDiagram
       CommunityRepository <|-- CommunityService
       CommunityService <|-- CommunityController
     }
-
+    '''
+    '''mermaid
     %%── 인증·권한 기능(FAU, FAR, FAA) ────────────────────────────────
     package com.hbnu.auth {
       class User {
@@ -524,7 +530,8 @@ classDiagram
       }
       AuthService <|-- AuthController
     }
-
+'''
+'''mermaid
     %%── CMS 관리 기능(FAM) ──────────────────────────────────────────
     package com.hbnu.cms {
       class Content {
@@ -545,6 +552,6 @@ classDiagram
       }
       CMSService <|-- CMSController
     }
-
+'''
 
 
