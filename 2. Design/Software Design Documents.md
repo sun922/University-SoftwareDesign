@@ -316,5 +316,235 @@
 - **데이터베이스 정규화**: 게시글, 사용자, 댓글, 관리자 테이블로 구분된 스키마 적용
 - **UI 컴포넌트 재사용성**: 각 기능별 화면이 유사한 구성 요소 기반으로 작성됨
 
+소프트웨어 설계문서 클래스 예시
+classDiagram
+    %%── Department Overview 기능(FDO) ─────────────────────────────────
+    package com.hbnu.department {
+      class DepartmentOverview {
+        +Long id
+        +String vision
+        +String history
+        +List<String> imageUrls
+      }
+      class DepartmentRepository {
+        +findById(Long): DepartmentOverview
+        +save(DepartmentOverview): DepartmentOverview
+      }
+      class DepartmentService {
+        +getOverview(): DepartmentOverview
+        +updateOverview(DepartmentOverview): DepartmentOverview
+      }
+      class DepartmentController {
+        +GET /api/department/overview
+        +PUT /api/department/overview
+      }
+      DepartmentRepository <|-- DepartmentService
+      DepartmentService <|-- DepartmentController
+    }
+
+    %%── Professor 기능(FPR) ───────────────────────────────────────────
+    package com.hbnu.professor {
+      class Professor {
+        +Long id
+        +String name
+        +String position
+        +String office
+        +String email
+        +String profileImageUrl
+      }
+      class ProfessorRepository {
+        +findAll(): List~Professor~
+        +findById(Long): Professor
+      }
+      class ProfessorService {
+        +listAll(): List~Professor~
+        +getDetail(Long): Professor
+      }
+      class ProfessorController {
+        +GET /api/professors
+        +GET /api/professors/{id}
+      }
+      ProfessorRepository <|-- ProfessorService
+      ProfessorService <|-- ProfessorController
+    }
+
+    %%── Curriculum 기능(FCC) ──────────────────────────────────────────
+    package com.hbnu.curriculum {
+      class Course {
+        +Long id
+        +String title
+        +int credits
+        +String professor
+        +String syllabusUrl
+      }
+      class CurriculumRepository {
+        +findByYear(int): List~Course~
+      }
+      class CurriculumService {
+        +getByYear(int): List~Course~
+      }
+      class CurriculumController {
+        +GET /api/curriculum/{year}
+      }
+      CurriculumRepository <|-- CurriculumService
+      CurriculumService <|-- CurriculumController
+    }
+
+    %%── Notice & News 기능(FNN) ─────────────────────────────────────
+    package com.hbnu.notice {
+      class Notice {
+        +Long id
+        +String title
+        +String content
+        +LocalDateTime postedAt
+        +boolean pinned
+      }
+      class NoticeRepository {
+        +findLatest(): List~Notice~
+        +save(Notice): Notice
+      }
+      class NoticeService {
+        +listLatest(): List~Notice~
+        +create(Notice): Notice
+        +update(Notice): Notice
+      }
+      class NoticeController {
+        +GET /api/notices
+        +POST /api/notices
+        +PUT /api/notices/{id}
+      }
+      NoticeRepository <|-- NoticeService
+      NoticeService <|-- NoticeController
+    }
+
+    %%── Research 기능(FRS) ────────────────────────────────────────────
+    package com.hbnu.research {
+      class ResearchResult {
+        +Long id
+        +String title
+        +String type    // 논문/특허/프로젝트
+        +String link
+        +LocalDateTime date
+      }
+      class ResearchRepository {
+        +findAllSorted(): List~ResearchResult~
+      }
+      class ResearchService {
+        +listAll(): List~ResearchResult~
+      }
+      class ResearchController {
+        +GET /api/research
+      }
+      ResearchRepository <|-- ResearchService
+      ResearchService <|-- ResearchController
+    }
+
+    %%── Admission 기능(FAD) ───────────────────────────────────────────
+    package com.hbnu.admission {
+      class AdmissionInfo {
+        +Long id
+        +String title
+        +String content
+        +LocalDateTime updatedAt
+      }
+      class AdmissionRepository {
+        +findLatest(): AdmissionInfo
+      }
+      class AdmissionService {
+        +getInfo(): AdmissionInfo
+      }
+      class AdmissionController {
+        +GET /api/admission
+      }
+      AdmissionRepository <|-- AdmissionService
+      AdmissionService <|-- AdmissionController
+    }
+
+    %%── Community 기능(FCM) ──────────────────────────────────────────
+    package com.hbnu.community {
+      class Post {
+        +Long id
+        +Long authorId
+        +String title
+        +String content
+        +LocalDateTime createdAt
+      }
+      class Comment {
+        +Long id
+        +Long postId
+        +Long authorId
+        +String content
+        +LocalDateTime createdAt
+      }
+      class CommunityRepository {
+        +findPosts(): List~Post~
+        +findComments(postId): List~Comment~
+      }
+      class CommunityService {
+        +createPost(Post): Post
+        +updatePost(Post): Post
+        +deletePost(Long id)
+        +addComment(Comment): Comment
+        +deleteComment(Long id)
+      }
+      class CommunityController {
+        +POST /api/community/posts
+        +PUT /api/community/posts/{id}
+        +DELETE /api/community/posts/{id}
+        +POST /api/community/comments
+        +DELETE /api/community/comments/{id}
+      }
+      CommunityRepository <|-- CommunityService
+      CommunityService <|-- CommunityController
+    }
+
+    %%── 인증·권한 기능(FAU, FAR, FAA) ────────────────────────────────
+    package com.hbnu.auth {
+      class User {
+        +Long id
+        +String username
+        +String passwordHash
+        +List~Role~ roles
+      }
+      class Role {
+        +String name   // STUDENT, PROFESSOR, ADMIN, SUPER_ADMIN
+      }
+      class AuthService {
+        +login(username, password): Token
+        +logout(token)
+        +register(User): User
+      }
+      class AuthController {
+        +POST /api/auth/login
+        +POST /api/auth/logout
+        +POST /api/auth/register
+      }
+      class RealIdentityService {
+        +verify(userInfo): boolean
+      }
+      AuthService <|-- AuthController
+    }
+
+    %%── CMS 관리 기능(FAM) ──────────────────────────────────────────
+    package com.hbnu.cms {
+      class Content {
+        +Long id
+        +String section   // e.g. "FDO", "FPR" …
+        +String body
+        +LocalDateTime updatedAt
+      }
+      class CMSService {
+        +listSections(): List~String~
+        +getContent(section): Content
+        +updateContent(Content): Content
+      }
+      class CMSController {
+        +GET /api/cms/sections
+        +GET /api/cms/sections/{section}
+        +PUT /api/cms/sections/{section}
+      }
+      CMSService <|-- CMSController
+    }
+
 
 
