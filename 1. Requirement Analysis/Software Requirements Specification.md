@@ -489,23 +489,25 @@ classDiagram
 | 정의        | 상단 고정 메뉴와 드롭다운 서브메뉴 구성 방식 적용        |
 | 세부내용      | - 주요 메뉴는 상단 고정<br>- 서브메뉴는 드롭다운으로 구성 |
 | 권한        | 모두                                  |
+
 ```mermaid
 classDiagram
-    class MenuConfigurationFeature {
-        <<Feature>>
-        -requirementID: string = "NUI-NMM-001"
-        -requirementName: string = "Menu Configuration"
-        -category: string = "Interface Requirement"
-        -definition: string = "Apply fixed top menu and dropdown submenu structure"
-        -topMenuFixedEnabled: boolean = true
-        -dropdownSubmenuEnabled: boolean = true
-        -permission: string = "All"
+    class MenuConfigurationFeature_NUI-NMM-001 {
+        <<Interface>>
+        -requirementID: string
+        -requirementName: string
+        -category: string
+        -definition: string
+        -isTopMenuFixed: boolean
+        -isDropdownSubmenuEnabled: boolean
+        -permission: string
 
-        +applyFixedTopMenu(): void
-        +configureDropdownSubmenu(): void
+        +enableTopFixedMenu(): void
+        +enableDropdownSubmenu(): void
+        +applyMenuConfiguration(): void
     }
-
 ```
+
 | 항목        | 내용                                     |
 | --------- | -------------------------------------- |
 | 요구사항 고유번호 | NUI-NAM-001                             |
@@ -514,23 +516,23 @@ classDiagram
 | 정의        | 로그인 여부 및 권한에 따라 메뉴 항목이 동적으로 변경됨        |
 | 세부내용      | - 비로그인 시 제한 메뉴 숨김<br>- 관리자 전용 메뉴 별도 구성 |
 | 권한        | 모두                                     |
+
 ```mermaid
 classDiagram
-    class PermissionBasedMenuDisplayFeature {
-        <<Feature>>
-        -requirementID: string = "NUI-NAM-001"
-        -requirementName: string = "Permission-based Menu Display"
-        -category: string = "Interface Requirement"
-        -definition: string = "Menu items dynamically change based on login status and user role"
-        -hideRestrictedMenuWhenNotLoggedIn: boolean = true
-        -adminOnlyMenuEnabled: boolean = true
-        -permission: string = "All"
+    class PermissionBasedMenuFeature_NUI_NAM_001 {
+        <<Interface>>
+        -requirementID: string
+        -requirementName: string
+        -category: string
+        -definition: string
+        -hideMenusWhenNotLoggedIn: boolean
+        -adminMenuAvailable: boolean
+        -permission: string
 
-        +applyDynamicMenuDisplay(): void
+        +applyPermissionBasedMenu(): void
         +hideRestrictedMenus(): void
-        +configureAdminMenus(): void
+        +showAdminMenus(): void
     }
-
 ```
 
 | 항목        | 내용                                   |
@@ -541,20 +543,21 @@ classDiagram
 | 정의        | 게시글 목록 → 상세 → 댓글의 명확한 페이지 전환 구조 제공   |
 | 세부내용      | - 전환 흐름이 직관적일 것<br>- 버튼/링크 구분 명확히 표기 |
 | 권한        | 모두                                   |
+
 ```mermaid
 classDiagram
-    class PageTransitionFlowFeature {
-        <<Feature>>
-        -requirementID: string = "NUI-NFT-001"
-        -requirementName: string = "Page Transition Flow"
-        -category: string = "Interface Requirement"
-        -definition: string = "Provide clear page transition structure: list → detail → comments"
-        -intuitiveFlowEnabled: boolean = true
-        -clearButtonLinkDistinction: boolean = true
-        -permission: string = "All"
+    class PageTransitionFlowFeature_NUI_NFT_001 {
+        <<Interface>>
+        -requirementID: string
+        -requirementName: string
+        -category: string
+        -definition: string
+        -isFlowIntuitive: boolean
+        -areButtonsAndLinksDistinguished: boolean
+        -permission: string
 
         +applyPageTransitionFlow(): void
-        +ensureIntuitiveFlow(): void
+        +verifyIntuitiveFlow(): void
         +distinguishButtonsAndLinks(): void
     }
 
@@ -568,23 +571,23 @@ classDiagram
 | 정의        | 교수, 관리자 등 사용자 유형에 따라 UI를 차등 구성      |
 | 세부내용      | - 불필요한 정보 최소화<br>- 권한별 중요도 중심 UI 구성 |
 | 권한        | 모두                                  |
+
 ```mermaid
 classDiagram
-    class AccessibleUIFeature {
-        <<Feature>>
-        -requirementID: string = "NUI-NAC-001"
-        -requirementName: string = "Accessibility Ensured UI"
-        -category: string = "Interface Requirement"
-        -definition: string = "Configure UI differently based on user type (e.g., professor, admin)"
-        -minimizeUnnecessaryInfo: boolean = true
-        -roleBasedUIEnabled: boolean = true
-        -permission: string = "All"
+    class AccessibleUIFeature_NUI_NAC_001 {
+        <<Interface>>
+        -requirementID: string
+        -requirementName: string
+        -category: string
+        -definition: string
+        -minimizeUnnecessaryInformation: boolean
+        -roleBasedUIPriorityEnabled: boolean
+        -permission: string
 
-        +applyAccessibilitySettings(): void
-        +minimizeUnnecessaryInformation(): void
-        +configureUIByRole(): void
+        +applyAccessibleUI(): void
+        +filterUnnecessaryInformation(): void
+        +configureUIByUserRole(): void
     }
-
 ```
 
 ## 7. 소프트웨어 요구사항
@@ -615,22 +618,24 @@ classDiagram
 | 정의        | React 또는 Vue.js 기반 SPA(단일 페이지 애플리케이션) 적용 가능 |
 | 세부내용      | - CSR 기반 빠른 화면 전환<br>- 유지보수 용이한 구조 채택       |
 | 권한        | 모두                                          |
+
 ```mermaid
 classDiagram
-    class FrontendFrameworkFeature {
-        <<Feature>>
-        -requirementID: string = "NSW-NFE-001"
-        -requirementName: string = "Frontend Framework"
-        -category: string = "Software Requirement"
-        -definition: string = "Support React or Vue.js based SPA"
-        -csrEnabled: boolean = true
-        -maintainableStructureEnabled: boolean = true
-        -permission: string = "All"
+    class FrontendFrameworkFeature_NSW_NFE_001 {
+        <<Software>>
+        -requirementID: string
+        -requirementName: string
+        -category: string
+        -definition: string
+        -supportsSPA: boolean
+        -isCSREnabled: boolean
+        -isMaintainableStructureEnabled: boolean
+        -permission: string
 
-        +enableCSR(): void
+        +applySPAFramework(): void
+        +enableClientSideRendering(): void
         +adoptMaintainableStructure(): void
     }
-
 ```
 
 | 항목        | 내용                                     |
@@ -641,22 +646,24 @@ classDiagram
 | 정의        | Django 또는 Node.js 기반 RESTful API 구조 채택 |
 | 세부내용      | - 모듈화 구조<br>- ORM 또는 비동기 처리 지원         |
 | 권한        | 모두                                     |
+
 ```mermaid
 classDiagram
-    class BackendFrameworkFeature {
-        <<Feature>>
-        -requirementID: string = "NSW-NBE-001"
-        -requirementName: string = "Backend Framework"
-        -category: string = "Software Requirement"
-        -definition: string = "Adopt Django or Node.js based RESTful API structure"
-        -modularArchitectureEnabled: boolean = true
-        -ormOrAsyncSupportEnabled: boolean = true
-        -permission: string = "All"
+    class BackendFrameworkFeature_NSW_NBE_001 {
+        <<Software>>
+        -requirementID: string
+        -requirementName: string
+        -category: string
+        -definition: string
+        -isModularArchitectureEnabled: boolean
+        -supportsORM: boolean
+        -supportsAsyncProcessing: boolean
+        -permission: string
 
+        +applyBackendFramework(): void
         +enableModularArchitecture(): void
-        +supportORMOrAsyncProcessing(): void
+        +supportORMorAsync(): void
     }
-
 ```
 
 | 항목        | 내용                                  |
@@ -667,22 +674,23 @@ classDiagram
 | 정의        | RESTful API 설계에 따른 클라이언트-서버 간 통신 적용 |
 | 세부내용      | - HTTP 메서드 활용<br>- 명확한 URI 구조       |
 | 권한        | 모두                                  |
+
 ```mermaid
 classDiagram
-    class APICommunicationFeature {
-        <<Feature>>
-        -requirementID: string = "NSW-NAP-001"
-        -requirementName: string = "API Communication"
-        -category: string = "Software Requirement"
-        -definition: string = "Apply RESTful API design for client-server communication"
-        -httpMethodsUtilized: boolean = true
-        -clearURIEnabled: boolean = true
-        -permission: string = "All"
+    class APICommunicationFeature_NSW_NAP_001 {
+        <<Software>>
+        -requirementID: string
+        -requirementName: string
+        -category: string
+        -definition: string
+        -usesHTTPMethods: boolean
+        -hasClearURIStructure: boolean
+        -permission: string
 
+        +applyRESTfulCommunication(): void
         +utilizeHTTPMethods(): void
         +defineClearURIStructure(): void
     }
-
 ```
 
 | 항목        | 내용                              |
@@ -693,22 +701,23 @@ classDiagram
 | 정의        | JWT 기반 인증 및 세션 유지 방식 적용         |
 | 세부내용      | - 토큰 기반 로그인 인증<br>- 세션 만료 시간 설정 |
 | 권한        | 모두                              |
+
 ```mermaid
 classDiagram
-    class AuthenticationSessionManagementFeature {
-        <<Feature>>
-        -requirementID: string = "NSW-NJS-001"
-        -requirementName: string = "Authentication and Session Management"
-        -category: string = "Software Requirement"
-        -definition: string = "Apply JWT-based authentication and session maintenance"
-        -jwtAuthenticationEnabled: boolean = true
-        -sessionExpirationConfigured: boolean = true
-        -permission: string = "All"
+    class AuthenticationSessionFeature_NSW_NJS_001 {
+        <<Software>>
+        -requirementID: string
+        -requirementName: string
+        -category: string
+        -definition: string
+        -isJWTAuthenticationEnabled: boolean
+        -isSessionExpirationConfigured: boolean
+        -permission: string
 
         +enableJWTAuthentication(): void
         +configureSessionExpiration(): void
+        +applyAuthenticationAndSessionManagement(): void
     }
-
 ```
 
 ## 8. 테스트 요구사항
@@ -741,22 +750,23 @@ classDiagram
 | 정의        | 로그인, 게시글 등 기능별 동작이 독립적으로 검증 가능해야 함  |
 | 세부내용      | - 기능별 단위 테스트 케이스 작성<br>- 테스트 자동화 지원 |
 | 권한        | 모두                                  |
+
 ```mermaid
 classDiagram
-    class UnitTestFeature {
-        <<Feature>>
-        -requirementID: string = "NTT-NUT-001"
-        -requirementName: string = "Unit Testing"
-        -category: string = "Testing Requirement"
-        -definition: string = "Ensure independent verification of features such as login and posts"
-        -unitTestCasesWritten: boolean = true
-        -testAutomationSupported: boolean = true
-        -permission: string = "All"
+    class UnitTestingFeature_NTT_NUT_001 {
+        <<Test>>
+        -requirementID: string
+        -requirementName: string
+        -category: string
+        -definition: string
+        -areUnitTestCasesWritten: boolean
+        -isTestAutomationSupported: boolean
+        -permission: string
 
         +writeUnitTestCases(): void
         +enableTestAutomation(): void
+        +applyUnitTesting(): void
     }
-
 ```
 
 | 항목        | 내용                                 |
@@ -767,23 +777,23 @@ classDiagram
 | 정의        | 로그인 → 게시판 → 댓글 등 주요 흐름을 통합적으로 검증   |
 | 세부내용      | - 사용자 시나리오 기반 테스트<br>- 상태 전이 검증 포함 |
 | 권한        | 모두                                 |
+
 ```mermaid
 classDiagram
-    class FlowBasedTestingFeature {
-        <<Feature>>
-        -requirementID: string = "NTT-NTF-001"
-        -requirementName: string = "Flow-Based Testing"
-        -category: string = "Testing Requirement"
-        -definition: string = "Verify major flows such as login → board → comments in an integrated manner"
-        -scenarioBasedTestingEnabled: boolean = true
-        -stateTransitionVerificationEnabled: boolean = true
-        -permission: string = "All"
+    class FlowBasedTestingFeature_NTT_NTF_001 {
+        <<Test>>
+        -requirementID: string
+        -requirementName: string
+        -category: string
+        -definition: string
+        -isScenarioBasedTestingEnabled: boolean
+        -isStateTransitionVerificationIncluded: boolean
+        -permission: string
 
-        +applyFlowBasedTesting(): void
-        +writeScenarioBasedTests(): void
+        +runScenarioBasedTests(): void
         +verifyStateTransitions(): void
+        +performFlowBasedTesting(): void
     }
-
 ```
 
 | 항목        | 내용                                 |
@@ -794,23 +804,23 @@ classDiagram
 | 정의        | 실명 인증, 접근 제어 등 보안 요소 테스트 수행 필요     |
 | 세부내용      | - 권한 상승 방지<br>- 민감 정보 노출 방지 테스트 포함 |
 | 권한        | 모두                                 |
+
 ```mermaid
 classDiagram
-    class SecurityTestingFeature {
-        <<Feature>>
-        -requirementID: string = "NTT-NST-001"
-        -requirementName: string = "Security Feature Testing"
-        -category: string = "Testing Requirement"
-        -definition: string = "Perform tests on security elements such as real-name authentication and access control"
-        -preventPrivilegeEscalationEnabled: boolean = true
-        -preventSensitiveInfoExposureEnabled: boolean = true
-        -permission: string = "All"
+    class SecurityTestingFeature_NTT_NST_001 {
+        <<Test>>
+        -requirementID: string
+        -requirementName: string
+        -category: string
+        -definition: string
+        -isPrivilegeEscalationPrevented: boolean
+        -isSensitiveInfoExposurePrevented: boolean
+        -permission: string
 
-        +applySecurityTesting(): void
-        +testPrivilegeEscalationPrevention(): void
-        +testSensitiveInfoExposurePrevention(): void
+        +testRealNameAuthentication(): void
+        +verifyAccessControl(): void
+        +runSecurityTests(): void
     }
-
 ```
 
 | 항목        | 내용                                |
@@ -821,22 +831,23 @@ classDiagram
 | 정의        | 다양한 해상도 및 디바이스 환경에서 UI 정상 동작 확인   |
 | 세부내용      | - 브라우저/기기별 테스트<br>- 뷰포트별 반응 여부 점검 |
 | 권한        | 모두                                |
+
 ```mermaid
 classDiagram
-    class ResponsiveUITestingFeature {
-        <<Feature>>
-        -requirementID: string = "NTT-NRT-001"
-        -requirementName: string = "Responsive UI Testing"
-        -category: string = "Testing Requirement"
-        -definition: string = "Ensure UI works correctly across various resolutions and devices"
-        -browserDeviceTestingEnabled: boolean = true
-        -viewportResponsivenessChecked: boolean = true
-        -permission: string = "All"
+    class ResponsiveUITestingFeature_NTT-NRT-001 {
+        <<Test>>
+        -requirementID: string
+        -requirementName: string
+        -category: string
+        -definition: string
+        -isCrossDeviceTested: boolean
+        -isViewportResponsivenessChecked: boolean
+        -permission: string
 
-        +performBrowserDeviceTests(): void
+        +testAcrossDevices(): void
         +checkViewportResponsiveness(): void
+        +performResponsiveUITesting(): void
     }
-
 ```
 
 | 항목        | 내용                                    |
@@ -847,23 +858,23 @@ classDiagram
 | 정의        | 사용자 권한 별 기능 접근 통제 검증 필요               |
 | 세부내용      | - 일반 사용자와 관리자 구분 테스트<br>- 접근 제한 기능 검증 |
 | 권한        | 모두                                    |
+
 ```mermaid
 classDiagram
-    class PermissionControlTestingFeature {
-        <<Feature>>
-        -requirementID: string = "NTT-NPT-001"
-        -requirementName: string = "Permission Control Testing"
-        -category: string = "Testing Requirement"
-        -definition: string = "Validate access control per user role"
-        -userRoleBasedAccessControlEnabled: boolean = true
-        -accessRestrictionFunctionalityVerified: boolean = true
-        -permission: string = "All"
+    class PermissionControlTestingFeature_NTT_NPT_001 {
+        <<Test>>
+        -requirementID: string
+        -requirementName: string
+        -category: string
+        -definition: string
+        -isUserRoleDistinctionTested: boolean
+        -isAccessRestrictionVerified: boolean
+        -permission: string
 
-        +applyPermissionControlTesting(): void
         +testUserAndAdminAccess(): void
-        +verifyAccessRestriction(): void
+        +verifyAccessRestrictions(): void
+        +performPermissionControlTesting(): void
     }
-
 ```
 
 ## 9. 보안 요구사항
