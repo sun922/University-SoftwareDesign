@@ -280,22 +280,44 @@ classDiagram
 | 세부내용      | - 화면 크기에 따라 자동으로 레이아웃 조정 |
 | 권한        | 모두       
 ```mermaid
-classDiagram
-    class Requirement {
-        +String id
-        +String name
-        +String category
-        +String definition
-        +String details
++----------------------+
+|      LayoutManager   |
++----------------------+
+| - deviceType: String |
+| - width: int         |
+| - height: int        |
++----------------------+
+| + adjustLayout(width: int, height: int): void       |
+| + detectDeviceType(width: int, height: int): String |
++----------------------+
 
-        +optimizeLayoutByResolution()
-    }
+          ▲
+          |
+          |
++------------------------+
+|     ResponsiveLayout   |
++------------------------+
+| - currentLayout: String|
++------------------------+
+| + renderLayout(deviceType: String): void           |
+| + optimizeForMobile(): void                        |
+| + optimizeForTablet(): void                        |
+| + optimizeForDesktop(): void                       |
++------------------------+
 
-    class Permission {
-        +String accessLevel
-    }
-
-    Requirement "1" --> "1" Permission : has
+          ▲
+          |
+          |
++------------------------+
+|       UIComponent      |
++------------------------+
+| - componentId: String  |
+| - position: String     |
+| - size: String         |
++------------------------+
+| + updatePosition(layout: String): void             |
+| + updateSize(layout: String): void                 |
++------------------------+
 
 ```
 
