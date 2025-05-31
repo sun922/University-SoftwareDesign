@@ -110,6 +110,17 @@
 | 세부내용      | - 소개 텍스트 표시(비전, 연혁, 구성) <br> - 소개 이미지 표시(학교 로고, 캠퍼스 전경 사진) <br> - 모바일에서 가독성 높은 단락 구조 적용<br> - 관리자 등록 콘텐츠 기반 정적 페이지 제공 |
 | 권한        | 모두                                                                                    |
 
+```mermaid
+classDiagram
+    class DepartmentIntroductionFeature {
+        +viewIntroductionText(vision: string, history: string, structure: string): void
+        +viewIntroductionImages(logo: Image, campusView: Image): void
+        +applyMobileParagraphStructure(): void
+        +serveStaticPageBasedOnAdminContent(content: Content): void
+    }
+```
+
+
 
 
 | 항목        | 내용                                                                                                                                  |
