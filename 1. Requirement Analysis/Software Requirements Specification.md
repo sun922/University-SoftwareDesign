@@ -279,7 +279,7 @@ classDiagram
 | 정의        | 모바일, 태블릿에서도 최적화된 화면 제공                                |
 | 세부내용      | - 화면 크기에 따라 자동으로 레이아웃 조정 |
 | 권한        | 모두       
-```mermaid
+
 ```mermaid
 classDiagram
     class LayoutManager {
@@ -308,9 +308,6 @@ classDiagram
 
     LayoutManager <|-- ResponsiveLayout
     ResponsiveLayout <|-- UIComponent
-```
-
-
 ```
 
 | 항목        | 내용                                                    |
