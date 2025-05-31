@@ -193,17 +193,16 @@ class NoticeAndNewsViewFeature_FN-FNN-001 {
 ```mermaid
 classDiagram
 class NoticeAndNewsEditFeature_FN-FNN-002 {
-        <<Feature>>
-        -isPinned: boolean
-        -attachments: List
-        -images: List
+    <<Feature>>
+    -isPinned: boolean
+    -attachments: List
+    -images: List
 
-        +createPost(title: string, content: string): void
-        +editPost(id: int, newContent: string): void
-        +deletePost(id: int): void
-        +setPinStatus(id: int, isPinned: boolean): void
-    }PinStatus(id: int, isPinned: boolean): void
-    }
+    +createPost(title: string, content: string): void
+    +editPost(id: int, newContent: string): void
+    +deletePost(id: int): void
+    +setPinStatus(id: int, isPinned: boolean): void
+}
 ```
 
 | 항목        | 내용                                                               |
