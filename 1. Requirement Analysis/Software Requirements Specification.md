@@ -166,6 +166,7 @@ classDiagram
 | 권한        | 모두                                                                                                                 |
 
 ```mermaid
+classDiagram
 class NoticeAndNewsViewFeature_FN-FNN-001 {
         <<Feature>>
         -title: string
@@ -190,6 +191,7 @@ class NoticeAndNewsViewFeature_FN-FNN-001 {
 | 권한        | 일반 관리자, 최고 관리자                                                                                        |
 
 ```mermaid
+classDiagram
 class NoticeAndNewsEditFeature_FN-FNN-002 {
         <<Feature>>
         -isPinned: boolean
@@ -214,6 +216,7 @@ class NoticeAndNewsEditFeature_FN-FNN-002 {
 | 권한        | 모두                                                               |
 
 ```mermaid
+classDiagram
 class ResearchShowcaseFeature_FN-FRS-001 {
         <<Feature>>
         -researchList: List
@@ -235,6 +238,7 @@ class ResearchShowcaseFeature_FN-FRS-001 {
 | 권한        | 모두                                                                  |
 
 ```mermaid
+classDiagram
 class AdmissionInfoFeature_FN-FAD-001 {
         <<Feature>>
         -admissionList: List
@@ -256,6 +260,7 @@ class AdmissionInfoFeature_FN-FAD-001 {
 | 권한        | 학생, 교수                                                                         |      
 
 ```mermaid
+classDiagram
  class PostCreationFeature_FN-FCM-001 {
         <<Feature>>
         -title: string
@@ -277,6 +282,7 @@ class AdmissionInfoFeature_FN-FAD-001 {
 | 권한        | 학생, 교수                                                                          |
 
 ```mermaid
+classDiagram
 class PostEditDeleteFeature_FN-FCM-002 {
         <<Feature>>
         +editOwnPost(userId: int, postId: int, newContent: string): void
@@ -294,6 +300,7 @@ class PostEditDeleteFeature_FN-FCM-002 {
 | 권한        | 학생, 교수                                                                              |
 
 ```mermaid
+classDiagram
 class CommentFeature_FN-FCM-003 {
         <<Feature>>
         -commentList: List
@@ -315,6 +322,7 @@ class CommentFeature_FN-FCM-003 {
 | 권한        | 교수, 일반 관리자, 최고 관리자                                                               |
 
 ```mermaid
+classDiagram
 class PostPinFeature_FN-FCM-004 {
         <<Feature>>
         -isPinned: boolean
@@ -334,6 +342,7 @@ class PostPinFeature_FN-FCM-004 {
 | 권한        | 모두                                                                                            |
 
 ```mermaid
+classDiagram
  class PostViewFeature_FN-FCM-005 {
         <<Feature>>
         -title: string
