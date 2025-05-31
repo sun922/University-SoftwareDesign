@@ -280,44 +280,36 @@ classDiagram
 | 세부내용      | - 화면 크기에 따라 자동으로 레이아웃 조정 |
 | 권한        | 모두       
 ```mermaid
-+----------------------+
-|      LayoutManager   |
-+----------------------+
-| - deviceType: String |
-| - width: int         |
-| - height: int        |
-+----------------------+
-| + adjustLayout(width: int, height: int): void       |
-| + detectDeviceType(width: int, height: int): String |
-+----------------------+
+```mermaid
+classDiagram
+    class LayoutManager {
+        - String deviceType
+        - int width
+        - int height
+        + void adjustLayout(int width, int height)
+        + String detectDeviceType(int width, int height)
+    }
 
-          ▲
-          |
-          |
-+------------------------+
-|     ResponsiveLayout   |
-+------------------------+
-| - currentLayout: String|
-+------------------------+
-| + renderLayout(deviceType: String): void           |
-| + optimizeForMobile(): void                        |
-| + optimizeForTablet(): void                        |
-| + optimizeForDesktop(): void                       |
-+------------------------+
+    class ResponsiveLayout {
+        - String currentLayout
+        + void renderLayout(String deviceType)
+        + void optimizeForMobile()
+        + void optimizeForTablet()
+        + void optimizeForDesktop()
+    }
 
-          ▲
-          |
-          |
-+------------------------+
-|       UIComponent      |
-+------------------------+
-| - componentId: String  |
-| - position: String     |
-| - size: String         |
-+------------------------+
-| + updatePosition(layout: String): void             |
-| + updateSize(layout: String): void                 |
-+------------------------+
+    class UIComponent {
+        - String componentId
+        - String position
+        - String size
+        + void updatePosition(String layout)
+        + void updateSize(String layout)
+    }
+
+    LayoutManager <|-- ResponsiveLayout
+    ResponsiveLayout <|-- UIComponent
+```
+
 
 ```
 
