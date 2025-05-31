@@ -140,7 +140,7 @@ classDiagram
 classDiagram
     class CurriculumAndClassInfoFeature_FN-FCC-001 {
         <<Feature>>
-        -gradeCurriculumInfo: Map<int, string>
+        -gradeCurriculumInfo: Map
         -subjectName: string
         -creditInfo: int
         -professorInfo: Professor
@@ -171,11 +171,11 @@ class NoticeAndNewsViewFeature_FN-FNN-001 {
         -title: string
         -content: string
         -createdDate: Date
-        -attachments: List<File>
+        -attachments: List
         -staticContent: Content
 
-        +viewNoticesSortedByLatest(): List<Notice>
-        +searchNotices(keyword: string): List<Notice>
+        +viewNoticesSortedByLatest(): List
+        +searchNotices(keyword: string): List
         +serveStaticPageBasedOnAdminContent(content: Content): void
     }
 ```
@@ -190,16 +190,17 @@ class NoticeAndNewsViewFeature_FN-FNN-001 {
 | 권한        | 일반 관리자, 최고 관리자                                                                                        |
 
 ```mermaid
- class NoticeAndNewsEditFeature_FN-FNN-002 {
+class NoticeAndNewsEditFeature_FN-FNN-002 {
         <<Feature>>
         -isPinned: boolean
-        -attachments: List<File>
-        -images: List<Image>
+        -attachments: List
+        -images: List
 
         +createPost(title: string, content: string): void
         +editPost(id: int, newContent: string): void
         +deletePost(id: int): void
         +setPinStatus(id: int, isPinned: boolean): void
+    }PinStatus(id: int, isPinned: boolean): void
     }
 ```
 
@@ -215,11 +216,11 @@ class NoticeAndNewsViewFeature_FN-FNN-001 {
 ```mermaid
 class ResearchShowcaseFeature_FN-FRS-001 {
         <<Feature>>
-        -researchList: List<Research>
+        -researchList: List
         -staticContent: Content
 
-        +viewResearchSortedByLatest(): List<Research>
-        +searchResearch(keyword: string): List<Research>
+        +viewResearchSortedByLatest(): List
+        +searchResearch(keyword: string): List
         +serveStaticPageBasedOnAdminContent(content: Content): void
     }
 ```
@@ -236,11 +237,11 @@ class ResearchShowcaseFeature_FN-FRS-001 {
 ```mermaid
 class AdmissionInfoFeature_FN-FAD-001 {
         <<Feature>>
-        -admissionList: List<AdmissionInfo>
+        -admissionList: List
         -staticContent: Content
 
-        +viewAdmissionSortedByLatest(): List<AdmissionInfo>
-        +searchAdmission(keyword: string): List<AdmissionInfo>
+        +viewAdmissionSortedByLatest(): List
+        +searchAdmission(keyword: string): List
         +serveStaticPageBasedOnAdminContent(content: Content): void
     }
 ```
@@ -259,9 +260,9 @@ class AdmissionInfoFeature_FN-FAD-001 {
         <<Feature>>
         -title: string
         -content: string
-        -attachments: List<File>
+        -attachments: List
 
-        +createPost(title: string, content: string, attachments: List<File>): void
+        +createPost(title: string, content: string, attachments: List): void
         +reflectSortingAfterCreation(): void
     }
 ```
@@ -295,7 +296,7 @@ class PostEditDeleteFeature_FN-FCM-002 {
 ```mermaid
 class CommentFeature_FN-FCM-003 {
         <<Feature>>
-        -commentList: List<Comment>
+        -commentList: List
 
         +writeComment(userId: int, postId: int, comment: string): void
         +deleteComment(userId: int, commentId: int): void
@@ -338,7 +339,7 @@ class PostPinFeature_FN-FCM-004 {
         -title: string
         -content: string
         -author: string
-        -comments: List<Comment>
+        -comments: List
         -views: int
 
         +viewPost(userId: int, postId: int): Post
