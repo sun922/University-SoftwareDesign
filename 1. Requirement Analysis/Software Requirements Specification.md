@@ -722,6 +722,32 @@ classDiagram
 | 정의        | 장애 복구 시 응답 대기 최소화        |
 | 세부내용      | - 이중화 서버 자동 전환 등으로 즉각 대응 |
 | 권한        | 모두                       |
+```mermaid
+classDiagram
+    class FaultRecoveryFeature {
+        <<Feature>>
+        -isPrimaryServerActive: boolean
+        -isFailoverInProgress: boolean
+        -recoveryTimeThreshold: int
+        -failoverServer: Server
+
+        +detectFailure(): void
+        +triggerAutomaticFailover(): void
+        +switchToBackupServer(): void
+        +verifyRecoveryWithinThreshold(threshold: int): boolean
+    }
+
+    class Server {
+        -serverId: string
+        -status: string
+        -ipAddress: string
+
+        +activate(): void
+        +deactivate(): void
+        +checkStatus(): string
+    }
+```
+
 
 <품질 - 기능 확장성 확보 (GEN-NEX)>
 | 항목        | 내용                                    |
@@ -732,6 +758,49 @@ classDiagram
 | 정의        | 연중무휴 최소 99.5% 가동률 유지                  |
 | 세부내용      | - 서버 이중화 및 모니터링 구성<br>- 유지보수 시간 사전 공지 |
 | 권한        | 모두                                    |
+```mermaid
+classDiagram
+    class AvailabilityFeature {
+        <<Feature>>
+        -uptimePercentage: float
+        -redundantServers: Server[]
+        -monitoringSystem: MonitoringSystem
+        -maintenanceSchedule: Schedule
+
+        +ensureHighAvailability(targetUptime: float): void
+        +configureRedundancy(servers: Server[]): void
+        +monitorSystemHealth(): void
+        +notifyMaintenance(schedule: Schedule): void
+    }
+
+    class Server {
+        -serverId: string
+        -status: string
+        -ipAddress: string
+
+        +activate(): void
+        +deactivate(): void
+        +checkStatus(): string
+    }
+
+    class MonitoringSystem {
+        -systemId: string
+        -status: string
+
+        +startMonitoring(): void
+        +alertOnFailure(): void
+        +generateHealthReport(): string
+    }
+
+    class Schedule {
+        -startTime: DateTime
+        -endTime: DateTime
+        -description: string
+
+        +notifyUsers(): void
+    }
+```
+
 
 <품질 - 사용자 편의성 (GEN-NUX)>
 | 항목        | 내용                                                 |
@@ -742,6 +811,22 @@ classDiagram
 | 정의        | 오류 발생 시 사용자에게 안내 메시지 제공                            |
 | 세부내용      | - 사용자에게 원인, 조치 방법 등 제공<br>- UI에 알림 팝업 또는 경고 메시지 출력 |
 | 권한        | 모두                                                 |
+```mermaid
+classDiagram
+    class UserErrorFeedbackFeature {
+        <<Feature>>
+        -errorCode: string
+        -errorMessage: string
+        -userFriendlyMessage: string
+        -isPopupVisible: boolean
+
+        +detectError(code: string, message: string): void
+        +generateUserFeedback(): void
+        +showAlertPopup(): void
+        +logErrorDetails(): void
+    }
+```
+
 
 <품질 - 빠른 응답 속도 (GEN-NPR)>
 | 항목        | 내용                                           |
@@ -752,6 +837,28 @@ classDiagram
 | 정의        | 사용자 요청에 2초 이내 반응                             |
 | 세부내용      | - 주요 기능 클릭 시 2초 이내 응답<br>- DB 조회/입력 시 병목 최소화 |
 | 권한        | 모두                                           |
+```mermaid
+classDiagram
+    class ResponseTimeControlFeature {
+        <<Feature>>
+        -maxResponseTimeSeconds: int
+        -currentResponseTime: int
+        -isWithinThreshold: boolean
+
+        +measureResponseTime(): int
+        +validateResponseTime(): boolean
+        +optimizeDatabaseAccess(): void
+        +handleUserRequest(request: Request): void
+    }
+
+    class Request {
+        -requestId: string
+        -requestType: string
+        -payload: object
+
+        +process(): void
+    }
+```
 
 ## 11. 제약 사항
 
