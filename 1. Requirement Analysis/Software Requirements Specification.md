@@ -103,6 +103,30 @@ classDiagram
 | 세부내용      | - 교수진 이름 표시<br> - 직책 표시<br> - 연구실 위치 안내<br> - 전공 정보 표시<br> - 연락처 정보 제공<br> - 프로필 사진 표시<br> - 이메일 주소 표시<br> - 관리자 등록 정보 기반 정적 페이지 제공 |
 | 권한        | 모두                                                                                                                                  |
 
+```mermaid
+classDiagram
+    class FacultyIntroductionFeature_FN-FPR-001 {
+        <<Feature>>
+        -facultyName: string
+        -position: string
+        -officeLocation: string
+        -majorField: string
+        -contactNumber: string
+        -profileImage: Image
+        -emailAddress: string
+        -staticContent: Content
+
+        +viewFacultyName(facultyName: string): void
+        +viewPosition(position: string): void
+        +viewOfficeLocation(officeLocation: string): void
+        +viewMajorField(majorField: string): void
+        +viewContactNumber(contactNumber: string): void
+        +viewProfileImage(profileImage: Image): void
+        +viewEmailAddress(emailAddress: string): void
+        +serveStaticPageBasedOnAdminContent(staticContent: Content): void
+    }
+```
+
 | 항목        | 내용                                                                                                             |
 | --------- | -------------------------------------------------------------------------------------------------------------- |
 | 요구사항 고유번호 | FN-FCC-001                                                                                                     |
@@ -111,6 +135,26 @@ classDiagram
 | 정의        | 학과 교육과정 안내 기능                                                                                                  |
 | 세부내용      | - 학년별 교과 교육 과정 정보 표시<br> - 과목명 안내<br> - 학점 안내<br> - 담당 교수 정보 제공(이미지, 전공, 연구실, 전화번호 등) <br> - 수업 방식 정보 안내<br> - 관리자 등록 정보 기반 정적 페이지 제공 |
 | 권한        | 모두                                                                                                             |
+
+```mermaid
+classDiagram
+    class CurriculumAndClassInfoFeature_FN-FCC-001 {
+        <<Feature>>
+        -gradeCurriculumInfo: Map<int, string>
+        -subjectName: string
+        -creditInfo: int
+        -professorInfo: Professor
+        -classMethodInfo: string
+        -staticContent: Content
+
+        +viewCurriculumByGrade(grade: int): string
+        +viewSubjectName(): string
+        +viewCreditInfo(): int
+        +viewProfessorInfo(): Professor
+        +viewClassMethod(): string
+        +serveStaticPageBasedOnAdminContent(content: Content): void
+    }
+```
 
 | 항목        | 내용                                                                                                                 |
 | --------- | ------------------------------------------------------------------------------------------------------------------ |
@@ -121,6 +165,21 @@ classDiagram
 | 세부내용      | - 공지사항/뉴스 제목 표시<br> - 내용 표시<br> - 작성일 표시<br> - 첨부파일 표시<br> - 최신순 정렬 기능<br> - 검색 기능 제공<br> - 관리자 등록 정보 기반 정적 페이지 제공 |
 | 권한        | 모두                                                                                                                 |
 
+```mermaid
+class NoticeAndNewsViewFeature_FN-FNN-001 {
+        <<Feature>>
+        -title: string
+        -content: string
+        -createdDate: Date
+        -attachments: List<File>
+        -staticContent: Content
+
+        +viewNoticesSortedByLatest(): List<Notice>
+        +searchNotices(keyword: string): List<Notice>
+        +serveStaticPageBasedOnAdminContent(content: Content): void
+    }
+```
+
 | 항목        | 내용                                                                                                    |
 | --------- | ----------------------------------------------------------------------------------------------------- |
 | 요구사항 고유번호 | FN-FNN-002                                                                                            |
@@ -129,6 +188,20 @@ classDiagram
 | 정의        | 관리자가 공지사항 및 뉴스를 작성하거나 수정할 수 있는 기능                                                                     |
 | 세부내용      | - 게시글 상단 고정 여부 설정 가능<br> - 게시글 등록 가능<br> - 게시글 수정 가능<br> - 게시글 삭제 가능<br> - 첨부파일 등록 가능<br> - 이미지 등록 가능 |
 | 권한        | 일반 관리자, 최고 관리자                                                                                        |
+
+```mermaid
+ class NoticeAndNewsEditFeature_FN-FNN-002 {
+        <<Feature>>
+        -isPinned: boolean
+        -attachments: List<File>
+        -images: List<Image>
+
+        +createPost(title: string, content: string): void
+        +editPost(id: int, newContent: string): void
+        +deletePost(id: int): void
+        +setPinStatus(id: int, isPinned: boolean): void
+    }
+```
 
 | 항목        | 내용                                                               |
 | --------- | ---------------------------------------------------------------- |
@@ -139,6 +212,18 @@ classDiagram
 | 세부내용      | - 연구 성과 최신순 정렬<br> - 연구 성과 검색 기능 제공<br> - 관리자 등록 정보 기반 정적 페이지 제공 |
 | 권한        | 모두                                                               |
 
+```mermaid
+class ResearchShowcaseFeature_FN-FRS-001 {
+        <<Feature>>
+        -researchList: List<Research>
+        -staticContent: Content
+
+        +viewResearchSortedByLatest(): List<Research>
+        +searchResearch(keyword: string): List<Research>
+        +serveStaticPageBasedOnAdminContent(content: Content): void
+    }
+```
+
 | 항목        | 내용                                                                  |
 | --------- | ------------------------------------------------------------------- |
 | 요구사항 고유번호 | FN-FAD-001                                                          |
@@ -148,6 +233,18 @@ classDiagram
 | 세부내용      | - 입학 정보 최신순 정렬 기능<br> - 입학 정보 검색 기능 제공<br> - 관리자 등록 정보 기반 정적 페이지 제공 |
 | 권한        | 모두                                                                  |
 
+```mermaid
+class AdmissionInfoFeature_FN-FAD-001 {
+        <<Feature>>
+        -admissionList: List<AdmissionInfo>
+        -staticContent: Content
+
+        +viewAdmissionSortedByLatest(): List<AdmissionInfo>
+        +searchAdmission(keyword: string): List<AdmissionInfo>
+        +serveStaticPageBasedOnAdminContent(content: Content): void
+    }
+```
+
 | 항목        | 내용                                                                             |
 | --------- | ------------------------------------------------------------------------------ |
 | 요구사항 고유번호 | FN-FCM-001                                                                     |
@@ -155,7 +252,19 @@ classDiagram
 | 요구사항 분류   | 기능 요구사항                                                                        |
 | 정의        | 사용자가 게시판에 새로운 게시글을 작성할 수 있는 기능                                                 |
 | 세부내용      | - 게시글 제목 입력 가능<br> - 게시글 본문 입력 가능<br> - 첨부파일 등록 가능<br> - 작성 완료 후 게시글 최신순 정렬 반영 |
-| 권한        | 학생, 교수                                                                         |                                                               
+| 권한        | 학생, 교수                                                                         |      
+
+```mermaid
+ class PostCreationFeature_FN-FCM-001 {
+        <<Feature>>
+        -title: string
+        -content: string
+        -attachments: List<File>
+
+        +createPost(title: string, content: string, attachments: List<File>): void
+        +reflectSortingAfterCreation(): void
+    }
+```
 
 | 항목        | 내용                                                                              |
 | --------- | ------------------------------------------------------------------------------- |
@@ -166,6 +275,14 @@ classDiagram
 | 세부내용      | - 로그인된 사용자가 본인 게시글 수정 가능<br> - 로그인된 사용자가 본인 게시글 삭제 가능<br> - 삭제 시 ‘복구 불가’ 경고창 표시 |
 | 권한        | 학생, 교수                                                                          |
 
+```mermaid
+class PostEditDeleteFeature_FN-FCM-002 {
+        <<Feature>>
+        +editOwnPost(userId: int, postId: int, newContent: string): void
+        +deleteOwnPost(userId: int, postId: int): void
+    }
+```
+
 | 항목        | 내용                                                                                  |
 | --------- | ----------------------------------------------------------------------------------- |
 | 요구사항 고유번호 | FN-FCM-003                                                                          |
@@ -174,6 +291,18 @@ classDiagram
 | 정의        | 로그인한 사용자가 게시글에 댓글을 작성/삭제할 수 있는 기능                                                   |
 | 세부내용      | - 댓글 작성 가능 (로그인 사용자)<br> - 댓글 실시간 반영<br> - 댓글 좋아요/싫어요 기능 제공<br> - 댓글 삭제는 댓글 작성자만 가능 |
 | 권한        | 학생, 교수                                                                              |
+
+```mermaid
+class CommentFeature_FN-FCM-003 {
+        <<Feature>>
+        -commentList: List<Comment>
+
+        +writeComment(userId: int, postId: int, comment: string): void
+        +deleteComment(userId: int, commentId: int): void
+        +likeComment(commentId: int): void
+        +dislikeComment(commentId: int): void
+    }
+```
 
 | 항목        | 내용                                                                               |
 | --------- | -------------------------------------------------------------------------------- |
@@ -184,6 +313,16 @@ classDiagram
 | 세부내용      | - 게시글 고정 시 핀 아이콘 표시<br> - 게시글 고정/해제 기능 제공<br> - 고정/해제 권한은 교수, 일반 관리자, 최고 관리자만 가능 |
 | 권한        | 교수, 일반 관리자, 최고 관리자                                                               |
 
+```mermaid
+class PostPinFeature_FN-FCM-004 {
+        <<Feature>>
+        -isPinned: boolean
+
+        +pinPost(postId: int): void
+        +unpinPost(postId: int): void
+    }
+```
+
 | 항목        | 내용                                                                                            |
 | --------- | --------------------------------------------------------------------------------------------- |
 | 요구사항 고유번호 | FN-FCM-005                                                                                    |
@@ -192,6 +331,19 @@ classDiagram
 | 정의        | 로그인 된 사용자가 게시글을 열람할 수 있는 기능                                                                   |
 | 세부내용      | - 로그인 사용자만 게시글 열람 가능<br> - 게시글 제목 표시<br> - 게시글 내용 표시<br> - 작성자 정보 표시<br> - 댓글 표시<br> - 조회수 표시 |
 | 권한        | 모두                                                                                            |
+
+```mermaid
+ class PostViewFeature_FN-FCM-005 {
+        <<Feature>>
+        -title: string
+        -content: string
+        -author: string
+        -comments: List<Comment>
+        -views: int
+
+        +viewPost(userId: int, postId: int): Post
+    }
+```
 
 ## 5. 디자인 요구사항 (코드: NDG)
 
