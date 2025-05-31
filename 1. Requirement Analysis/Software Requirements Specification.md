@@ -267,37 +267,26 @@
 | 요구사항 분류   | 디자인 요구사항                                              |
 | 정의        | 모바일, 태블릿에서도 최적화된 화면 제공                                |
 | 세부내용      | - 화면 크기에 따라 자동으로 레이아웃 조정 |
+| 권한        | 모두       
 ```mermaid
 classDiagram
-    class 요구사항 {
-        +String 요구사항고유번호
-        +String 요구사항명칭
-        +String 요구사항분류
-        +String 정의
-        +String 세부내용
+    class Requirement {
+        +String id
+        +String name
+        +String category
+        +String definition
+        +String details
+
+        +optimizeLayoutByResolution()
     }
 
-    class 권한 {
-        +String 권한범위
+    class Permission {
+        +String accessLevel
     }
 
-    요구사항 "1" --> "1" 권한 : 접근
+    Requirement "1" --> "1" Permission : has
 
-    %% 객체 예시 (Optional – for illustration, not used in diagram rendering)
-    %% 객체 이름은 식별 목적
-    %% 요구사항 인스턴스 예시
-    %% 요구사항_모바일메뉴 : 요구사항
-    %% 요구사항_모바일메뉴.요구사항고유번호 = "NDG-RWD-002"
-    %% 요구사항_모바일메뉴.요구사항명칭 = "모바일 전용 메뉴 제공"
-    %% 요구사항_모바일메뉴.요구사항분류 = "디자인 요구사항"
-    %% 요구사항_모바일메뉴.정의 = "모바일 모드 지원"
-    %% 요구사항_모바일메뉴.세부내용 = "- 햄버거 메뉴, 모바일 메뉴 지원 및 가독성 높은 폰트 자동 배치"
-
-    %% 권한 인스턴스 예시
-    %% 권한_모두 : 권한
-    %% 권한_모두.권한범위 = "모두"
 ```
-| 권한        | 모두       
 
 | 항목        | 내용                                                    |
 | --------- | ----------------------------------------------------- |
@@ -306,8 +295,25 @@ classDiagram
 | 요구사항 분류   | 디자인 요구사항                                              |
 | 정의        | 모바일 모드 지원                                |
 | 세부내용      | - 햄버거 메뉴, 모바일 메뉴 지원 및 가독성 높은 폰트 자동 배치 |
-| 권한        | 모두       
+| 권한        | 모두 
+```mermaid
+classDiagram
+    class Requirement {
+        +String id
+        +String name
+        +String category
+        +String definition
+        +String details
 
+        +provideMobileOnlyMenu()
+    }
+
+    class Permission {
+        +String accessLevel
+    }
+
+    Requirement "1" --> "1" Permission : has
+```
 | 항목        | 내용                                                    |
 | --------- | ----------------------------------------------------- |
 | 요구사항 고유번호 | NDG-RWD-003                                               |
@@ -315,8 +321,25 @@ classDiagram
 | 요구사항 분류   | 디자인 요구사항                                              |
 | 정의        | 모바일 사용자의 원활한 이용                               |
 | 세부내용      | - 버튼 간격, 크기 모바일 기준 이상 확보 |
-| 권한        | 모두
+| 권한        | 모두 |
+```mermaid
+classDiagram
+    class Requirement {
+        +String id
+        +String name
+        +String category
+        +String definition
+        +String details
 
+        +adjustTouchElementSizeAndSpacing()
+    }
+
+    class Permission {
+        +String accessLevel
+    }
+
+    Requirement "1" --> "1" Permission : has
+```
 
 ## 6. 인터페이스 요구사항
 | 대분류 코드 | 의미                                    |
