@@ -433,6 +433,7 @@ classDiagram
 | **NSW** | 소프트웨어 (Software)  |
 
 | 중분류 코드 | 의미                                     |
+| ------ | -------------------------------------------|    
 | NFE    | 프론트엔드 프레임워크 (React/Vue.js 기반 SPA)      |
 | NBE    | 백엔드 프레임워크 (Django/Node.js 기반 REST API) |
 | NAP    | API 통신 방식 (RESTful API 설계)             |
