@@ -292,33 +292,25 @@ classDiagram
 
 ```mermaid
 classDiagram
-    class LayoutManager {
-        - String deviceType
-        - int width
-        - int height
-        + void adjustLayout(int width, int height)
-        + String detectDeviceType(int width, int height)
-    }
+    class ResponsiveLayoutFeature {
+        <<Feature>>
+        -deviceType: string
+        -screenWidth: int
+        -screenHeight: int
+        -currentLayout: string
+        -mobileLayoutEnabled: boolean
+        -tabletLayoutEnabled: boolean
+        -desktopLayoutEnabled: boolean
 
-    class ResponsiveLayout {
-        - String currentLayout
-        + void renderLayout(String deviceType)
-        + void optimizeForMobile()
-        + void optimizeForTablet()
-        + void optimizeForDesktop()
+        +adjustLayout(width: int, height: int): void
+        +detectDeviceType(width: int, height: int): string
+        +renderResponsiveLayout(deviceType: string): void
+        +optimizeForMobile(): void
+        +optimizeForTablet(): void
+        +optimizeForDesktop(): void
     }
-
-    class UIComponent {
-        - String componentId
-        - String position
-        - String size
-        + void updatePosition(String layout)
-        + void updateSize(String layout)
-    }
-
-    LayoutManager <|-- ResponsiveLayout
-    ResponsiveLayout <|-- UIComponent
 ```
+
 
 | 항목        | 내용                                                    |
 | --------- | ----------------------------------------------------- |
@@ -330,22 +322,21 @@ classDiagram
 | 권한        | 모두 
 ```mermaid
 classDiagram
-    class Requirement {
-        +String id
-        +String name
-        +String category
-        +String definition
-        +String details
+    class MobileMenuFeature {
+        <<Feature>>
+        -isMobileMode: boolean
+        -hamburgerMenuVisible: boolean
+        -mobileMenuItems: string[]
+        -fontStyle: string
+        -fontSize: int
 
-        +provideMobileOnlyMenu()
+        +enableMobileMode(): void
+        +showHamburgerMenu(): void
+        +renderMobileMenu(items: string[]): void
+        +applyReadableFontStyle(): void
     }
-
-    class Permission {
-        +String accessLevel
-    }
-
-    Requirement "1" --> "1" Permission : has
 ```
+
 | 항목        | 내용                                                    |
 | --------- | ----------------------------------------------------- |
 | 요구사항 고유번호 | NDG-RWD-003                                               |
@@ -356,21 +347,18 @@ classDiagram
 | 권한        | 모두 |
 ```mermaid
 classDiagram
-    class Requirement {
-        +String id
-        +String name
-        +String category
-        +String definition
-        +String details
+    class TouchOptimizedUIFeature {
+        <<Feature>>
+        -buttonSpacing: int
+        -buttonSize: int
+        -minimumTouchTargetSize: int
+        -isMobileDevice: boolean
 
-        +adjustTouchElementSizeAndSpacing()
+        +adjustButtonSpacing(spacing: int): void
+        +adjustButtonSize(size: int): void
+        +applyMinimumTouchTargets(): void
+        +enableTouchOptimization(): void
     }
-
-    class Permission {
-        +String accessLevel
-    }
-
-    Requirement "1" --> "1" Permission : has
 ```
 
 ## 6. 인터페이스 요구사항
