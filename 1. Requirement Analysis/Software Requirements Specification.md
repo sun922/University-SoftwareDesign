@@ -113,11 +113,21 @@
 ```mermaid
 classDiagram
     class DepartmentIntroductionFeature {
+        <<Feature>>
+        -visionText: string
+        -historyText: string
+        -structureText: string
+        -logoImage: Image
+        -campusViewImage: Image
+        -mobileParagraphStructureEnabled: boolean
+        -staticContent: Content
+
         +viewIntroductionText(vision: string, history: string, structure: string): void
         +viewIntroductionImages(logo: Image, campusView: Image): void
         +applyMobileParagraphStructure(): void
         +serveStaticPageBasedOnAdminContent(content: Content): void
     }
+
 ```
 
 
