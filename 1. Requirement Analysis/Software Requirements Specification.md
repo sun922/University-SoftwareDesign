@@ -374,12 +374,28 @@ classDiagram
 
 | 항목        | 내용                                        |
 | --------- | ----------------------------------------- |
-| 요구사항 고유번호 | NF-NDG-RUL-001                                   |
+| 요구사항 고유번호 | NDG-RUL-001                                   |
 | 요구사항 명칭   | 디자인 일관성 제공 기능                             |
 | 요구사항 분류   | 디자인 요구사항                                  |
 | 정의        | 깔끔하고 전문적인 디자인 제공                          |
 | 세부내용      | - 학교 로고 기반<br>- 폰트, 버튼, 여백 등 일관된 UI 요소 제공 <br> ![서울대 참고 이미지](https://github.com/HBNU-COME2105/webtf-faier-team-2/blob/main/1.%20Requirement%20Analysis/Figures/%EC%84%9C%EC%9A%B8%EB%8C%80%20%EC%B0%B8%EA%B3%A0%20%EA%B5%AC%EC%83%81%EB%8F%84.png?raw=true) <br> ![kaist](https://github.com/HBNU-COME2105/webtf-faier-team-2/blob/main/1.%20Requirement%20Analysis/Figures/KAIST%20%EC%B0%B8%EA%B3%A0%20%EA%B5%AC%EC%83%81%EB%8F%84.png?raw=true)|
 | 권한        | 모두  |
+```mermaid
+classDiagram
+    class ConsistentDesignFeature_NDG-RUL-001 {
+        <<VisualDesign>>
+        -schoolLogoImage: Image
+        -fontStyle: string
+        -buttonStyle: string
+        -spacingUnit: int
+        -referenceDesigns: Image[]
+
+        +applyConsistentDesign(font: string, button: string, spacing: int): void
+        +setSchoolLogo(logo: Image): void
+        +loadReferenceDesigns(images: Image[]): void
+        +renderUIElements(): void
+    }
+```
 
 | 항목        | 내용                                                    |
 | --------- | ----------------------------------------------------- |
@@ -392,8 +408,8 @@ classDiagram
 
 ```mermaid
 classDiagram
-    class ResponsiveLayoutFeature {
-        <<Feature>>
+    class ResponsiveLayoutFeature_NDG-RWD-001 {
+        <<VisualDesign>>
         -deviceType: string
         -screenWidth: int
         -screenHeight: int
@@ -409,6 +425,7 @@ classDiagram
         +optimizeForTablet(): void
         +optimizeForDesktop(): void
     }
+
 ```
 
 | 항목        | 내용                                                    |
@@ -422,8 +439,8 @@ classDiagram
 
 ```mermaid
 classDiagram
-    class MobileMenuFeature {
-        <<Feature>>
+    class MobileMenuFeature_NDG-RWD-002 {
+        <<VisualDesign>>
         -isMobileMode: boolean
         -hamburgerMenuVisible: boolean
         -mobileMenuItems: string[]
@@ -448,8 +465,8 @@ classDiagram
 
 ```mermaid
 classDiagram
-    class TouchOptimizedUIFeature {
-        <<Feature>>
+    class TouchOptimizedUIFeature_NDG-RWD-003 {
+        <<VisualDesign>>
         -buttonSpacing: int
         -buttonSize: int
         -minimumTouchTargetSize: int
@@ -1049,28 +1066,24 @@ classDiagram
 
 ```mermaid
 classDiagram
-    class FaultRecoveryFeature {
-        <<Feature>>
+    class FaultRecoveryFeature_GEN-NMQ-001 {
+        <<Maintainability>>
         -isPrimaryServerActive: boolean
         -isFailoverInProgress: boolean
         -recoveryTimeThreshold: int
-        -failoverServer: Server
+        -serverId: string
+        -status: string
+        -ipAddress: string
 
         +detectFailure(): void
         +triggerAutomaticFailover(): void
         +switchToBackupServer(): void
         +verifyRecoveryWithinThreshold(threshold: int): boolean
-    }
-
-    class Server {
-        -serverId: string
-        -status: string
-        -ipAddress: string
-
         +activate(): void
         +deactivate(): void
         +checkStatus(): string
     }
+
 ```
 
 <품질 - 기능 확장성 확보 (GEN-NEX)>
@@ -1085,45 +1098,30 @@ classDiagram
 
 ```mermaid
 classDiagram
-    class AvailabilityFeature {
-        <<Feature>>
+    class AvailabilityFeature_GEN-NEX-001 {
+        <<Extensibility>>
         -uptimePercentage: float
-        -redundantServers: Server[]
-        -monitoringSystem: MonitoringSystem
-        -maintenanceSchedule: Schedule
+        -redundantServerIds: string[]
+        -monitoringSystemId: string
+        -monitoringSystemStatus: string
+        -maintenanceStartTime: DateTime
+        -maintenanceEndTime: DateTime
+        -maintenanceDescription: string
+        -serverStatusMap: map[string]string  // 서버ID별 상태 저장
 
         +ensureHighAvailability(targetUptime: float): void
-        +configureRedundancy(servers: Server[]): void
+        +configureRedundancy(serverIds: string[]): void
         +monitorSystemHealth(): void
-        +notifyMaintenance(schedule: Schedule): void
-    }
-
-    class Server {
-        -serverId: string
-        -status: string
-        -ipAddress: string
-
-        +activate(): void
-        +deactivate(): void
-        +checkStatus(): string
-    }
-
-    class MonitoringSystem {
-        -systemId: string
-        -status: string
-
+        +notifyMaintenance(startTime: DateTime, endTime: DateTime, description: string): void
+        +activateServer(serverId: string): void
+        +deactivateServer(serverId: string): void
+        +checkServerStatus(serverId: string): string
         +startMonitoring(): void
         +alertOnFailure(): void
         +generateHealthReport(): string
-    }
-
-    class Schedule {
-        -startTime: DateTime
-        -endTime: DateTime
-        -description: string
-
         +notifyUsers(): void
     }
+
 ```
 
 <품질 - 사용자 편의성 (GEN-NUX)>
@@ -1138,8 +1136,8 @@ classDiagram
 
 ```mermaid
 classDiagram
-    class UserErrorFeedbackFeature {
-        <<Feature>>
+    class UserErrorFeedbackFeature_GEN-NUX-001 {
+        <<Usability>>
         -errorCode: string
         -errorMessage: string
         -userFriendlyMessage: string
@@ -1163,25 +1161,22 @@ classDiagram
 
 ```mermaid
 classDiagram
-    class ResponseTimeControlFeature {
-        <<Feature>>
+    class ResponseTimeControlFeature_GEN-NPR-001 {
+        <<Performance>>
         -maxResponseTimeSeconds: int
         -currentResponseTime: int
         -isWithinThreshold: boolean
-
-        +measureResponseTime(): int
-        +validateResponseTime(): boolean
-        +optimizeDatabaseAccess(): void
-        +handleUserRequest(request: Request): void
-    }
-
-    class Request {
         -requestId: string
         -requestType: string
         -payload: object
 
-        +process(): void
+        +measureResponseTime(): int
+        +validateResponseTime(): boolean
+        +optimizeDatabaseAccess(): void
+        +handleUserRequest(): void
+        +processRequest(): void
     }
+
 ```
 
 ## 11. 제약 사항
@@ -1217,6 +1212,18 @@ classDiagram
 | 정의        | 과제 목적상 실제 구현은 수행하지 않음         |
 | 세부내용      | - 실제 기능 구현 대신 설계 및 문서 작성에 집중함 |
 | 권한        | 모두                            |
+```mermaid
+classDiagram
+    class ImplementationExclusionConstraint_ENV-NEX-001 {
+        <<Constraint>>
+        -isImplementationExcluded: boolean
+        -focusArea: string
+        -documentationEmphasis: boolean
+
+        +skipImplementation(): void
+        +focusOnDesignAndDocs(): void
+    }
+```
 
 | 항목        | 내용                       |
 | --------- | ------------------------ |
@@ -1226,6 +1233,19 @@ classDiagram
 | 정의        | 학기 내 보고서 제출 일정 엄수 필요     |
 | 세부내용      | - 제출 기한 엄수 필수<br>- 연장 불가 |
 | 권한        | 모두                       |
+```mermaid
+classDiagram
+    class BrowserCompatibilityConstraint_ENV-BRC-001 {
+        <<Constraint>>
+        -supportedBrowsers: string[]
+        -isIESupported: boolean
+        -compatibilityStatus: string
+
+        +checkBrowserSupport(browserName: string, version: string): boolean
+        +enforceCompatibility(): void
+        +reportIncompatibility(): void
+    }
+```
 
 | 항목        | 내용                             |
 | --------- | ------------------------------ |
@@ -1235,6 +1255,20 @@ classDiagram
 | 정의        | 외부 인력 참여 없이 팀 내 작성 수행          |
 | 세부내용      | - 외부 전문가 참여 금지<br>- 팀 내부 작성 필수 |
 | 권한        | 모두                             |
+```mermaid
+classDiagram
+    class OpenSourceUsageRestriction_TEC-OSS-001 {
+        <<Constraint>>
+        -allowedLicenses: string[]
+        -isAdminApproved: boolean
+        -restrictedLicenses: string[]
+
+        +validateLicense(license: string): boolean
+        +requireAdminApproval(): void
+        +checkLibraryApproval(libraryName: string): boolean
+    }
+
+```
 
 | 항목        | 내용                                 |
 | --------- | ---------------------------------- |
@@ -1244,6 +1278,20 @@ classDiagram
 | 정의        | 크롬, 엣지, 사파리 최신 버전에서만 완전 지원         |
 | 세부내용      | - IE 미지원<br>- 브라우저별 화면/기능 동일 유지 필요 |
 | 권한        | 모두                                 |
+```mermaid
+classDiagram
+    class LanguageFrameworkConstraint_TEC-FRW-001 {
+        <<Constraint>>
+        -backendLanguage: string
+        -frontendFramework: string
+        -requiresPriorApproval: boolean
+        -maintenanceConsiderations: string
+
+        +validateTechStack(backend: string, frontend: string): boolean
+        +requestApprovalForChange(): void
+        +considerMaintenanceAndStaffing(): void
+    }
+```
 
 | 항목        | 내용                                                |
 | --------- | ------------------------------------------------- |
@@ -1253,6 +1301,26 @@ classDiagram
 | 정의        | 검증된 오픈소스만 사용 가능                                   |
 | 세부내용      | - GPL 등 상업적 제약 라이선스 금지<br>- 관리자 승인 없는 라이브러리 도입 불가 |
 | 권한        | 관리자                                               |
+```mermaid
+classDiagram
+    class FaultRecoveryFeature_GEN-NMQ-001 {
+        <<Maintainability>>
+        -isPrimaryServerActive: boolean
+        -isFailoverInProgress: boolean
+        -recoveryTimeThreshold: int
+        -serverId: string
+        -status: string
+        -ipAddress: string
+
+        +detectFailure(): void
+        +triggerAutomaticFailover(): void
+        +switchToBackupServer(): void
+        +verifyRecoveryWithinThreshold(threshold: int): boolean
+        +activate(): void
+        +deactivate(): void
+        +checkStatus(): string
+    }
+```
 
 | 항목        | 내용                                         |
 | --------- | ------------------------------------------ |
@@ -1262,6 +1330,32 @@ classDiagram
 | 정의        | 백엔드는 Python, 프론트엔드는 React.js 기반 구현         |
 | 세부내용      | - 다른 스택 사용 시 사전 협의 필요<br>- 유지보수 및 인력 기준 고려 |
 | 권한        | 관리자                                        |
+```mermaid
+classDiagram
+    class AvailabilityFeature_GEN-NEX-001 {
+        <<Extensibility>>
+        -uptimePercentage: float
+        -redundantServerIds: string[]
+        -monitoringSystemId: string
+        -monitoringSystemStatus: string
+        -maintenanceStartTime: DateTime
+        -maintenanceEndTime: DateTime
+        -maintenanceDescription: string
+        -serverStatusMap: map[string]string  // 서버ID별 상태 저장
+
+        +ensureHighAvailability(targetUptime: float): void
+        +configureRedundancy(serverIds: string[]): void
+        +monitorSystemHealth(): void
+        +notifyMaintenance(startTime: DateTime, endTime: DateTime, description: string): void
+        +activateServer(serverId: string): void
+        +deactivateServer(serverId: string): void
+        +checkServerStatus(serverId: string): string
+        +startMonitoring(): void
+        +alertOnFailure(): void
+        +generateHealthReport(): string
+        +notifyUsers(): void
+    }
+```
           
 ## 12. 유지보수 요구사항
 
