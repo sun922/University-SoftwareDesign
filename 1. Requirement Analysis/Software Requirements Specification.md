@@ -536,7 +536,7 @@ classDiagram
 
 ```mermaid
 classDiagram
-    class PermissionBasedMenuFeature_NUI_NAM_001 {
+    class PermissionBasedMenuFeature_NUI-NAM-001 {
         <<Interface>>
         -requirementID: string
         -requirementName: string
@@ -563,7 +563,7 @@ classDiagram
 
 ```mermaid
 classDiagram
-    class PageTransitionFlowFeature_NUI_NFT_001 {
+    class PageTransitionFlowFeature_NUI-NFT-001 {
         <<Interface>>
         -requirementID: string
         -requirementName: string
@@ -591,7 +591,7 @@ classDiagram
 
 ```mermaid
 classDiagram
-    class AccessibleUIFeature_NUI_NAC_001 {
+    class AccessibleUIFeature_NUI-NAC-001 {
         <<Interface>>
         -requirementID: string
         -requirementName: string
@@ -638,7 +638,7 @@ classDiagram
 
 ```mermaid
 classDiagram
-    class FrontendFrameworkFeature_NSW_NFE_001 {
+    class FrontendFrameworkFeature_NSW-NFE-001 {
         <<Software>>
         -requirementID: string
         -requirementName: string
@@ -666,7 +666,7 @@ classDiagram
 
 ```mermaid
 classDiagram
-    class BackendFrameworkFeature_NSW_NBE_001 {
+    class BackendFrameworkFeature_NSW-NBE-001 {
         <<Software>>
         -requirementID: string
         -requirementName: string
@@ -694,7 +694,7 @@ classDiagram
 
 ```mermaid
 classDiagram
-    class APICommunicationFeature_NSW_NAP_001 {
+    class APICommunicationFeature_NSW-NAP-001 {
         <<Software>>
         -requirementID: string
         -requirementName: string
@@ -721,7 +721,7 @@ classDiagram
 
 ```mermaid
 classDiagram
-    class AuthenticationSessionFeature_NSW_NJS_001 {
+    class AuthenticationSessionFeature_NSW-NJS-001 {
         <<Software>>
         -requirementID: string
         -requirementName: string
@@ -770,7 +770,7 @@ classDiagram
 
 ```mermaid
 classDiagram
-    class UnitTestingFeature_NTT_NUT_001 {
+    class UnitTestingFeature_NTT-NUT-001 {
         <<Test>>
         -requirementID: string
         -requirementName: string
@@ -797,7 +797,7 @@ classDiagram
 
 ```mermaid
 classDiagram
-    class FlowBasedTestingFeature_NTT_NTF_001 {
+    class FlowBasedTestingFeature_NTT-NTF-001 {
         <<Test>>
         -requirementID: string
         -requirementName: string
@@ -824,7 +824,7 @@ classDiagram
 
 ```mermaid
 classDiagram
-    class SecurityTestingFeature_NTT_NST_001 {
+    class SecurityTestingFeature_NTT-NST-001 {
         <<Test>>
         -requirementID: string
         -requirementName: string
@@ -878,7 +878,7 @@ classDiagram
 
 ```mermaid
 classDiagram
-    class PermissionControlTestingFeature_NTT_NPT_001 {
+    class PermissionControlTestingFeature_NTT-NPT-001 {
         <<Test>>
         -requirementID: string
         -requirementName: string
