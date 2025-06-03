@@ -346,3 +346,193 @@
 
     %% 모바일에서 가독성 높은 단락 구조는 UI/스타일 영역이라 클래스 다이어그램에서 제외 가능
 ```
+
+
+
+---------------------------------------- 최종 수정
+
+**FAA – 실명 인증 기능**
+
+| 항목          | 설명                              |
+| ----------- | ------------------------------- |
+| **기능 ID**   | FAA                             |
+| **기능명**     | 실명 인증 기능                        |
+| **목적**      | 사용자 실명을 기반으로 한 인증 절차 제공 및 보안 강화 |
+| **대상 사용자**  | 학생, 교수                          |
+| **연관 UI**   | UI-FAA-001                      |
+| **연관 시나리오** | SC-FAA-001                      |
+| **입력**      | 이름, 주민등록번호(또는 학번), 사용자 유형       |
+| **출력**      | 인증 성공 여부, 에러 메시지                |
+| **외부 연동**   | 실명 인증 외부 API                    |
+| **UI 처리**   | 인증 성공 시 다음 화면으로 진행              |
+
+```mermaid
+classDiagram
+class RealNameAuthService {
+    -verifier: RealNameVerifier
+    +verify(name: string, identifier: string, userType: string): AuthResult
+}
+class RealNameVerifier {
+    +sendRequest(name: string, identifier: string): boolean
+}
+
+class AuthResult {
+    +verified: boolean
+    +errorMessage: string
+}
+
+RealNameAuthService --> RealNameVerifier
+RealNameAuthService --> AuthResult
+```
+**FAA – 실명 인증 기능 변수 설명**
+
+| 변수명        | 타입      | 설명          |
+| ---------- | ------- | ----------- |
+| `name`     | string  | 사용자 이름      |
+| `idNumber` | string  | 사용자 식별번호    |
+| `verified` | boolean | 실명 인증 여부 결과 |
+
+**FAA – 실명 인증 기능 함수 설명**
+| 함수명                   | 파라미터                           | 반환형        | 설명                     |
+| --------------------- | ------------------------------ | ---------- | ---------------------- |
+| `verifyRealName()`    | name: string, idNumber: string | AuthResult | 이름과 주민번호 기반 실명 인증 수행   |
+| `isVerified()`        | 없음                             | bool       | 인증 결과 확인               |
+| `fetchExternalData()` | idNumber: string               | string     | 외부 인증 시스템에서 사용자 데이터 조회 |
+
+**FAA – 실명 인증 시스템 구성요소** 
+
+| 구성요소                               | 역할                  |
+| ---------------------------------- | ------------------- |
+| **웹서버**                            | 실명 인증 요청 처리 및 결과 반환 |
+| **사용자 브라우저**                       | 이름, 생년월일, 학번 등 입력   |
+| **RealNameVerificationFeature 모듈** | 실명 입력값 처리 및 검증      |
+| **VerificationServer (외부기관)**      | 외부 실명 인증 API 서버     |
+| **인증 결과 DB (선택사항)**                | 검증 완료된 사용자 정보 저장 가능 |
+
+**FAA – 실명 인증 시스템 동작 과정** 
+| 단계        | 설명                                                                |
+| --------- | ----------------------------------------------------------------- |
+| 1. 사용자 입력 | 사용자가 이름, 생년월일, 학번 등을 입력함                                          |
+| 2. 인증 요청  | `RealNameVerificationFeature`가 입력 정보를 `verifyRealName` 메서드를 통해 처리 |
+| 3. 외부 검증  | `VerificationServer` 클래스를 통해 행정기관 DB 등 외부 시스템과 연동하여 실명 여부 확인      |
+| 4. 결과 반환  | 성공 시 실명 인증 완료, 실패 시 오류 메시지 반환                                     |
+| 5. 후속 처리  | 실명 인증된 사용자만 가입/로그인/권한 부여 가능 (통합 시스템과 연계됨)                         |
+
+**FAA – 실명 인증 시스템 상호작용**
+
+사용자
+  └─> 브라우저 ──> 웹서버 ──> RealNameVerificationFeature
+                                   └─> VerificationServer (외부 API)
+웹서버
+  └─> 인증 결과를 사용자에게 반환
+  
+**FAA – 실명 인증 설계적 고려사항**
+
+| 고려 항목      | 설명                                   |
+| ---------- | ------------------------------------ |
+| **신뢰성**    | 외부 인증 기관 API 실패 시 재시도 로직 및 사용자 알림 제공 |
+| **보안**     | 사용자 개인정보(이름, 생년월일 등) 전송 시 암호화 필수     |
+| **연계성**    | 로그인, 회원가입 등 다른 기능들과 연계된 플로우 설계 필요    |
+| **속도 최적화** | 외부 API 응답 시간 지연을 고려한 비동기 처리 가능성 고려   |
+
+**FAU – 로그인 기능**
+
+| 항목          | 설명                                |
+| ----------- | --------------------------------- |
+| **기능 ID**   | FAU                               |
+| **기능명**     | 로그인 기능                            |
+| **목적**      | 사용자 인증을 통해 기능 접근 제어               |
+| **대상 사용자**  | 모두                                |
+| **연관 UI**   | UI-FAU-001                        |
+| **연관 시나리오** | SC-FCM-001, SC-FNN-001            |
+| **입력**      | 사용자 ID, 비밀번호                      |
+| **출력**      | 로그인 성공 여부, 사용자 정보, 에러 메시지         |
+| **외부 연동**   | 사용자 데이터베이스 또는 인증 시스템              |
+| **UI 처리**   | 로그인 성공 시 메인 페이지 이동 또는 권한 별 기능 활성화 |
+
+```mermaid
+classDiagram
+class AuthService {
+  +login(userId: string, password: string): AuthResult
+}
+
+class UserRepository {
+  +findUserById(userId: string): User
+}
+
+class User {
+  -id: string
+  -password: string
+  -name: string
+  -role: string
+  +verifyPassword(password: string): boolean
+}
+
+class AuthResult {
+  +success: boolean
+  +errorMessage: string
+  +user: User
+}
+
+AuthService --> UserRepository
+AuthService --> AuthResult
+UserRepository --> User
+AuthResult --> User
+```
+
+**FAU – 로그인 기능 변수 설명**
+
+| 변수명             | 타입     | 설명              |
+| --------------- | ------ | --------------- |
+| `userId`        | string | 사용자 아이디         |
+| `password`      | string | 사용자 비밀번호 (암호화됨) |
+| `authenticated` | bool   | 인증 성공 여부        |
+
+**FAU – 로그인 기능 함수 설명**
+
+| 함수명                  | 파라미터                             | 반환형        | 설명                    |
+| -------------------- | -------------------------------- | ---------- | --------------------- |
+| `login()`            | userId: string, password: string | AuthResult | ID와 비밀번호 기반 로그인 처리    |
+| `validatePassword()` | rawPassword: string              | bool       | 비밀번호 일치 여부 확인         |
+| `findUserById()`     | userId: string                   | User       | 해당 ID에 해당하는 사용자 정보 조회 |
+| `createSession()`    | user: User                       | Session    | 로그인 성공 시 세션 생성 및 반환   |
+
+**FAU – 로그인 기능 시스템 구성요소**
+
+| 구성요소                 | 역할                         |
+| -------------------- | -------------------------- |
+| **웹서버**              | 로그인 요청을 받아 서버 내부 인증 모듈과 통신 |
+| **사용자 브라우저 (클라이언트)** | 로그인 정보를 입력하고 결과를 확인        |
+| **LoginFeature 모듈**  | 사용자의 입력을 받아 검증하고 인증 처리     |
+| **사용자 계정 DB**        | 사용자 ID, 비밀번호 해시 정보 저장      |
+| **SessionManager**   | 인증 완료 시 세션을 생성 및 관리        |
+
+**FAU – 로그인 기능 시스템 동작 과정**
+
+| 단계        | 설명                                                      |
+| --------- | ------------------------------------------------------- |
+| 1. 사용자 입력 | 사용자가 ID와 비밀번호를 입력함                                      |
+| 2. 입력 처리  | `LoginFeature` 클래스가 `inputCredentials` 메서드를 통해 입력값을 저장  |
+| 3. 인증 처리  | `authenticate()` 메서드를 호출하여, 사용자 정보와 DB 내 계정 정보 일치 여부 검증 |
+| 4. 세션 생성  | 인증 성공 시 `SessionManager`가 세션을 생성하여 사용자 상태를 유지함          |
+| 5. 인증 결과  | 성공 시 사용자 정보를 세션에 담고 다음 기능(메인화면 등)으로 이동, 실패 시 오류 메시지 출력  |
+
+**FAU – 로그인 기능 시스템 상호작용**
+
+사용자
+  └─> 브라우저 ──> 웹서버 ──> LoginFeature
+                                 └─> 사용자 계정 DB 조회
+                                 └─> 인증 성공 시 SessionManager
+웹서버
+  └─> 사용자에게 로그인 결과 응답
+
+**FAU – 로그인 기능 설계적 고려사항**
+
+| 고려 항목     | 설명                                   |
+| --------- | ------------------------------------ |
+| **보안**    | 비밀번호는 해시 방식으로 저장하고, 통신은 HTTPS로 암호화   |
+| **세션 관리** | 인증 성공 시 세션 생성, 세션 타임아웃 및 갱신 로직 필요    |
+| **확장성**   | 소셜 로그인(Google, Kakao 등) 추가를 위한 구조 고려 |
+| **에러 처리** | 잘못된 로그인 정보, DB 연결 오류 등에 대한 예외 처리 필수  |
+
+
