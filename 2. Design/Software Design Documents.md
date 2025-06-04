@@ -1456,6 +1456,108 @@ serveStaticPageBasedOnAdminContent(content: Content): void
 | **보안** | 성과 데이터는 공개용이지만, 등록/수정 기능은 관리자용으로 제한 필요 |
 
 -----------------------------
+**FCM – 학생 커뮤니티 게시판**
+
+| 항목          | 설명                              |
+| ----------- | ------------------------------- |
+| **기능 ID**   | FCM                             |
+| **기능명**     | 학생 커뮤니티 게시판                        |
+| **목적**      | 자유롭게 게시글을 작성 및 열람, 댓글을 통해 상호 소통 |
+| **대상 사용자**  | 학생, 교수, 일반 관리자                |
+| **연관 UI**   | UI-FCM-001, UI-FCM-002, UI-FCM-003 |
+| **연관 시나리오** | SC-FCM-001, SC-FCM-002 |
+| **입력**      | title, content, attachments, userID, role, postId|
+| **출력**      | Post 리스트, Post 상세, API 응답, 파일 URL|
+| **외부 연동**   | 파일 저장소, 인증 서비스, 웬 클라이언트/앱, 알림 서비스 |
+| **UI 처리**   | 게시판 목록, 게시글 상세, 게시글 작성/수정 |
+
+```mermaid
+classDiagram
+    class User {
+        +Long id
+        +String name
+        +Role role
+        +canEdit(post: Post): boolean
+        +canDelete(post: Post): boolean
+    }
+
+    class Post {
+        +Long id
+        +String title
+        +String content
+        +boolean isPinned
+        +int views
+        +List~Comment~ comments
+        +List~File~ attachments
+        +User author
+        +increaseView(): void
+    }
+
+    class Comment {
+        +Long id
+        +String content
+        +User author
+        +Date createdAt
+    }
+
+    class File {
+        +String fileName
+        +String fileUrl
+    }
+
+    class PostService {
+        +createPost(title: String, content: String, files: List~File~, user: User): Post
+        +editOwnPost(postId: Long, newContent: String, user: User): void
+        +deleteOwnPost(postId: Long, user: User): void
+        +pinPost(postId: Long, user: User): void
+        +unpinPost(postId: Long, user: User): void
+        +viewPost(postId: Long, user: User): Post
+    }
+
+    class PostRepository {
+        +save(post: Post): Post
+        +findById(id: Long): Post
+        +delete(post: Post): void
+        +findAll(): List~Post~
+        +findPinned(): List~Post~
+    }
+
+    class AuthService {
+        +getUserFromToken(token: String): User
+        +hasPermission(user: User, action: String): boolean
+    }
+
+    class FileStorageService {
+        +upload(files: List~File~): List~File~
+        +delete(file: File): void
+    }
+
+    class PostController {
+        +createPost(request: PostCreateRequest): Post
+        +getPost(id: Long): Post
+        +updatePost(id: Long, request: PostEditRequest): void
+        +deletePost(id: Long): void
+        +pinPost(id: Long): void
+    }
+
+    class UI {
+        +renderPostList(posts: List~Post~)
+        +renderPostDetail(post: Post)
+        +renderPostForm()
+    }
+
+    %% 관계 설정
+    Post --> "1" User : author
+    Post --> "*" Comment
+    Post --> "*" File
+    PostController --> PostService
+    PostService --> PostRepository
+    PostService --> AuthService
+    PostService --> FileStorageService
+    UI --> PostController
+    PostController --> AuthService
+
+```
 **FCM – 커뮤니티 게시판 변수 설명**
 
 | 변수명        | 타입      | 설명          |
@@ -1474,7 +1576,7 @@ serveStaticPageBasedOnAdminContent(content: Content): void
 | 함수명                   | 파라미터                           | 반환형        | 설명                     |
 | --------------------- | ------------------------------ | ---------- | ---------------------- |
 | `createPost()`        | title: String, content: String, files: List<File>, user: User | Post | 게시글을 새로 생성하고 DB에 저장함  |
-| `reflectSortingAfterCreation()`   없음                             |   | 게시글 생성 후 최신 순 정렬 반영      |
+| `reflectSortingAfterCreation()` |  없음    |       | 게시글 생성 후 최신 순 정렬 반영      |
 | `editOwnPost()`       | postId: Long, newContent: String, user: User	| void     | 사용자가 자신의 게시글을 수정함 |
 | `deleteOwnPost()`    |postId: Long, user: User| void | 사용자가 자신의 게시글을 삭제함   |
 | `pinPost()`        | postId: Long, user: User    | void       | 관리자가 게시글을 고정함    |
@@ -1514,7 +1616,25 @@ serveStaticPageBasedOnAdminContent(content: Content): void
 
 **FCM – 커뮤니티 게시판 상호작용**
 
-[사용자] ⇄ [UI] ⇄ [Controller] ⇄ [Service] ⇄ [Repository] ⇄ [Database]
+관리자
+ └─> 관리자 UI
+       └─> 콘텐츠 저장소
+             └─> 입학 정보 저장
+
+사용자
+ └─> 웹 브라우저
+       └─> 웹서버
+             └─> AdmissionInfoFeature
+                   ├─> 콘텐츠 로딩
+                   ├─> viewAdmissionSortedByLatest()
+                   ├─> searchAdmission()
+                   └─> serveStaticPageBasedOnAdminContent()
+
+웹서버
+ └─> 렌더링된 페이지 응답
+
+사용자 브라우저
+ └─> 페이지 렌더링 및 확인
 
   
 **FCM – 커뮤니티 게시판 설계적 고려사항**
@@ -1528,6 +1648,5 @@ serveStaticPageBasedOnAdminContent(content: Content): void
 | **파일 업로드**    | 확장자 및 크기 제한 / 별도 스토리지 저장 고려 (ex. AWS S3) |
 | **보안 처리**     | XSS 방지, SQL Injection 방지, CSRF Token 등 적용    |
 | **트래픽 부하**    | 인기 게시판일 경우 캐시 적용 또는 페이지네이션 처리 필요   |
-
 
 
