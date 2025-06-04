@@ -1455,3 +1455,79 @@ serveStaticPageBasedOnAdminContent(content: Content): void
 | **확장성 고려** | 외부 API 연동 또는 다국어, 필터 기능 확장 가능성 고려 |
 | **보안** | 성과 데이터는 공개용이지만, 등록/수정 기능은 관리자용으로 제한 필요 |
 
+-----------------------------
+**FCM – 커뮤니티 게시판 변수 설명**
+
+| 변수명        | 타입      | 설명          |
+| ---------- | ------- | ----------- |
+| `title`     | string  | 게시글 제목      |
+| `content` | string  | 게시글 본문 내용    |
+| `attachments` | List<File> | 첨부파일 리스트 |
+| `authorId`     | Long  | 게시글 작성자 ID |
+| `isPinned` | boolean  | 게시글 고정 여부 |
+| `views` | int | 게시글 조회수 |
+| `comments` | List<Comment>  | 해당 게시글의 댓글 리스트  |
+| `userId` | Long  | 현재 요청 사용자 ID(검증용) |
+| `postId` | Long | 게시글 ID |
+
+**FCM – 커뮤니티 게시판 함수 설명**
+| 함수명                   | 파라미터                           | 반환형        | 설명                     |
+| --------------------- | ------------------------------ | ---------- | ---------------------- |
+| `createPost()`        | title: String, content: String, files: List<File>, user: User | Post | 게시글을 새로 생성하고 DB에 저장함  |
+| `reflectSortingAfterCreation()`   없음                             |   | 게시글 생성 후 최신 순 정렬 반영      |
+| `editOwnPost()`       | postId: Long, newContent: String, user: User	| void     | 사용자가 자신의 게시글을 수정함 |
+| `deleteOwnPost()`    |postId: Long, user: User| void | 사용자가 자신의 게시글을 삭제함   |
+| `pinPost()`        | postId: Long, user: User    | void       | 관리자가 게시글을 고정함    |
+| `unpinPost()` | postId: Long, user: User | void     | 관리자가 고정된 게시글을 해제함 |
+| `viewPost()`    | postId: Long, user: User | Post | 게시글을 조회하며 조회수를 1 증가시킴  |
+
+**FCM – 커뮤니티 게시판 구성요소** 
+
+| 구성요소                               | 역할                  |
+| ---------------------------------- | ------------------- |
+| **Frontend (UI)**       | 게시글 목록, 상세, 작성/수정 UI (React, Android XML 등) |
+| **Controller**          | HTTP 요청을 받아 처리 (REST API 엔드포인트)   |
+| **Service Layer**       | 비즈니스 로직 처리 (권한, 정렬, 조회수 증가 등)      |
+| **Repository/DAO**      | 데이터베이스와의 연결 처리 (JPA, MyBatis 등)    |
+| **Database (DB)**       | 게시글, 사용자, 댓글 등의 영속 데이터 저장소 |
+
+**FCM – 커뮤니티 게시판 동작 과정** 
+
+**게시글 작성**
+1. 사용자 UI에서 제목/내용/첨부 입력 후 전송
+2. Controller가 Service에 요청 전달
+3. Service에서 권한 검사 및 DB 저장
+4. Repository를 통해 Post, File 테이블에 데이터 삽입
+5. 게시글 리스트 최신순으로 정렬되어 UI에 반영
+
+**게시글 조회**
+1. 사용자가 특정 게시글 상세페이지 요청
+2. Controller → Service → Repository를 통해 DB 조회
+3. Service에서 조회수 증가 처리
+4. 댓글 포함하여 게시글 상세 데이터를 반환
+
+**게시글 고정(관리자)**
+1. 관리자가 고정 버튼 클릭 시 /posts/{id}/pin 호출
+2. Service에서 관리자 권한 확인
+3. isPinned = true로 DB 업데이트
+4. 게시글 목록에 상단 노출
+
+**FCM – 커뮤니티 게시판 상호작용**
+
+[사용자] ⇄ [UI] ⇄ [Controller] ⇄ [Service] ⇄ [Repository] ⇄ [Database]
+
+  
+**FCM – 커뮤니티 게시판 설계적 고려사항**
+
+| 고려 항목      | 설명                                   |
+| ---------- | ------------------------------------ |
+| **권한 관리**    | 학생/교수는 작성만, 관리자는 고정/삭제 가능 → 역할 기반 검증 필요 |
+| **조회수 처리**     | 단일 사용자 반복 조회 제한, 또는 단순 카운트 증가 (설계 선택)    |
+| **정렬 처리**    | 고정된 게시글 우선 정렬 → isPinned 우선, 그 다음 최신순   |
+| **데이터 무결성** | 사용자 본인 외에는 게시글 수정/삭제 불가 (ID 체크 필수)  |
+| **파일 업로드**    | 확장자 및 크기 제한 / 별도 스토리지 저장 고려 (ex. AWS S3) |
+| **보안 처리**     | XSS 방지, SQL Injection 방지, CSRF Token 등 적용    |
+| **트래픽 부하**    | 인기 게시판일 경우 캐시 적용 또는 페이지네이션 처리 필요   |
+
+
+
