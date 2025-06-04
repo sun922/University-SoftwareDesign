@@ -220,24 +220,24 @@
 | 항목 | 설명 |
 |------|------|
 | 기능 ID | FDO |
-| 기능명 | 학과 소개 페이지 |
+| 기능명 | 학과 소개 |
 | 목적 | 학과 비전, 연혁, 구성 정보를 사용자에게 제공 |
 | 대상 사용자 | 모두 |
 | 연관 UI | UI-FDO-001 |
 | 연관 시나리오 | 없음 (정적 페이지) |
-| 다이어그램 | ![image](https://github.com/user-attachments/assets/701f12fd-d506-4d1a-885a-08ea5fd952e6) |
+| 다이어그램 |![image](https://github.com/user-attachments/assets/0bcbdcca-1640-4a6c-82f8-47d34587de3a)|
 
 ---
 
 | 항목 | 설명 |
 |------|------|
 | 기능 ID | FPR |
-| 기능명 | 교수진 소개 페이지 |
+| 기능명 | 교수진 소개 |
 | 목적 | 교수 개별 정보(이름, 연락처, 전공 등)를 시각적으로 제공 |
 | 대상 사용자 | 모두 |
 | 연관 UI | UI-FPR-001 |
 | 연관 시나리오 | 없음 (정적 페이지) |
-| 다이어그램 | ![image](https://github.com/user-attachments/assets/8c7edac0-4dd3-41eb-a925-d70a8449658d) |
+| 다이어그램 |![image](https://github.com/user-attachments/assets/c9fd7511-d0b5-403a-b835-bfe7abfbe6db) |
 
 ---
 
@@ -249,7 +249,8 @@
 | 대상 사용자 | 모두 |
 | 연관 UI | UI-FCC-001 |
 | 연관 시나리오 | SC-FCC-001 |
-| 다이어그램 | ![image](https://github.com/user-attachments/assets/90eb8eca-7ec2-46d7-ad8b-1b478fc720cc) |
+| 다이어그램 | ![image](https://github.com/user-attachments/assets/9f1bb75b-dd22-4352-88ce-54368e68b90d)|
+
 
 ---
 
@@ -261,7 +262,8 @@
 | 대상 사용자 | 일반 관리자(작성), 모두(열람) |
 | 연관 UI | UI-FNN-001, UI-FNN-002 |
 | 연관 시나리오 | SC-FNN-001 |
-| 다이어그램 | ![image](https://github.com/user-attachments/assets/5be2a6e5-86a3-474f-bc1a-35744ca3d357) |
+| 다이어그램 | ![image](https://github.com/user-attachments/assets/f3f51015-04a2-4ab4-8eba-28b014d4d4ee) |
+
 
 ---
 
@@ -273,19 +275,19 @@
 | 대상 사용자 | 모두 |
 | 연관 UI | UI-FRS-001 |
 | 연관 시나리오 | 없음 (정적 페이지) |
-| 다이어그램 | ![image](https://github.com/user-attachments/assets/d72a95b1-475a-4271-bf36-df4157ad87f5) |
+| 다이어그램 | ![image](https://github.com/user-attachments/assets/eaa7ce06-1f19-4de2-9e24-2b3e520bf2fa) |
 
 ---
 
 | 항목 | 설명 |
 |------|------|
 | 기능 ID | FAD |
-| 기능명 | 입학 안내 페이지 |
+| 기능명 | 입학 안내 |
 | 목적 | 입학 일정 및 전형 정보 제공 |
 | 대상 사용자 | 모두 |
 | 연관 UI | UI-FAD-001 |
 | 연관 시나리오 | 없음 (정적 페이지) |
-| 다이어그램 | ![image](https://github.com/user-attachments/assets/37046158-a7de-45ab-b6c4-9c02494ce4e4) |
+| 다이어그램 | ![image](https://github.com/user-attachments/assets/334f3e03-ef8b-432a-a564-df8e1fdbf98b)|
 
 ---
 
@@ -297,7 +299,7 @@
 | 대상 사용자 | 학생, 교수 (작성), 일반 관리자 (고정/삭제) |
 | 연관 UI | UI-FCM-001, UI-FCM-002, UI-FCM-003 |
 | 연관 시나리오 | SC-FCM-001, SC-FCM-002 |
-| 다이어그램 | ![image](https://github.com/user-attachments/assets/8e290292-07c0-4b23-bfa9-bdce30ed2436) |
+| 다이어그램 |![image](https://github.com/user-attachments/assets/534dac2f-c636-4613-b5b3-a41ce1588e40) |
 
 ---
 
@@ -309,7 +311,7 @@
 | 대상 사용자 | 모두 |
 | 연관 UI | UI-FAU-001 |
 | 연관 시나리오 | SC-FCM-001, SC-FNN-001 |
-| 다이어그램 | ![image](https://github.com/user-attachments/assets/93574959-e54d-40c0-ba29-5e610dc6af9f) |
+| 다이어그램 |![image](https://github.com/user-attachments/assets/8490a622-710b-42fe-beed-1ed2fa8953bc) |
 
 ---
 
@@ -321,7 +323,7 @@
 | 대상 사용자 | 학생, 교수, 일반 관리자 |
 | 연관 UI | UI-FAR-001 |
 | 연관 시나리오 | 없음 |
-| 권한 표 | ![image](https://github.com/user-attachments/assets/97287851-a208-4038-ac44-dbe9d0fb0a56) |
+| 권한 표 | ![image](https://github.com/user-attachments/assets/a6097290-b1b2-40ff-a8b4-c8905d628482)|
 
 ---
 
@@ -333,19 +335,19 @@
 | 대상 사용자 | 학생, 교수 |
 | 연관 UI | UI-FAA-001 |
 | 연관 시나리오 | SC-FAA-001 |
-| 다이어그램 | ![image](https://github.com/user-attachments/assets/f53d3415-65ef-4f9a-8bb6-ee50316f1ea3) |
+| 다이어그램 | ![image](https://github.com/user-attachments/assets/fdd82311-8511-41c9-97f4-31bba9428a86)|
 
 ---
 
 | 항목 | 설명 |
 |------|------|
 | 기능 ID | FAM |
-| 기능명 | 관리자 콘텐츠 관리 |
+| 기능명 | 콘텐츠 관리 |
 | 목적 | 공지사항 및 정적 콘텐츠 등록/수정 UI 제공 |
 | 대상 사용자 | 최고 관리자 |
 | 연관 UI | UI-FAM-001 |
 | 연관 시나리오 | SC-FNN-001, SC-FAM-001 |
-| 다이어그램 | ![image](https://github.com/user-attachments/assets/5880c2fa-162b-4ef4-ab08-52da51b6d78c) |
+| 다이어그램 |![image](https://github.com/user-attachments/assets/90bd5616-db8f-464d-b425-8a09ed392676)|
 
 
 ---
