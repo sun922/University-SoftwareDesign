@@ -913,212 +913,88 @@ Subject --> Professor
 | **파일 보안** | 강의계획서 PDF 링크 접근 권한 제한 고려 가능   |
 
 ---------------------------------------------------------------------------------------------------------------
-FDO
+**FDO – 학과 소개 페이지 기능**
 
-## 1. 개요
+| 항목          | 설명                                                                                                                 |
+| ----------- | ------------------------------------------------------------------------------------------------------------------ |
+| **기능 ID**   | FDO                                                                                                                |
+| **기능명**     | 학과 소개 페이지                                                                                                          |
+| **목적**      | 학과의 비전, 연혁, 구성 정보를 사용자에게 제공하여 학과에 대한 전반적인 이해를 돕는다.                                                                 |
+| **대상 사용자**  | 웹사이트 방문자 모두 (학생, 교직원, 외부인 등)                                                                                       |
+| **연관 UI**   | UI-FDO-001                                                                                                         |
+| **연관 시나리오** | 없음 (정적 페이지로 관리자에 의해 콘텐츠가 미리 등록됨)                                                                                   |
+| **입력**      | 학과 비전 설명 텍스트, 학과 연혁 설명 텍스트, 학과 구성 설명 텍스트, 학과 로고 이미지, 캠퍼스 전경 이미지, 모바일 문단 구조 적용 여부, 관리자 등록 정적 콘텐츠 |
+| **출력**      | 학과 소개 페이지 (텍스트 및 이미지 포함 완성 페이지)                                                                                    |
+| **외부 연동**   | 콘텐츠 저장소 (정적 콘텐츠 DB 또는 파일 서버)                                                                                       |
+| **UI 처리**   | 사용자 요청 시 학과 소개 콘텐츠를 정적 페이지 형태로 화면에 출력                                                                              |
 
-### 1.1 기능명  
-학과 소개 페이지 (Department Introduction Page)
+**FDO – 학과 소개 페이지 기능 기능 변수 설명**
 
-### 1.2 기능 ID  
-FDO
-
-### 1.3 목적  
-학과의 비전, 연혁, 구성 정보를 사용자에게 제공하여 학과에 대한 전반적인 이해를 돕는다.
-
-### 1.4 대상 사용자  
-웹사이트 방문자 모두 (학생, 교직원, 외부인 등)
-
-### 1.5 연관 UI  
-UI-FDO-001 (학과 소개 페이지 UI 컴포넌트)
-
-### 1.6 연관 시나리오  
-없음 (정적 페이지로 관리자가 콘텐츠를 미리 등록하여 제공)
-
----
-
-## 2. 기능 설명
-
-### 2.1 주요 기능
-- 학과 비전, 연혁, 구성 관련 텍스트 콘텐츠 제공  
-- 학과 로고 및 캠퍼스 전경 이미지 제공  
-- 모바일 환경에서 문단 구조 자동 적용 기능  
-- 관리자가 설정한 정적 콘텐츠 기반 페이지 서비스  
-
-### 2.2 입력 및 출력
-
-#### 입력
-
-| 입력값 | 타입 | 설명 |
-|--------|------|------|
-| visionText | string | 학과 비전 설명 텍스트 |
-| historyText | string | 학과 연혁 설명 텍스트 |
-| structureText | string | 학과 구성 설명 텍스트 |
-| logoImage | Image | 학과 로고 이미지 |
-| campusViewImage | Image | 캠퍼스 전경 이미지 |
+| 변수명                             | 타입      | 설명                |
+| ------------------------------- | ------- | ----------------- |
+| visionText                      | string  | 학과 비전 텍스트         |
+| historyText                     | string  | 학과 연혁 텍스트         |
+| structureText                   | string  | 학과 구성 설명 텍스트      |
+| logoImage                       | Image   | 학과 로고 이미지         |
+| campusViewImage                 | Image   | 캠퍼스 전경 이미지        |
 | mobileParagraphStructureEnabled | boolean | 모바일에서 문단 구조 적용 여부 |
-| staticContent | Content | 관리자가 등록한 정적 페이지 콘텐츠 |
+| staticContent                   | Content | 관리자가 등록한 정적 콘텐츠   |
 
-#### 출력
+**FDO – 학과 소개 페이지 기능 함수 설명**
 
-| 출력값 | 설명 |
-|--------|------|
-| 학과 소개 페이지 | 텍스트 및 이미지가 포함된 완성된 학과 소개 웹 페이지 |
+| 함수명                                  | 파라미터                               | 반환형  | 설명                         |
+| ------------------------------------ | ---------------------------------- | ---- | -------------------------- |
+| viewIntroductionText()               | vision, history, structure: string | void | 학과 비전, 연혁, 구성 텍스트를 화면에 출력  |
+| viewIntroductionImages()             | logo, campusView: Image            | void | 로고 및 캠퍼스 이미지를 화면에 출력       |
+| applyMobileParagraphStructure()      | 없음                                 | void | 모바일 화면에서 문단 구조 적용 (가독성 향상) |
+| serveStaticPageBasedOnAdminContent() | content: Content                   | void | 등록된 정적 콘텐츠를 기반으로 페이지 렌더링   |
 
----
+**FDO – 학과 소개 페이지 기능 시스템 구성요소**
 
-## 3. 클래스 설계
+| 구성요소                             | 역할                       |
+| -------------------------------- | ------------------------ |
+| 웹서버                              | 사용자의 페이지 요청 처리 및 콘텐츠 전달  |
+| 콘텐츠 저장소                          | 정적 콘텐츠(텍스트, 이미지 등)를 저장   |
+| 관리자 UI                           | 관리자용 콘텐츠 등록/수정 웹 인터페이스   |
+| 클라이언트(브라우저)                      | 사용자 요청 및 최종 웹페이지 렌더링     |
+| DepartmentIntroductionFeature 모듈 | 콘텐츠 가공, 모바일 최적화 처리 기능 모듈 |
 
-### 클래스 구조
-<<Feature>>
- DepartmentIntroductionFeature
-visionText: string
+**FDO – 학과 소개 페이지 기능 시스템 동작 과정**
 
+| 단계         | 설명                                                  |
+| ---------- | --------------------------------------------------- |
+| 1. 콘텐츠 준비  | 관리자가 Admin UI를 통해 학과 소개 콘텐츠 입력 및 저장                 |
+| 2. 사용자 요청  | 사용자가 웹 브라우저에서 학과 소개 페이지 접속                          |
+| 3. 페이지 생성  | 웹서버가 콘텐츠를 불러와 DepartmentIntroductionFeature 모듈로 렌더링 |
+| 4. 모바일 최적화 | 모바일 기기 또는 설정에 따라 문단 구조 최적화 수행                       |
+| 5. 페이지 제공  | 사용자 브라우저에 완성된 페이지 응답 및 렌더링                          |
 
-historyText: string
+**FDO – 학과 소개 페이지 기능 시스템 상호작용**
 
-
-structureText: string
-
-
-logoImage: Image
-
-
-campusViewImage: Image
-
-
-mobileParagraphStructureEnabled: boolean
-
-
-staticContent: Content
-
-
-viewIntroductionText(vision: string, history: string, structure: string) : void
-
-
-viewIntroductionImages(logo: Image, campusView: Image) : void
-
-
-applyMobileParagraphStructure() : void
-
-
-serveStaticPageBasedOnAdminContent(content: Content) : void
-
-### 3.1 필드 설명
-
-| 필드명 | 타입 | 설명 |
-|--------|------|------|
-| visionText | string | 학과 비전 텍스트 |
-| historyText | string | 학과 연혁 텍스트 |
-| structureText | string | 학과 구성 텍스트 |
-| logoImage | Image | 학과 로고 이미지 |
-| campusViewImage | Image | 캠퍼스 전경 이미지 |
-| mobileParagraphStructureEnabled | boolean | 모바일용 문단 구조 활성화 여부 |
-| staticContent | Content | 관리자가 등록한 정적 콘텐츠 |
-
-### 3.2 메서드 설명
-
-| 메서드명 | 파라미터 | 반환형 | 설명 |
-|----------|----------|--------|------|
-| viewIntroductionText | vision, history, structure (string) | void | 학과 비전, 연혁, 구성 텍스트를 화면에 출력 |
-| viewIntroductionImages | logo, campusView (Image) | void | 로고 및 캠퍼스 이미지를 화면에 출력 |
-| applyMobileParagraphStructure | 없음 | void | 모바일 화면에서 문단별 구조를 적용하여 가독성 향상 |
-| serveStaticPageBasedOnAdminContent | content (Content) | void | 관리자가 제공한 정적 콘텐츠 기반으로 페이지 렌더링 |
-
----
-
-## 4. 동작 시나리오 (Sequence)
-
-1. 관리자가 학과 소개 텍스트 및 이미지 콘텐츠를 등록한다.  
-2. 사용자가 학과 소개 페이지에 접속한다.  
-3. `serveStaticPageBasedOnAdminContent()` 메서드를 통해 콘텐츠를 로드하여 렌더링한다.  
-4. `viewIntroductionText()`가 비전, 연혁, 구성 텍스트를 출력한다.  
-5. `viewIntroductionImages()`가 로고 이미지와 캠퍼스 전경 이미지를 출력한다.  
-6. 모바일 환경에서 `mobileParagraphStructureEnabled`가 true이면 `applyMobileParagraphStructure()`가 호출된다.  
-7. 완성된 학과 소개 페이지가 사용자에게 보여진다.
-
----
-
-## 5. UI 연동
-
-- 본 기능은 `UI-FDO-001`과 연동되어 실제 사용자 화면에서 콘텐츠를 표시한다.  
-- 콘텐츠는 관리자가 백엔드 또는 CMS를 통해 사전 등록한다.
-
----
-
-## 6. 기타 사항
-
-- 해당 페이지는 정적 콘텐츠 제공을 목적으로 하며 별도 동적 상호작용은 없음  
-- 모바일 환경에서 가독성 향상을 위한 문단 구조 자동 적용 포함  
-- 이미지 파일은 WebP 또는 JPEG 등 최적화된 포맷 사용 권장
-
-## 7. 시스템 아키텍처 및 동작 흐름
-
-### 7.1 시스템 구성요소
-
-| 구성요소 | 설명 |
-|----------|------|
-| **웹서버 (Web Server)** | 클라이언트(사용자 브라우저)의 요청을 받아 학과 소개 페이지 콘텐츠를 전달 |
-| **콘텐츠 저장소 (Content Storage)** | 학과 비전, 연혁, 구성 텍스트와 이미지 등 정적 콘텐츠를 저장하는 DB 또는 파일 서버 |
-| **관리자 UI (Admin UI)** | 관리자가 학과 소개 콘텐츠를 등록, 수정할 수 있는 웹 인터페이스 |
-| **클라이언트 (Web Browser)** | 사용자가 최종 페이지를 요청하고 화면으로 확인하는 공간 |
-| **DepartmentIntroductionFeature 모듈** | 콘텐츠를 가공하고 모바일 최적화 등을 처리하여 페이지를 생성하는 핵심 기능 단위 (서버 내 모듈) |
-
----
-
-### 7.2 동작 흐름
-
-#### 1) 콘텐츠 준비 단계 (관리자 역할)
-- 관리자는 Admin UI를 통해 학과 비전, 연혁, 구성 정보를 입력 및 수정
-- 로고 및 캠퍼스 전경 이미지도 함께 업로드
-- 모바일 문단 구조 설정 여부도 함께 저장
-- 모든 콘텐츠는 콘텐츠 저장소에 저장됨
-
-#### 2) 사용자 요청 단계
-- 사용자가 웹 브라우저에서 학과 소개 페이지(URL)에 접속
-- HTTP 요청이 웹서버로 전달됨
-
-#### 3) 콘텐츠 제공 및 페이지 생성
-- 웹서버는 `DepartmentIntroductionFeature` 모듈을 호출
-- `serveStaticPageBasedOnAdminContent(content)`로 콘텐츠 로드
-- `viewIntroductionText()`로 텍스트 가공 및 준비
-- `viewIntroductionImages()`로 이미지 가공 및 준비
-
-#### 4) 모바일 최적화 적용
-- 클라이언트가 모바일 기기이거나 `mobileParagraphStructureEnabled == true`인 경우,
-- `applyMobileParagraphStructure()` 메서드를 통해 문단 분할, 폰트 조절 등 모바일 최적화 수행
-
-#### 5) 페이지 응답 및 렌더링
-- 최종 HTML, CSS, 이미지 데이터를 클라이언트로 응답
-- 클라이언트는 페이지를 렌더링하여 사용자에게 표시
-
----
-
-### 7.3 시스템 상호작용 요약 (시퀀스 흐름)
 관리자
- └─> 관리자 UI ──> 콘텐츠 저장소 (텍스트 + 이미지 저장)
+ └─> 관리자 UI
+     └─> 콘텐츠 저장소 (텍스트, 이미지 저장)
+
 사용자
- └─> 웹 브라우저 ──> 웹서버 ──> DepartmentIntroductionFeature
- ├─> 콘텐츠 저장소에서 콘텐츠 로드
- ├─> viewIntroductionText()
- ├─> viewIntroductionImages()
- └─> applyMobileParagraphStructure()
-웹서버
- └─> HTML, CSS, 이미지 데이터 클라이언트에 응답
-사용자 웹브라우저
+ └─> 웹 브라우저
+     └─> 웹서버
+         └─> DepartmentIntroductionFeature
+              ├─> 콘텐츠 저장소에서 로드
+              ├─> viewIntroductionText()
+              ├─> viewIntroductionImages()
+              └─> applyMobileParagraphStructure()
+         └─> HTML, CSS, 이미지 사용자에게 응답
+사용자 브라우저
  └─> 페이지 렌더링 및 표시
 
+**FDO – 학과 소개 페이지 기능 설계적 고려사항**
 
----
-
-### 7.4 설계적 고려사항
-
-| 항목 | 설명 |
-|------|------|
-| **정적 콘텐츠 기반** | 자주 바뀌지 않는 정보를 정적 콘텐츠로 관리하여 서버 부하 최소화 |
-| **모바일 최적화** | 모바일 비율이 높은 환경을 고려하여 문단 구조 적용 기능을 설계에 포함 |
-| **확장성** | 향후 영상, 추가 이미지, 다국어 지원 등 기능 추가를 고려해 모듈을 유연하게 설계 |
-| **보안** | 관리자 UI의 접근 권한 제어, 콘텐츠 무결성 확보 및 안전한 서비스 제공 고려 |
+| 고려 항목         | 설명                                         |
+| ------------- | ------------------------------------------ |
+| **정적 콘텐츠 기반** | 자주 변경되지 않는 콘텐츠를 정적으로 관리하여 서버 부하 최소화        |
+| **모바일 최적화**   | 모바일 환경에서 가독성 향상을 위한 문단 구조 적용 기능 설계         |
+| **확장성**       | 향후 영상, 다국어, 추가 이미지 등 기능 확장 가능하도록 유연한 구조 설계 |
+| **보안**        | 관리자 UI 접근 권한 제어, 콘텐츠 무결성 검증, 안전한 콘텐츠 제공 보장 |
 
 FAD
 
