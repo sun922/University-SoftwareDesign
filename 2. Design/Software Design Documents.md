@@ -1618,23 +1618,31 @@ classDiagram
 
 관리자
  └─> 관리자 UI
-       └─> 콘텐츠 저장소
-             └─> 입학 정보 저장
+       ├─> 게시글 고정(pinPost)
+       └─> 게시글 삭제(deletePost)
 
-사용자
+교수/학생
  └─> 웹 브라우저
        └─> 웹서버
-             └─> AdmissionInfoFeature
-                   ├─> 콘텐츠 로딩
-                   ├─> viewAdmissionSortedByLatest()
-                   ├─> searchAdmission()
-                   └─> serveStaticPageBasedOnAdminContent()
+             └─> PostController
+                   ├─> createPost(title, content, files, user)
+                   ├─> editOwnPost(postId, newContent, user)
+                   ├─> deleteOwnPost(postId, user)
+                   ├─> viewPost(postId, user)
+                   └─> getAllPostsSorted()
+
+PostController
+ └─> PostService
+       ├─> AuthService.hasPermission(user, action)
+       ├─> FileStorageService.upload(files)
+       ├─> PostRepository.save(post)
+       └─> PostRepository.findById(postId)
 
 웹서버
  └─> 렌더링된 페이지 응답
 
 사용자 브라우저
- └─> 페이지 렌더링 및 확인
+ └─> 게시글 목록/상세/작성 화면 렌더링 및 확인
 
   
 **FCM – 커뮤니티 게시판 설계적 고려사항**
