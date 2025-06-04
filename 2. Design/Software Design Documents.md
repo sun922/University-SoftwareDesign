@@ -928,6 +928,25 @@ Subject --> Professor
 | **외부 연동**   | 콘텐츠 저장소 (정적 콘텐츠 DB 또는 파일 서버)                                                                                       |
 | **UI 처리**   | 사용자 요청 시 학과 소개 콘텐츠를 정적 페이지 형태로 화면에 출력                                                                              |
 
+```mermaid
+classDiagram
+    class DepartmentIntroductionFeature_FN-FDO-001 {
+        <<Feature>>
+        -visionText: string
+        -historyText: string
+        -structureText: string
+        -logoImage: Image
+        -campusViewImage: Image
+        -mobileParagraphStructureEnabled: boolean
+        -staticContent: Content
+
+        +viewIntroductionText(vision: string, history: string, structure: string): void
+        +viewIntroductionImages(logo: Image, campusView: Image): void
+        +applyMobileParagraphStructure(): void
+        +serveStaticPageBasedOnAdminContent(content: Content): void
+    }
+```
+
 **FDO – 학과 소개 페이지 기능 기능 변수 설명**
 
 | 변수명                             | 타입      | 설명                |
@@ -1007,6 +1026,19 @@ Subject --> Professor
 | 연관 UI   | UI-FAD-001                                                |
 | 연관 시나리오 | 없음 (정적 페이지로 관리자가 콘텐츠를 미리 등록함)                             |
 
+```mermaid
+classDiagram
+class AdmissionInfoFeature_FN-FAD-001 {
+        <<Feature>>
+        -admissionList: List
+        -staticContent: Content
+
+        +viewAdmissionSortedByLatest(): List
+        +searchAdmission(keyword: string): List
+        +serveStaticPageBasedOnAdminContent(content: Content): void
+    }
+```
+
 **FAD – 입학 안내 페이지 기능 변수 설명**
 
 | 변수명           | 타입      | 설명                                    |
@@ -1079,6 +1111,19 @@ Subject --> Professor
 | 대상 사용자  | 웹사이트 방문자 모두 (학생, 교수, 외부인 등)                                        |
 | 연관 UI   | UI-FRS-001                                                         |
 | 연관 시나리오 | 없음 (정적 콘텐츠 기반의 페이지이나, 일부 동적 리스트는 내부 모듈 또는 API 서버를 통해 제공 가능)        |
+
+```mermaid
+classDiagram
+class ResearchShowcaseFeature_FN-FRS-001 {
+        <<Feature>>
+        -researchList: List
+        -staticContent: Content
+
+        +viewResearchSortedByLatest(): List
+        +searchResearch(keyword: string): List
+        +serveStaticPageBasedOnAdminContent(content: Content): void
+    }
+```
 
 **FRS – 연구 성과 공유 페이지 기능 변수 설명**
 
