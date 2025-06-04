@@ -720,3 +720,547 @@ Subject --> Professor
 | **가독성**    | 사용자 친화적 탭 또는 필터 UI 제공    |
 | **연동성** | 각 강의별 교수 상세 정보와 연계 가능   |
 | **파일 보안** | 강의계획서 PDF 링크 접근 권한 제한 고려 가능   |
+
+---------------------------------------------------------------------------------------------------------------
+FDO
+
+## 1. 개요
+
+### 1.1 기능명  
+학과 소개 페이지 (Department Introduction Page)
+
+### 1.2 기능 ID  
+FDO
+
+### 1.3 목적  
+학과의 비전, 연혁, 구성 정보를 사용자에게 제공하여 학과에 대한 전반적인 이해를 돕는다.
+
+### 1.4 대상 사용자  
+웹사이트 방문자 모두 (학생, 교직원, 외부인 등)
+
+### 1.5 연관 UI  
+UI-FDO-001 (학과 소개 페이지 UI 컴포넌트)
+
+### 1.6 연관 시나리오  
+없음 (정적 페이지로 관리자가 콘텐츠를 미리 등록하여 제공)
+
+---
+
+## 2. 기능 설명
+
+### 2.1 주요 기능
+- 학과 비전, 연혁, 구성 관련 텍스트 콘텐츠 제공  
+- 학과 로고 및 캠퍼스 전경 이미지 제공  
+- 모바일 환경에서 문단 구조 자동 적용 기능  
+- 관리자가 설정한 정적 콘텐츠 기반 페이지 서비스  
+
+### 2.2 입력 및 출력
+
+#### 입력
+
+| 입력값 | 타입 | 설명 |
+|--------|------|------|
+| visionText | string | 학과 비전 설명 텍스트 |
+| historyText | string | 학과 연혁 설명 텍스트 |
+| structureText | string | 학과 구성 설명 텍스트 |
+| logoImage | Image | 학과 로고 이미지 |
+| campusViewImage | Image | 캠퍼스 전경 이미지 |
+| mobileParagraphStructureEnabled | boolean | 모바일에서 문단 구조 적용 여부 |
+| staticContent | Content | 관리자가 등록한 정적 페이지 콘텐츠 |
+
+#### 출력
+
+| 출력값 | 설명 |
+|--------|------|
+| 학과 소개 페이지 | 텍스트 및 이미지가 포함된 완성된 학과 소개 웹 페이지 |
+
+---
+
+## 3. 클래스 설계
+
+### 클래스 구조
+<<Feature>>
+ DepartmentIntroductionFeature
+visionText: string
+
+
+historyText: string
+
+
+structureText: string
+
+
+logoImage: Image
+
+
+campusViewImage: Image
+
+
+mobileParagraphStructureEnabled: boolean
+
+
+staticContent: Content
+
+
+viewIntroductionText(vision: string, history: string, structure: string) : void
+
+
+viewIntroductionImages(logo: Image, campusView: Image) : void
+
+
+applyMobileParagraphStructure() : void
+
+
+serveStaticPageBasedOnAdminContent(content: Content) : void
+
+### 3.1 필드 설명
+
+| 필드명 | 타입 | 설명 |
+|--------|------|------|
+| visionText | string | 학과 비전 텍스트 |
+| historyText | string | 학과 연혁 텍스트 |
+| structureText | string | 학과 구성 텍스트 |
+| logoImage | Image | 학과 로고 이미지 |
+| campusViewImage | Image | 캠퍼스 전경 이미지 |
+| mobileParagraphStructureEnabled | boolean | 모바일용 문단 구조 활성화 여부 |
+| staticContent | Content | 관리자가 등록한 정적 콘텐츠 |
+
+### 3.2 메서드 설명
+
+| 메서드명 | 파라미터 | 반환형 | 설명 |
+|----------|----------|--------|------|
+| viewIntroductionText | vision, history, structure (string) | void | 학과 비전, 연혁, 구성 텍스트를 화면에 출력 |
+| viewIntroductionImages | logo, campusView (Image) | void | 로고 및 캠퍼스 이미지를 화면에 출력 |
+| applyMobileParagraphStructure | 없음 | void | 모바일 화면에서 문단별 구조를 적용하여 가독성 향상 |
+| serveStaticPageBasedOnAdminContent | content (Content) | void | 관리자가 제공한 정적 콘텐츠 기반으로 페이지 렌더링 |
+
+---
+
+## 4. 동작 시나리오 (Sequence)
+
+1. 관리자가 학과 소개 텍스트 및 이미지 콘텐츠를 등록한다.  
+2. 사용자가 학과 소개 페이지에 접속한다.  
+3. `serveStaticPageBasedOnAdminContent()` 메서드를 통해 콘텐츠를 로드하여 렌더링한다.  
+4. `viewIntroductionText()`가 비전, 연혁, 구성 텍스트를 출력한다.  
+5. `viewIntroductionImages()`가 로고 이미지와 캠퍼스 전경 이미지를 출력한다.  
+6. 모바일 환경에서 `mobileParagraphStructureEnabled`가 true이면 `applyMobileParagraphStructure()`가 호출된다.  
+7. 완성된 학과 소개 페이지가 사용자에게 보여진다.
+
+---
+
+## 5. UI 연동
+
+- 본 기능은 `UI-FDO-001`과 연동되어 실제 사용자 화면에서 콘텐츠를 표시한다.  
+- 콘텐츠는 관리자가 백엔드 또는 CMS를 통해 사전 등록한다.
+
+---
+
+## 6. 기타 사항
+
+- 해당 페이지는 정적 콘텐츠 제공을 목적으로 하며 별도 동적 상호작용은 없음  
+- 모바일 환경에서 가독성 향상을 위한 문단 구조 자동 적용 포함  
+- 이미지 파일은 WebP 또는 JPEG 등 최적화된 포맷 사용 권장
+
+## 7. 시스템 아키텍처 및 동작 흐름
+
+### 7.1 시스템 구성요소
+
+| 구성요소 | 설명 |
+|----------|------|
+| **웹서버 (Web Server)** | 클라이언트(사용자 브라우저)의 요청을 받아 학과 소개 페이지 콘텐츠를 전달 |
+| **콘텐츠 저장소 (Content Storage)** | 학과 비전, 연혁, 구성 텍스트와 이미지 등 정적 콘텐츠를 저장하는 DB 또는 파일 서버 |
+| **관리자 UI (Admin UI)** | 관리자가 학과 소개 콘텐츠를 등록, 수정할 수 있는 웹 인터페이스 |
+| **클라이언트 (Web Browser)** | 사용자가 최종 페이지를 요청하고 화면으로 확인하는 공간 |
+| **DepartmentIntroductionFeature 모듈** | 콘텐츠를 가공하고 모바일 최적화 등을 처리하여 페이지를 생성하는 핵심 기능 단위 (서버 내 모듈) |
+
+---
+
+### 7.2 동작 흐름
+
+#### 1) 콘텐츠 준비 단계 (관리자 역할)
+- 관리자는 Admin UI를 통해 학과 비전, 연혁, 구성 정보를 입력 및 수정
+- 로고 및 캠퍼스 전경 이미지도 함께 업로드
+- 모바일 문단 구조 설정 여부도 함께 저장
+- 모든 콘텐츠는 콘텐츠 저장소에 저장됨
+
+#### 2) 사용자 요청 단계
+- 사용자가 웹 브라우저에서 학과 소개 페이지(URL)에 접속
+- HTTP 요청이 웹서버로 전달됨
+
+#### 3) 콘텐츠 제공 및 페이지 생성
+- 웹서버는 `DepartmentIntroductionFeature` 모듈을 호출
+- `serveStaticPageBasedOnAdminContent(content)`로 콘텐츠 로드
+- `viewIntroductionText()`로 텍스트 가공 및 준비
+- `viewIntroductionImages()`로 이미지 가공 및 준비
+
+#### 4) 모바일 최적화 적용
+- 클라이언트가 모바일 기기이거나 `mobileParagraphStructureEnabled == true`인 경우,
+- `applyMobileParagraphStructure()` 메서드를 통해 문단 분할, 폰트 조절 등 모바일 최적화 수행
+
+#### 5) 페이지 응답 및 렌더링
+- 최종 HTML, CSS, 이미지 데이터를 클라이언트로 응답
+- 클라이언트는 페이지를 렌더링하여 사용자에게 표시
+
+---
+
+### 7.3 시스템 상호작용 요약 (시퀀스 흐름)
+관리자
+ └─> 관리자 UI ──> 콘텐츠 저장소 (텍스트 + 이미지 저장)
+사용자
+ └─> 웹 브라우저 ──> 웹서버 ──> DepartmentIntroductionFeature
+ ├─> 콘텐츠 저장소에서 콘텐츠 로드
+ ├─> viewIntroductionText()
+ ├─> viewIntroductionImages()
+ └─> applyMobileParagraphStructure()
+웹서버
+ └─> HTML, CSS, 이미지 데이터 클라이언트에 응답
+사용자 웹브라우저
+ └─> 페이지 렌더링 및 표시
+
+
+---
+
+### 7.4 설계적 고려사항
+
+| 항목 | 설명 |
+|------|------|
+| **정적 콘텐츠 기반** | 자주 바뀌지 않는 정보를 정적 콘텐츠로 관리하여 서버 부하 최소화 |
+| **모바일 최적화** | 모바일 비율이 높은 환경을 고려하여 문단 구조 적용 기능을 설계에 포함 |
+| **확장성** | 향후 영상, 추가 이미지, 다국어 지원 등 기능 추가를 고려해 모듈을 유연하게 설계 |
+| **보안** | 관리자 UI의 접근 권한 제어, 콘텐츠 무결성 확보 및 안전한 서비스 제공 고려 |
+
+FAD
+
+## 1. 개요
+
+### 1.1 기능명  
+입학 안내 페이지 (Admission Information Page)
+
+### 1.2 기능 ID  
+FAD
+
+### 1.3 목적  
+입학 일정, 지원 자격, 자주 묻는 질문 등의 정보를 제공하여 사용자에게 입학 관련 내용을 명확히 안내한다.
+
+### 1.4 대상 사용자  
+웹사이트 방문자 모두 (학생, 학부모, 일반인 등)
+
+### 1.5 연관 UI  
+UI-FAD-001 (입학 안내 페이지 UI 컴포넌트)
+
+### 1.6 연관 시나리오  
+없음 (정적 페이지로 관리자가 콘텐츠를 미리 등록하여 제공)
+
+---
+
+## 2. 기능 설명
+
+### 2.1 주요 기능
+- 입학 전형 일정 정보 제공  
+- 지원 자격 요건 안내  
+- 자주 묻는 질문(FAQ) 제공  
+- 검색 및 최신순 정렬 기능 제공  
+- 관리자가 등록한 정적 콘텐츠 기반 페이지 서비스  
+
+### 2.2 입력 및 출력
+
+#### 입력
+
+| 입력값 | 타입 | 설명 |
+|--------|------|------|
+| admissionList | List | 입학 관련 정보 항목 리스트 |
+| staticContent | Content | 정적 콘텐츠(FAQ, 전형 일정, 자격 등) |
+| keyword | string | 검색 시 사용되는 키워드 |
+
+#### 출력
+
+| 출력값 | 설명 |
+|--------|------|
+| 입학 안내 페이지 | 최신 정렬 또는 검색 결과를 포함한 입학 정보 웹 페이지 |
+
+---
+
+## 3. 클래스 설계
+
+### 클래스 구조
+<<Feature>>
+ AdmissionInfoFeature_FN-FAD-001
+admissionList: List
+
+
+staticContent: Content
+
+
+viewAdmissionSortedByLatest(): List
+
+
+searchAdmission(keyword: string): List
+
+
+serveStaticPageBasedOnAdminContent(content: Content): void
+
+### 3.1 필드 설명
+
+| 필드명 | 타입 | 설명 |
+|--------|------|------|
+| admissionList | List | 입학 정보(전형 일정, 지원 자격, Q&A 등)를 담는 리스트 |
+| staticContent | Content | 관리자에 의해 등록된 정적 콘텐츠 |
+
+### 3.2 메서드 설명
+
+| 메서드명 | 파라미터 | 반환형 | 설명 |
+|----------|----------|--------|------|
+| viewAdmissionSortedByLatest | 없음 | List | 최신순으로 정렬된 입학 정보를 반환 |
+| searchAdmission | keyword (string) | List | 키워드로 입학 정보를 검색하여 반환 |
+| serveStaticPageBasedOnAdminContent | content (Content) | void | 관리자가 등록한 콘텐츠를 기반으로 정적 페이지를 렌더링 |
+
+---
+
+## 4. 동작 시나리오 (Sequence)
+
+1. 관리자가 전형 일정, 자격 요건, Q&A 등의 콘텐츠를 관리자 UI를 통해 등록  
+2. 콘텐츠는 콘텐츠 저장소에 저장됨  
+3. 사용자가 입학 안내 페이지에 접속  
+4. `serveStaticPageBasedOnAdminContent()` 메서드를 통해 정적 콘텐츠를 로드  
+5. `viewAdmissionSortedByLatest()`로 최신 입학 정보를 정렬  
+6. 검색 요청 시 `searchAdmission(keyword)` 메서드로 결과 필터링  
+7. 최종 페이지가 사용자에게 렌더링되어 제공됨
+
+---
+
+## 5. UI 연동
+
+- 본 기능은 `UI-FAD-001`과 연동되어 사용자 인터페이스를 구성한다  
+- 콘텐츠 수정은 관리자가 별도 관리자 UI에서 수행
+
+---
+
+## 6. 기타 사항
+
+- 페이지는 정적 콘텐츠 기반이지만, 정렬 및 검색 기능을 포함함  
+- 콘텐츠 변경 주기가 잦지 않으므로 서버 부하를 최소화하는 설계 적용  
+- FAQ 등은 태그 기반으로 분류 가능하게 확장 가능성 고려  
+
+---
+
+## 7. 시스템 아키텍처 및 동작 흐름
+
+### 7.1 시스템 구성요소
+
+| 구성요소 | 설명 |
+|----------|------|
+| **웹서버 (Web Server)** | 사용자 요청을 처리하고 페이지 데이터를 전달 |
+| **콘텐츠 저장소 (Content Storage)** | 입학 정보와 정적 콘텐츠를 저장 |
+| **관리자 UI (Admin UI)** | 관리자용 입학 콘텐츠 등록 및 수정 도구 |
+| **클라이언트 (Web Browser)** | 최종 페이지를 렌더링하고 사용자에게 표시 |
+| **AdmissionInfoFeature 모듈** | 콘텐츠 정렬, 검색, 렌더링을 담당하는 기능 단위 |
+
+---
+
+### 7.2 동작 흐름
+
+#### 1) 콘텐츠 준비 단계
+- 관리자가 관리자 UI로 입학 콘텐츠 등록
+- 데이터는 콘텐츠 저장소에 저장됨
+
+#### 2) 사용자 요청 및 처리
+- 사용자가 입학 안내 페이지 접속
+- 웹서버가 `AdmissionInfoFeature` 호출
+- 콘텐츠 로딩 및 최신순 정렬 처리
+- 검색 시 키워드 기반 필터링 수행
+- HTML/CSS 결과를 사용자에게 전달
+
+---
+
+### 7.3 시스템 상호작용 요약
+관리자
+ └─> 관리자 UI ──> 콘텐츠 저장소 (입학 정보 저장)
+사용자
+ └─> 웹 브라우저 ──> 웹서버 ──> AdmissionInfoFeature
+ ├─> 콘텐츠 로딩
+ ├─> viewAdmissionSortedByLatest()
+ ├─> searchAdmission()
+ └─> serveStaticPageBasedOnAdminContent()
+웹서버
+ └─> 렌더링된 페이지 응답
+사용자 브라우저
+ └─> 페이지 렌더링 및 확인
+
+
+---
+
+### 7.4 설계적 고려사항
+
+| 항목 | 설명 |
+|------|------|
+| **정적 콘텐츠 기반** | 입학 정보는 빈번히 변경되지 않아 정적 콘텐츠 구조로 효율적 처리 가능 |
+| **검색/정렬 기능** | 사용자 경험 향상을 위해 검색과 최신순 정렬 기능 포함 |
+| **확장성** | 향후 입시 영상, 온라인 설명회 등 추가 콘텐츠 통합을 고려한 구조 |
+| **보안** | 관리자 UI는 인증 기반 접근 제한 및 데이터 무결성 유지 필요 |
+
+
+FRS
+
+## 1. 개요
+
+### 1.1 기능명  
+연구 성과 공유 (Research Showcase)
+
+### 1.2 기능 ID  
+FRS
+
+### 1.3 목적  
+학과 구성원이 진행한 논문, 특허, 프로젝트 등의 연구 성과를 연도별로 사용자에게 공유한다.
+
+### 1.4 대상 사용자  
+웹사이트 방문자 모두 (학생, 교수, 외부인 등)
+
+### 1.5 연관 UI  
+UI-FRS-001 (연구 성과 공유 페이지 UI 컴포넌트)
+
+### 1.6 연관 시나리오  
+없음 (정적 콘텐츠 기반 페이지, 동적 데이터 제공 없음)
+
+---
+
+## 2. 기능 설명
+
+### 2.1 주요 기능
+- 논문, 특허, 프로젝트 등의 연구 성과 목록 제공  
+- 성과 데이터를 최신순으로 정렬하여 제공  
+- 키워드 기반 검색 기능 제공  
+- 관리자가 등록한 콘텐츠 기반의 정적 페이지 서비스
+
+### 2.2 입력 및 출력
+
+#### 입력
+
+| 입력값 | 타입 | 설명 |
+|--------|------|------|
+| researchList | List | 연구 성과 항목 리스트 |
+| staticContent | Content | 정적 콘텐츠 (성과 설명, 분류 등) |
+| keyword | string | 검색 시 사용되는 키워드 |
+
+#### 출력
+
+| 출력값 | 설명 |
+|--------|------|
+| 연구 성과 페이지 | 최신 정렬 또는 검색 결과를 포함한 연구 성과 정보 웹 페이지 |
+
+---
+
+## 3. 클래스 설계
+
+### 클래스 구조
+<<Feature>>
+ ResearchShowcaseFeature_FN-FRS-001
+researchList: List
+
+
+staticContent: Content
+
+
+viewResearchSortedByLatest(): List
+
+
+searchResearch(keyword: string): List
+
+
+serveStaticPageBasedOnAdminContent(content: Content): void
+
+### 3.1 필드 설명
+
+| 필드명 | 타입 | 설명 |
+|--------|------|------|
+| researchList | List | 논문, 특허, 프로젝트 등 연구 성과 리스트 |
+| staticContent | Content | 관리자가 등록한 콘텐츠 내용 |
+
+### 3.2 메서드 설명
+
+| 메서드명 | 파라미터 | 반환형 | 설명 |
+|----------|----------|--------|------|
+| viewResearchSortedByLatest | 없음 | List | 연도 기준 최신순 정렬된 연구 성과 반환 |
+| searchResearch | keyword (string) | List | 키워드 기반으로 연구 성과 검색 |
+| serveStaticPageBasedOnAdminContent | content (Content) | void | 정적 콘텐츠 기반 페이지 렌더링 수행 |
+
+---
+
+## 4. 동작 시나리오 (Sequence)
+
+1. 사용자가 연구 성과 페이지 URL에 접속  
+2. `viewResearchSortedByLatest()`로 최신 순으로 정렬된 연구 목록 조회  
+3. 필요한 경우 `searchResearch(keyword)`로 검색 결과 제공  
+4. `serveStaticPageBasedOnAdminContent()`로 정적 콘텐츠 로딩  
+5. 완성된 페이지가 사용자에게 렌더링되어 제공됨
+
+---
+
+## 5. UI 연동
+
+- 본 기능은 `UI-FRS-001`과 연동되어 연구 성과를 UI 구성으로 제공  
+- 성과 목록은 자동 정렬 또는 키워드 검색으로 제공됨
+
+---
+
+## 6. 기타 사항
+
+- 성과는 주기적으로 추가되므로 동적 리스트가 필요하지만 구조는 정적 콘텐츠 기반 유지  
+- 페이지는 주로 출력 전용이며, 입력 기능은 관리자 측에 따로 존재 가능  
+- 추후 데이터베이스 또는 API 연동 시 기능 확장 가능성 고려
+
+---
+
+## 7. 시스템 아키텍처 및 동작 흐름
+
+### 7.1 시스템 구성요소
+
+| 구성요소 | 설명 |
+|----------|------|
+| **웹서버 (Web Server)** | 사용자 요청을 받아 연구 성과 데이터를 전달 |
+| **성과 DB** | 연구 성과 데이터를 저장하는 데이터베이스 |
+| **API 서버** | DB로부터 데이터를 조회하고 UI에 전달하는 중간 역할 |
+| **클라이언트 (Web Browser)** | 사용자가 결과를 조회하고 렌더링하는 공간 |
+| **ResearchShowcaseFeature 모듈** | 콘텐츠 정렬, 검색, 정적 콘텐츠 렌더링 담당 기능 단위 |
+
+---
+
+### 7.2 동작 흐름
+
+#### 1) 사용자 요청 및 데이터 조회
+- 사용자가 연구 성과 페이지 접속  
+- UI가 API 서버에 성과 목록 요청  
+- API 서버는 DB에서 `SELECT * FROM achievements ORDER BY year DESC` 쿼리 수행  
+- 성과 리스트를 응답하여 UI에 전달
+
+#### 2) 렌더링 및 표시
+- UI는 `viewResearchSortedByLatest()` 또는 `searchResearch()` 메서드 호출  
+- `serveStaticPageBasedOnAdminContent()`로 정적 콘텐츠 포함 렌더링  
+- 클라이언트는 전체 성과 정보를 화면에 표시
+
+---
+
+### 7.3 시스템 상호작용 요약
+사용자
+ └─> UIX-011: 연구 성과 페이지 접속
+ └─> API 서버 ──> 성과 DB
+ └─> SELECT * FROM achievements ORDER BY year DESC
+ └─> ResearchShowcaseFeature
+ ├─> viewResearchSortedByLatest()
+ ├─> searchResearch()
+ └─> serveStaticPageBasedOnAdminContent()
+웹서버
+ └─> 렌더링된 결과를 사용자 브라우저에 응답
+사용자 브라우저
+ └─> 연구 성과 페이지 표시 (논문, 특허, 프로젝트 등)
+
+---
+
+### 7.4 설계적 고려사항
+
+| 항목 | 설명 |
+|------|------|
+| **정적+반동적 콘텐츠 병행** | 관리자 등록 정적 콘텐츠 + 실시간 성과 리스트 제공 구조 |
+| **검색/정렬 기능 포함** | 사용자 경험을 위한 최신순 정렬 및 키워드 검색 기능 포함 |
+| **확장성 고려** | 외부 API 연동 또는 다국어, 필터 기능 확장 가능성 고려 |
+| **보안** | 성과 데이터는 공개용이지만, 등록/수정 기능은 관리자용으로 제한 필요 |
+
