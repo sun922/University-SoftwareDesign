@@ -535,4 +535,188 @@ AuthResult --> User
 | **확장성**   | 소셜 로그인(Google, Kakao 등) 추가를 위한 구조 고려 |
 | **에러 처리** | 잘못된 로그인 정보, DB 연결 오류 등에 대한 예외 처리 필수  |
 
+**FPR – 교수진 정보 페이지**
 
+| 항목          | 설명                              |
+| ----------- | ------------------------------- |
+| **기능 ID**   | FPR                             |
+| **기능명**     | 교수진 정보 페이지                       |
+| **목적**      | 학과 교수진 정보를 사용자에게 제공       |
+| **대상 사용자**  | 모두(학생, 교수, 일반인 등)                          |
+| **연관 UI**   | UI-FPR-001                      |
+| **연관 시나리오** | SC-FPR-001                      |
+| **입력**      | 메뉴 클릭, 교수 클릭(상세보기)       |
+| **출력**      | 교수 리스트, 교수 상세 정보 |
+| **외부 연동**   | 없음             |
+| **UI 처리**   | 클릭 시 리스트 표시, 교수 선택 시 상세 정보 및 이미지 출           |
+
+```mermaid
+classDiagram
+class FacultyIntroductionFeature {
+    -facultyList: List<Professor>
+    +viewFacultyList(): List<Professor>
+    +viewFacultyDetail(professorId: int): Professor
+}
+
+class Professor {
+    -name: string
+    -position: string
+    -officeLocation: string
+    -majorField: string
+    -contactNumber: string
+    -emailAddress: string
+    -profileImage: Image
+}
+FacultyIntroductionFeature --> Professor
+```
+**FPR – 교수진 정보 페이지 변수 설명**
+
+| 변수명        | 타입      | 설명          |
+| ---------- | ------- | ----------- |
+| `facultyList`     | List<Professor>  | 전체 교수 목록      |
+| `professorName`     | string  | 교수 이름      |
+| `position` | string  | 직책    |
+| `officeLocation` | string | 연구실 위치 |
+| `majorField` | string | 전공 분야 |
+| `contactNumber` | string | 전화번호 |
+| `emailAddress` | string | 이메일 |
+| `profileImage` | image | 프로필 이미지 |
+
+**FPR – 교수진 정보 페이지 함수 설명**
+| 함수명                   | 파라미터                           | 반환형        | 설명                     |
+| --------------------- | ------------------------------ | ---------- | ---------------------- |
+| `viewFacultyList()`    | 없음                          | List<Professor>| 전체 교수 목록 반환   |
+| `viewFacultyDetail()`  | professorId: int           | Professor       | 선택한 교수의 상세 정보 반환               |
+
+**FPR – 교수진 정보 페이지 시스템 구성요소** 
+
+| 구성요소                               | 역할                  |
+| ---------------------------------- | ------------------- |
+| **웹서버**                          | 교수 정보 요청 처리 및 HTML 콘텐츠 제공 |
+| **사용자 브라우저**                       | 메뉴 클릭, 교수 목록 및 상세 정보 조회 요청/표시   |
+| **FacultyIntroductionFeature 모듈** | 교수 데이터 조회 및 처리 수행      |
+| **DB 서버**                | 교수 정보 저장 및 제공 |
+
+**FPR – 교수진 정보 페이지 시스템 동작 과정** 
+| 단계        | 설명                                                                |
+| --------- | ----------------------------------------------------------------- |
+| 1. 메뉴 선택 | 사용자가 '교수진 소개'메뉴 클릭                                 |
+| 2. 목록 요청  | 웹서버에서 교수 목록 조회 |
+| 3. 상세 요청  | 사용자가 교수 선택 시 상세 정보 요청      |
+| 4. 데이터 반환  | 교수 상세 정보(이름, 직책, 전공 등) 출력           |
+
+**FPR – 교수진 정보 페이지 시스템 상호작용**
+
+사용자
+  └─> 브라우저 ──> 웹서버 ──> FacultyIntroductionFeature
+                                   └─> 교수 정보 DB
+웹서버
+  └─> 교수 목록 or 상세 정보 반환
+  
+**FPR – 교수진 정보 페이지지 설계적 고려사항**
+
+| 고려 항목      | 설명                                   |
+| ---------- | ------------------------------------ |
+| **접근성**    | 누구나 교수 정보를 찾을 수 있는 UI 설계 필요 |
+| **정확성**     | 관리자에 의한 최신 정보 업데이트 유지     |
+| **확장성**    | 교수별 강의, 연구 실적 등 추가 정보 연동 고려    |
+| **정적처리** | 관리자 입력 기반 정적 콘텐츠로 처리 시 속도 우수   |
+
+**FCC – 커리큘럼 정보 제공**
+
+| 항목          | 설명                              |
+| ----------- | ------------------------------- |
+| **기능 ID**   | FCC                             |
+| **기능명**     | 커리큘럼 정보 제공                        |
+| **목적**      | 학년별 커리큘럼, 과목 정보, 담당 교수 정보 등을 사용자에게 제공 |
+| **대상 사용자**  | 모두(학생, 교수, 일반인 등)                          |
+| **연관 UI**   | UI-FCC-001                      |
+| **연관 시나리오** | SC-FCC-001                      |
+| **입력**      | 학년 선택, 과목 선택       |
+| **출력**      | 과목명, 학점, 수업 방식, 교수 정보, 강의계획서 링크      |
+| **외부 연동**   | 없음             |
+| **UI 처리**   | 과목 목록 표시 및 선택 시 강의계획서 링크 제공공            |
+
+```mermaid
+classDiagram
+class CurriculumAndClassInfoFeature {
+  -gradeToSubjectsMap: Map<int, List<Subject>>
+  +viewCurriculumByGrade(grade: int): List~Subject~
+  +viewSubjectDetail(subjectId: int): Subject
+}
+
+class Subject {
+  -name: string
+  -credit: int
+  -classMethod: string
+  -syllabusLink: string
+  -professor: Professor
+}
+
+class Professor {
+  -name: string
+  -position: string
+  -majorField: string
+  -officeLocation: string
+  -contactNumber: string
+  -emailAddress: string
+  -profileImage: Image
+}
+
+CurriculumAndClassInfoFeature --> Subject
+Subject --> Professor
+```
+**FCC – 커리큘럼 정보 제공 변수 설명**
+
+| 변수명        | 타입      | 설명          |
+| ---------- | ------- | ----------- |
+| `gradeToSubjectsMap`     | Map<int, List<Subject>>  | 학년별 커리큘럼 목록      |
+| `name`     | string  | 과목명      |
+| `credit` | int  | 학점    |
+| `classMethod` | string | 수업 방식 |
+| `syllabusLink` | string | 강의계획서 링크 |
+| `professor` | Professor | 담당 교수 정보 |
+
+**FCC – 커리큘럼 정보 제공 함수 설명**
+| 함수명                   | 파라미터                           | 반환형        | 설명                     |
+| --------------------- | ------------------------------ | ---------- | ---------------------- |
+| `viewCurriculumByGrade()`    | grade: int             | List<Subject> | 선택한 학년의 커리큘럼 목록 반환 |
+| `viewSubjectDetail()`  | subjectId: int           | Subject       | 과목 상세 정보 반환          |
+| `getSyllabusLink()` | subjectId: int               | string     | 강의계획서 PDF 링크 반환 |
+
+**FCC – 커리큘럼 정보 제공 시스템 구성요소** 
+
+| 구성요소                               | 역할                  |
+| ---------------------------------- | -------------------------- |
+| **웹서버**                         | 커리큘럼 정보 요청 처리 및 HTML 콘텐츠 제공 |
+| **사용자 브라우저**                | 학년 선택, 과목 조회, PDF 열람   |
+| **CurriculumAndClassInfoFeature 모듈** | 과목 및 강의 정보 처리 수행      |
+| **DB 서버**                | 과목, 교수 정보 저장 및 조회 |
+| **파일 서버**                | 강의계획서(PDF) 저장 및 제공 |
+
+**FCC – 커리큘럼 정보 제공 시스템 동작 과정** 
+| 단계        | 설명                                                                |
+| --------- | ----------------------------------------------------------------- |
+| 1. 메뉴 선택 | 사용자가 '커리큘럼 안내'메뉴 선택                                 |
+| 2. 학년 선택 | 탭 또는 드롭다운으로 학년 선택 |
+| 3. 과목 목록 조회  | 선택 학년의 과목 리스트 출력      |
+| 4. 과목 상세 클릭  | 교수 정보, 수업 방식, 강의계획서 링크 제공           |
+| 5. 강의계획서 열람  | PDF 다운로드 또는 새 창에서 강의계획서 열람           |
+
+**FCC – 커리큘럼 정보 제공 시스템 상호작용**
+
+사용자
+  └─> 브라우저 ──> 웹서버 ──> CurriculumAndClassInfoFeature
+                                   └─> 과목, 교수 DB
+웹서버
+  └─> 강의계획서 PDF 경로 전달
+  
+**FCC – 커리큘럼 정보 제공 설계적 고려사항**
+
+| 고려 항목      | 설명                                   |
+| ---------- | ------------------------------------ |
+| **정확성**    | 학년별 과목과 교수 정보 최신 상태 유지 |
+| **확장성**     | 교양/전공/선택 구분 추가     |
+| **가독성**    | 사용자 친화적 탭 또는 필터 UI 제공    |
+| **연동성** | 각 과목별 교수 상세 정보와 연계 가능   |
+| **파일 보안** | 강의계획서 PDF 링크 접근 권한 제한 고려 가능   |
