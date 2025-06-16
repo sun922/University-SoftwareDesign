@@ -728,8 +728,7 @@ classDiagram
 
 ```mermaid
 classDiagram
-class AdmissionInfoFeature_FAD-001 {
-        <<Feature>>
+class AdmissionInfoFeature {
         -admissionList: List
         -staticContent: Content
 
@@ -814,8 +813,7 @@ class AdmissionInfoFeature_FAD-001 {
 
 ```mermaid
 classDiagram
-class ResearchShowcaseFeature_FRS-001 {
-        <<Feature>>
+class ResearchShowcaseFeature {
         -researchList: List
         -staticContent: Content
 
