@@ -455,25 +455,6 @@ classDiagram
 | 세부내용      | - CSR 기반 빠른 화면 전환<br>- 유지보수 용이한 구조 채택       |
 | 권한        | 모두                                          |
 
-```mermaid
-classDiagram
-    class FrontendFrameworkFeature_NSW-NFE-001 {
-        <<Software>>
-        -requirementID: string
-        -requirementName: string
-        -category: string
-        -definition: string
-        -supportsSPA: boolean
-        -isCSREnabled: boolean
-        -isMaintainableStructureEnabled: boolean
-        -permission: string
-
-        +applySPAFramework(): void
-        +enableClientSideRendering(): void
-        +adoptMaintainableStructure(): void
-    }
-```
-
 | 항목        | 내용                                     |
 | --------- | -------------------------------------- |
 | 요구사항 고유번호 | NBE-001                             |
@@ -482,25 +463,6 @@ classDiagram
 | 정의        | Django 또는 Node.js 기반 RESTful API 구조 채택 |
 | 세부내용      | - 모듈화 구조<br>- ORM 또는 비동기 처리 지원         |
 | 권한        | 모두                                     |
-
-```mermaid
-classDiagram
-    class BackendFrameworkFeature_NSW-NBE-001 {
-        <<Software>>
-        -requirementID: string
-        -requirementName: string
-        -category: string
-        -definition: string
-        -isModularArchitectureEnabled: boolean
-        -supportsORM: boolean
-        -supportsAsyncProcessing: boolean
-        -permission: string
-
-        +applyBackendFramework(): void
-        +enableModularArchitecture(): void
-        +supportORMorAsync(): void
-    }
-```
 
 | 항목        | 내용                                  |
 | --------- | ----------------------------------- |
@@ -511,24 +473,6 @@ classDiagram
 | 세부내용      | - HTTP 메서드 활용<br>- 명확한 URI 구조       |
 | 권한        | 모두                                  |
 
-```mermaid
-classDiagram
-    class APICommunicationFeature_NSW-NAP-001 {
-        <<Software>>
-        -requirementID: string
-        -requirementName: string
-        -category: string
-        -definition: string
-        -usesHTTPMethods: boolean
-        -hasClearURIStructure: boolean
-        -permission: string
-
-        +applyRESTfulCommunication(): void
-        +utilizeHTTPMethods(): void
-        +defineClearURIStructure(): void
-    }
-```
-
 | 항목        | 내용                              |
 | --------- | ------------------------------- |
 | 요구사항 고유번호 | NJS-001                      |
@@ -537,24 +481,6 @@ classDiagram
 | 정의        | JWT 기반 인증 및 세션 유지 방식 적용         |
 | 세부내용      | - 토큰 기반 로그인 인증<br>- 세션 만료 시간 설정 |
 | 권한        | 모두                              |
-
-```mermaid
-classDiagram
-    class AuthenticationSessionFeature_NSW-NJS-001 {
-        <<Software>>
-        -requirementID: string
-        -requirementName: string
-        -category: string
-        -definition: string
-        -isJWTAuthenticationEnabled: boolean
-        -isSessionExpirationConfigured: boolean
-        -permission: string
-
-        +enableJWTAuthentication(): void
-        +configureSessionExpiration(): void
-        +applyAuthenticationAndSessionManagement(): void
-    }
-```
 
 ## 8. 테스트 요구사항
 
@@ -583,24 +509,6 @@ classDiagram
 | 세부내용      | - 기능별 단위 테스트 케이스 작성<br>- 테스트 자동화 지원 |
 | 권한        | 모두                                  |
 
-```mermaid
-classDiagram
-    class UnitTestingFeature_NTT-NUT-001 {
-        <<Test>>
-        -requirementID: string
-        -requirementName: string
-        -category: string
-        -definition: string
-        -areUnitTestCasesWritten: boolean
-        -isTestAutomationSupported: boolean
-        -permission: string
-
-        +writeUnitTestCases(): void
-        +enableTestAutomation(): void
-        +applyUnitTesting(): void
-    }
-```
-
 | 항목        | 내용                                 |
 | --------- | ---------------------------------- |
 | 요구사항 고유번호 | NTF-001                         |
@@ -609,24 +517,6 @@ classDiagram
 | 정의        | 로그인 → 게시판 → 댓글 등 주요 흐름을 통합적으로 검증   |
 | 세부내용      | - 사용자 시나리오 기반 테스트<br>- 상태 전이 검증 포함 |
 | 권한        | 모두                                 |
-
-```mermaid
-classDiagram
-    class FlowBasedTestingFeature_NTT-NTF-001 {
-        <<Test>>
-        -requirementID: string
-        -requirementName: string
-        -category: string
-        -definition: string
-        -isScenarioBasedTestingEnabled: boolean
-        -isStateTransitionVerificationIncluded: boolean
-        -permission: string
-
-        +runScenarioBasedTests(): void
-        +verifyStateTransitions(): void
-        +performFlowBasedTesting(): void
-    }
-```
 
 | 항목        | 내용                                 |
 | --------- | ---------------------------------- |
@@ -637,24 +527,6 @@ classDiagram
 | 세부내용      | - 권한 상승 방지<br>- 민감 정보 노출 방지 테스트 포함 |
 | 권한        | 모두                                 |
 
-```mermaid
-classDiagram
-    class SecurityTestingFeature_NTT-NST-001 {
-        <<Test>>
-        -requirementID: string
-        -requirementName: string
-        -category: string
-        -definition: string
-        -isPrivilegeEscalationPrevented: boolean
-        -isSensitiveInfoExposurePrevented: boolean
-        -permission: string
-
-        +testRealNameAuthentication(): void
-        +verifyAccessControl(): void
-        +runSecurityTests(): void
-    }
-```
-
 | 항목        | 내용                                |
 | --------- | --------------------------------- |
 | 요구사항 고유번호 | NRT-001                        |
@@ -664,24 +536,6 @@ classDiagram
 | 세부내용      | - 브라우저/기기별 테스트<br>- 뷰포트별 반응 여부 점검 |
 | 권한        | 모두                                |
 
-```mermaid
-classDiagram
-    class ResponsiveUITestingFeature_NTT-NRT-001 {
-        <<Test>>
-        -requirementID: string
-        -requirementName: string
-        -category: string
-        -definition: string
-        -isCrossDeviceTested: boolean
-        -isViewportResponsivenessChecked: boolean
-        -permission: string
-
-        +testAcrossDevices(): void
-        +checkViewportResponsiveness(): void
-        +performResponsiveUITesting(): void
-    }
-```
-
 | 항목        | 내용                                    |
 | --------- | ------------------------------------- |
 | 요구사항 고유번호 | NPT-001                            |
@@ -690,24 +544,6 @@ classDiagram
 | 정의        | 사용자 권한 별 기능 접근 통제 검증 필요               |
 | 세부내용      | - 일반 사용자와 관리자 구분 테스트<br>- 접근 제한 기능 검증 |
 | 권한        | 모두                                    |
-
-```mermaid
-classDiagram
-    class PermissionControlTestingFeature_NTT-NPT-001 {
-        <<Test>>
-        -requirementID: string
-        -requirementName: string
-        -category: string
-        -definition: string
-        -isUserRoleDistinctionTested: boolean
-        -isAccessRestrictionVerified: boolean
-        -permission: string
-
-        +testUserAndAdminAccess(): void
-        +verifyAccessRestrictions(): void
-        +performPermissionControlTesting(): void
-    }
-```
 
 ## 9. 보안 요구사항
 
