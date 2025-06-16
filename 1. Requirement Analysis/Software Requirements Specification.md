@@ -17,364 +17,169 @@
 | 교수           | 교수 계정으로 로그인한 사용자         |
 | 일반 관리자     | 게시판 및 공지사항 관리 권한만 있음   |
 | 최고 관리자     | 전체 기능과 권한 설정 가능            |
----
-(수정 예정 목차)
-- 시스템 장비 구성 요구사항
-- 기능 요구사항
-- 디자인 요구사항
-- 인터페이스 요구사항
-- 소프트웨어 요구사항
-- 테스트 요구사항
-- 보안 요구사항
-- 품질 요구사항
-- 제약 사항
-- 유지보수 요구사항
 
 ---
 ## 3. 시스템 장비 구성 요구사항
 
-## 4. 기능 요구사항 (코드: FXX)
+## 4. 기능 요구사항
 
-| 대분류 코드 | 의미                               |
-| ------ | -------------------------------- |
-| **FN** | 기능 요구사항 (Functional Requirement) |
+| 코드 | 의미 |
+|------|--------------------------------------------|
+| FDO  | 학과 소개 (Function Department Overview)   |
+| FPR  | 교수진 정보 (Function Professor Roster)    |
+| FCC  | 커리큘럼 정보 (Function Curriculum Guide) |
+| FNN  | 공지사항 기능 (Function Notice News)       |
+| FRS  | 연구 성과 (Function Research Summary)      |
+| FAD  | 입학 안내 (Function Admission Detail)      |
+| FCM  | 커뮤니티 (Function Community Module)       |
+| FAU  | 로그인 (Function Authentication User)      |
+| FAR  | 권한 분리 (Function Authorization Role)    |
+| FAA  | 실명 인증 (Function Authentication Account)|
+| FAM  | 콘텐츠 관리 (Function Admin Management)    |
 
-| 중분류 코드  | 의미                               |
-| ------- | -------------------------------- |
-| **FDO** | 학과 소개 (Department Overview)      |
-| **FPR** | 교수진 소개 (Professor)               |
-| **FCC** | 교육과정 및 수업 (Curriculum & Course)  |
-| **FNN** | 공지사항 및 뉴스 (Notice & News)        |
-| **FRS** | 연구 성과 (Research)                 |
-| **FAD** | 입학 안내 (Admission)                |
-| **FCM** | 커뮤니티/게시판 (Community)             |
-| **FAA** | 실명 인증 (Real Name Authentication) |
-| **FAU** | 로그인 (Authentication - Login)     |
-
-| 구분                  | 고유번호       | 요구사항 명칭            | 권한                 |
-| ------------------- | ---------- | ------------------ | ------------------ |
-| **학과 소개 (FDO)**     | FN-FDO-001 | 학과 소개 열람 기능        | 모두                 |
-| **교수진 소개 (FPR)**    | FN-FPR-001 | 교수진 소개 열람 기능       | 모두                 |
-| **교육과정 및 수업 (FCC)** | FN-FCC-001 | 커리큘럼 및 수업 정보 열람 기능 | 모두                 |
-| **공지사항 및 뉴스 (FNN)** | FN-FNN-001 | 공지사항 및 뉴스 열람 기능    | 모두                 |
-|                     | FN-FNN-002 | 공지사항 및 뉴스 등록/수정 기능 | 일반 관리자, 최고 관리자     |
-| **연구 성과 (FRS)**     | FN-FRS-001 | 연구 성과 열람 기능        | 모두                 |
-| **입학 안내 (FAD)**     | FN-FAD-001 | 입학 안내 열람 기능        | 모두                 |
-| **커뮤니티/게시판 (FCM)**  | FN-FCM-001 | 게시글 작성 기능          | 학생, 교수             |
-|                     | FN-FCM-002 | 게시글 수정/삭제 기능       | 학생, 교수             |
-|                     | FN-FCM-003 | 댓글 작성/삭제 기능        | 학생, 교수             |
-|                     | FN-FCM-004 | 게시글 상단 고정 기능       | 교수, 일반 관리자, 최고 관리자 |
-|                     | FN-FCM-005 | 게시글 열람 기능          | 학생, 교수             |
-| **실명 인증 (FAA)**     | FN-FAA-001 | 실명 인증 기능           | 학생, 교수             |
-| **로그인 (FAU)**       | FN-FAU-001 | 로그인 기능             | 모두                 |
+| 구분 | 고유번호    | 요구사항 명칭               | 권한                                |
+|------|-------------|-----------------------------|-------------------------------------|
+| FDO  | FDO-001     | 학과 소개 열람 기능          | 모두                                |
+| FPR  | FPR-001     | 교수진 소개 열람 기능         | 모두                                |
+| FCC  | FCC-001     | 커리큘럼 및 수업 정보 열람 기능 | 모두                                |
+| FNN  | FNN-001     | 공지사항 및 뉴스 열람 기능     | 모두                                |
+| FRS  | FRS-001     | 연구 성과 열람 기능          | 모두                                |
+| FAD  | FAD-001     | 입학 안내 열람 기능          | 모두                                |
+| FCM  | FCM-001     | 게시글 작성 기능            | 학생, 교수                          |
+|          | FCM-002     | 게시글 수정/삭제 기능         | 학생, 교수                          |
+|          | FCM-003     | 댓글 작성/삭제 기능          | 학생, 교수                          |
+|          | FCM-004     | 게시글 열람 기능            | 학생, 교수                          |
+| FAU  | FAU-001     | 로그인 기능                 | 모두                                |
+| FAR  | FAR-001     | 사용자 권한 분리 기능         | 학생, 교수, 일반 관리자             |
+| FAA  | FAA-001     | 실명 인증 기능              | 학생, 교수                          |
+| FAM  | FAM-001     | 관리자 콘텐츠 관리 기능       | 최고 관리자                         ||
 ---
 | 항목        | 내용                                                                                    |
 | --------- | ------------------------------------------------------------------------------------- |
-| 요구사항 고유번호 | FN-FDO-001                                                                            |
+| 요구사항 고유번호 | FDO-001                                                                            |
 | 요구사항 명칭   | 학과 소개 열람 기능                                                                           |
 | 요구사항 분류   | 기능 요구사항                                                                               |
 | 정의        | 사용자가 학과의 비전, 연혁, 구성 등을 열람할 수 있는 기능                                                    |
 | 세부내용      | - 소개 텍스트 표시(비전, 연혁, 구성) <br> - 소개 이미지 표시(학교 로고, 캠퍼스 전경 사진) <br> - 모바일에서 가독성 높은 단락 구조 적용<br> - 관리자 등록 콘텐츠 기반 정적 페이지 제공 |
 | 권한        | 모두                                                                                    |
 
-```mermaid
-classDiagram
-    class DepartmentIntroductionFeature {
-        <<Feature>>
-        -visionText: string
-        -historyText: string
-        -structureText: string
-        -logoImage: Image
-        -campusViewImage: Image
-        -mobileParagraphStructureEnabled: boolean
-        -staticContent: Content
-
-        +viewIntroductionText(vision: string, history: string, structure: string): void
-        +viewIntroductionImages(logo: Image, campusView: Image): void
-        +applyMobileParagraphStructure(): void
-        +serveStaticPageBasedOnAdminContent(content: Content): void
-    }
-
-```
-
 | 항목        | 내용                                                                                                                                  |
 | --------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| 요구사항 고유번호 | FN-FPR-001                                                                                                                          |
-| 요구사항 명칭   | 교수진 소개 열람 기능                                                                                                                        |
-| 요구사항 분류   | 기능 요구사항                                                                                                                             |
-| 정의        | 사용자가 교수진들의 세부 정보를 열람할 수 있는 기능                                                                                                       |
+| 요구사항 고유번호 | FPR-001                                               |
+| 요구사항 명칭   | 교수진 소개 열람 기능                                           |
+| 요구사항 분류   | 기능 요구사항                                                   |
+| 정의        | 사용자가 교수진들의 세부 정보를 열람할 수 있는 기능                               |
 | 세부내용      | - 교수진 이름 표시<br> - 직책 표시<br> - 연구실 위치 안내<br> - 전공 정보 표시<br> - 연락처 정보 제공<br> - 프로필 사진 표시<br> - 이메일 주소 표시<br> - 관리자 등록 정보 기반 정적 페이지 제공 |
 | 권한        | 모두                                                                                                                                  |
 
-```mermaid
-classDiagram
-    class FacultyIntroductionFeature_FN-FPR-001 {
-        <<Feature>>
-        -facultyName: string
-        -position: string
-        -officeLocation: string
-        -majorField: string
-        -contactNumber: string
-        -profileImage: Image
-        -emailAddress: string
-        -staticContent: Content
-
-        +viewFacultyName(facultyName: string): void
-        +viewPosition(position: string): void
-        +viewOfficeLocation(officeLocation: string): void
-        +viewMajorField(majorField: string): void
-        +viewContactNumber(contactNumber: string): void
-        +viewProfileImage(profileImage: Image): void
-        +viewEmailAddress(emailAddress: string): void
-        +serveStaticPageBasedOnAdminContent(staticContent: Content): void
-    }
-```
-
-| 항목        | 내용                                                                                                             |
-| --------- | -------------------------------------------------------------------------------------------------------------- |
-| 요구사항 고유번호 | FN-FCC-001                                                                                                     |
-| 요구사항 명칭   | 커리큘럼 및 수업 정보 열람 기능                                                                                             |
-| 요구사항 분류   | 기능 요구사항                                                                                                        |
-| 정의        | 학과 교육과정 안내 기능                                                                                                  |
+| 항목        | 내용                                                          |
+| --------- | ------------------------------------------------------------------- |
+| 요구사항 고유번호 | FCC-001                                          |
+| 요구사항 명칭   | 커리큘럼 및 수업 정보 열람 기능                                                |
+| 요구사항 분류   | 기능 요구사항                                     |
+| 정의        | 학과 교육과정 안내 기능                                             |
 | 세부내용      | - 학년별 교과 교육 과정 정보 표시<br> - 과목명 안내<br> - 학점 안내<br> - 담당 교수 정보 제공(이미지, 전공, 연구실, 전화번호 등) <br> - 수업 방식 정보 안내<br> - 관리자 등록 정보 기반 정적 페이지 제공 |
-| 권한        | 모두                                                                                                             |
-
-```mermaid
-classDiagram
-    class CurriculumAndClassInfoFeature_FN-FCC-001 {
-        <<Feature>>
-        -gradeCurriculumInfo: Map
-        -subjectName: string
-        -creditInfo: int
-        -professorInfo: Professor
-        -classMethodInfo: string
-        -staticContent: Content
-
-        +viewCurriculumByGrade(grade: int): string
-        +viewSubjectName(): string
-        +viewCreditInfo(): int
-        +viewProfessorInfo(): Professor
-        +viewClassMethod(): string
-        +serveStaticPageBasedOnAdminContent(content: Content): void
-    }
-```
+| 권한        | 모두                                                                |
 
 | 항목        | 내용                                                                                                                 |
 | --------- | ------------------------------------------------------------------------------------------------------------------ |
-| 요구사항 고유번호 | FN-FNN-001                                                                                                         |
-| 요구사항 명칭   | 공지사항 및 뉴스 열람 기능                                                                                                    |
-| 요구사항 분류   | 기능 요구사항                                                                                                            |
-| 정의        | 사용자가 최신 학과 공지사항을 열람할 수 있는 기능                                                                                       |
+| 요구사항 고유번호 | FNN-001                                                                 |
+| 요구사항 명칭   | 공지사항 및 뉴스 열람 기능                                             |
+| 요구사항 분류   | 기능 요구사항                                        |
+| 정의        | 사용자가 최신 학과 공지사항을 열람할 수 있는 기능                                            |
 | 세부내용      | - 공지사항/뉴스 제목 표시<br> - 내용 표시<br> - 작성일 표시<br> - 첨부파일 표시<br> - 최신순 정렬 기능<br> - 검색 기능 제공<br> - 관리자 등록 정보 기반 정적 페이지 제공 |
-| 권한        | 모두                                                                                                                 |
-
-```mermaid
-classDiagram
-class NoticeAndNewsViewFeature_FN-FNN-001 {
-        <<Feature>>
-        -title: string
-        -content: string
-        -createdDate: Date
-        -attachments: List
-        -staticContent: Content
-
-        +viewNoticesSortedByLatest(): List
-        +searchNotices(keyword: string): List
-        +serveStaticPageBasedOnAdminContent(content: Content): void
-    }
-```
-
-| 항목        | 내용                                                                                                    |
-| --------- | ----------------------------------------------------------------------------------------------------- |
-| 요구사항 고유번호 | FN-FNN-002                                                                                            |
-| 요구사항 명칭   | 공지사항 및 뉴스 등록/수정 기능                                                                                    |
-| 요구사항 분류   | 기능 요구사항                                                                                               |
-| 정의        | 관리자가 공지사항 및 뉴스를 작성하거나 수정할 수 있는 기능                                                                     |
-| 세부내용      | - 게시글 상단 고정 여부 설정 가능<br> - 게시글 등록 가능<br> - 게시글 수정 가능<br> - 게시글 삭제 가능<br> - 첨부파일 등록 가능<br> - 이미지 등록 가능 |
-| 권한        | 일반 관리자, 최고 관리자                                                                                        |
-
-```mermaid
-classDiagram
-class NoticeAndNewsEditFeature_FN-FNN-002 {
-    <<Feature>>
-    -isPinned: boolean
-    -attachments: List
-    -images: List
-
-    +createPost(title: string, content: string): void
-    +editPost(id: int, newContent: string): void
-    +deletePost(id: int): void
-    +setPinStatus(id: int, isPinned: boolean): void
-}
-```
+| 권한        | 모두                                                        |
 
 | 항목        | 내용                                                               |
 | --------- | ---------------------------------------------------------------- |
-| 요구사항 고유번호 | FN-FRS-001                                                       |
+| 요구사항 고유번호 | FRS-001                                                       |
 | 요구사항 명칭   | 연구 성과 열람 기능                                                      |
 | 요구사항 분류   | 기능 요구사항                                                          |
 | 정의        | 연구 논문, 프로젝트, 수상 내역 등을 열람할 수 있는 기능                                |
 | 세부내용      | - 연구 성과 최신순 정렬<br> - 연구 성과 검색 기능 제공<br> - 관리자 등록 정보 기반 정적 페이지 제공 |
 | 권한        | 모두                                                               |
 
-```mermaid
-classDiagram
-class ResearchShowcaseFeature_FN-FRS-001 {
-        <<Feature>>
-        -researchList: List
-        -staticContent: Content
-
-        +viewResearchSortedByLatest(): List
-        +searchResearch(keyword: string): List
-        +serveStaticPageBasedOnAdminContent(content: Content): void
-    }
-```
-
 | 항목        | 내용                                                                  |
 | --------- | ------------------------------------------------------------------- |
-| 요구사항 고유번호 | FN-FAD-001                                                          |
+| 요구사항 고유번호 | FAD-001                                                          |
 | 요구사항 명칭   | 입학 안내 열람 기능                                                         |
 | 요구사항 분류   | 기능 요구사항                                                             |
 | 정의        | 입학 전형, 일정, 지원 자격 등의 입학 정보를 열람할 수 있는 기능                              |
 | 세부내용      | - 입학 정보 최신순 정렬 기능<br> - 입학 정보 검색 기능 제공<br> - 관리자 등록 정보 기반 정적 페이지 제공 |
 | 권한        | 모두                                                                  |
 
-```mermaid
-classDiagram
-class AdmissionInfoFeature_FN-FAD-001 {
-        <<Feature>>
-        -admissionList: List
-        -staticContent: Content
-
-        +viewAdmissionSortedByLatest(): List
-        +searchAdmission(keyword: string): List
-        +serveStaticPageBasedOnAdminContent(content: Content): void
-    }
-```
-
 | 항목        | 내용                                                                             |
 | --------- | ------------------------------------------------------------------------------ |
-| 요구사항 고유번호 | FN-FCM-001                                                                     |
+| 요구사항 고유번호 | FCM-001                                                                     |
 | 요구사항 명칭   | 게시글 작성 기능                                                                      |
 | 요구사항 분류   | 기능 요구사항                                                                        |
 | 정의        | 사용자가 게시판에 새로운 게시글을 작성할 수 있는 기능                                                 |
 | 세부내용      | - 게시글 제목 입력 가능<br> - 게시글 본문 입력 가능<br> - 첨부파일 등록 가능<br> - 작성 완료 후 게시글 최신순 정렬 반영 |
 | 권한        | 학생, 교수                                                                         |      
 
-```mermaid
-classDiagram
- class PostCreationFeature_FN-FCM-001 {
-        <<Feature>>
-        -title: string
-        -content: string
-        -attachments: List
-
-        +createPost(title: string, content: string, attachments: List): void
-        +reflectSortingAfterCreation(): void
-    }
-```
-
 | 항목        | 내용                                                                              |
 | --------- | ------------------------------------------------------------------------------- |
-| 요구사항 고유번호 | FN-FCM-002                                                                      |
+| 요구사항 고유번호 | FCM-002                                                                      |
 | 요구사항 명칭   | 게시글 수정/삭제 기능                                                                    |
 | 요구사항 분류   | 기능 요구사항                                                                         |
 | 정의        | 사용자가 본인의 게시글을 수정/삭제할 수 있는 기능                                                    |
 | 세부내용      | - 로그인된 사용자가 본인 게시글 수정 가능<br> - 로그인된 사용자가 본인 게시글 삭제 가능<br> - 삭제 시 ‘복구 불가’ 경고창 표시 |
 | 권한        | 학생, 교수                                                                          |
 
-```mermaid
-classDiagram
-class PostEditDeleteFeature_FN-FCM-002 {
-        <<Feature>>
-        +editOwnPost(userId: int, postId: int, newContent: string): void
-        +deleteOwnPost(userId: int, postId: int): void
-    }
-```
-
 | 항목        | 내용                                                                                  |
 | --------- | ----------------------------------------------------------------------------------- |
-| 요구사항 고유번호 | FN-FCM-003                                                                          |
+| 요구사항 고유번호 | FCM-003                                                                          |
 | 요구사항 명칭   | 댓글 작성/삭제 기능                                                                         |
 | 요구사항 분류   | 기능 요구사항                                                                             |
 | 정의        | 로그인한 사용자가 게시글에 댓글을 작성/삭제할 수 있는 기능                                                   |
 | 세부내용      | - 댓글 작성 가능 (로그인 사용자)<br> - 댓글 실시간 반영<br> - 댓글 좋아요/싫어요 기능 제공<br> - 댓글 삭제는 댓글 작성자만 가능 |
 | 권한        | 학생, 교수                                                                              |
 
-```mermaid
-classDiagram
-class CommentFeature_FN-FCM-003 {
-        <<Feature>>
-        -commentList: List
-
-        +writeComment(userId: int, postId: int, comment: string): void
-        +deleteComment(userId: int, commentId: int): void
-        +likeComment(commentId: int): void
-        +dislikeComment(commentId: int): void
-    }
-```
-
-| 항목        | 내용                                                                               |
-| --------- | -------------------------------------------------------------------------------- |
-| 요구사항 고유번호 | FN-FCM-004                                                                       |
-| 요구사항 명칭   | 게시글 상단 고정 기능                                                                     |
-| 요구사항 분류   | 기능 요구사항                                                                          |
-| 정의        | 게시판 중요 게시글을 목록 상단에 고정하는 기능                                                       |
-| 세부내용      | - 게시글 고정 시 핀 아이콘 표시<br> - 게시글 고정/해제 기능 제공<br> - 고정/해제 권한은 교수, 일반 관리자, 최고 관리자만 가능 |
-| 권한        | 교수, 일반 관리자, 최고 관리자                                                               |
-
-```mermaid
-classDiagram
-class PostPinFeature_FN-FCM-004 {
-        <<Feature>>
-        -isPinned: boolean
-
-        +pinPost(postId: int): void
-        +unpinPost(postId: int): void
-    }
-```
-
 | 항목        | 내용                                                                                            |
 | --------- | --------------------------------------------------------------------------------------------- |
-| 요구사항 고유번호 | FN-FCM-005                                                                                    |
+| 요구사항 고유번호 | FCM-004                                                                                    |
 | 요구사항 명칭   | 게시글 열람 기능                                                                                     |
 | 요구사항 분류   | 기능 요구사항                                                                                       |
 | 정의        | 로그인 된 사용자가 게시글을 열람할 수 있는 기능                                                                   |
 | 세부내용      | - 로그인 사용자만 게시글 열람 가능<br> - 게시글 제목 표시<br> - 게시글 내용 표시<br> - 작성자 정보 표시<br> - 댓글 표시<br> - 조회수 표시 |
 | 권한        | 모두                                                                                            |
 
-```mermaid
-classDiagram
- class PostViewFeature_FN-FCM-005 {
-        <<Feature>>
-        -title: string
-        -content: string
-        -author: string
-        -comments: List
-        -views: int
+| 항목        | 내용                                                                          |
+| --------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| 요구사항 고유번호 | FAU-001                                                          |
+| 요구사항 명칭   | 로그인 기능                                                             |
+| 요구사항 분류   | 기능 요구사항                                                           |
+| 정의        | 사용자 인증을 통해 기능 접근을 제어하는 기능                                          |
+| 세부내용      | - 사용자 ID 입력<br>- 비밀번호 입력<br>- 사용자 데이터베이스 또는 인증 시스템 연동<br>- 로그인 성공 여부 출력<br>- 로그인 성공 시 메인 페이지 이동 또는 권한 별 기능 활성화<br>- 로그인 실패 시 에러 메시지 출력 |
+| 권한        | 모두                                     |
 
-        +viewPost(userId: int, postId: int): Post
-    }
-```
-| 항목        | 내용                                                                                                                         |
+| 항목             | 내용                                                                                          |
+|------------------|-----------------------------------------------------------------------------------------------|
+| 요구사항 고유번호 | FAR-001                                                                                       |
+| 요구사항 명칭      | 사용자 권한 분리 기능                                                                             |
+| 요구사항 분류      | 기능 요구사항                                                                                    |
+| 정의              | 사용자의 유형에 따라 권한을 분리하여 각 역할별 접근 및 기능 제어를 가능하게 하는 기능                           |
+| 세부내용           | - 사용자 유형(학생, 교수, 일반 관리자) 식별<br>- 로그인 시 권한 분류 기준 적용<br>- 역할별 메뉴 및 기능 접근 제한<br>- 관리자 화면 접근 권한 제어 |
+| 권한              | 학생, 교수, 일반 관리자                                                                          |
+
+| 항목        | 내용                                                  |
 | --------- | -------------------------------------------------------------------------------------------------------------------------- |
-| 요구사항 고유번호 | FN-FAA-001                                                                                                                 |
+| 요구사항 고유번호 | FAA-001                                                                                                                 |
 | 요구사항 명칭   | 실명 인증 기능                                                                                                                   |
 | 요구사항 분류   | 기능 요구사항                                                                                                                    |
 | 정의        | 사용자의 실명을 기반으로 한 인증 절차를 제공하여 보안을 강화하는 기능                                                                                    |
 | 세부내용      | - 사용자 이름 입력<br>- 주민등록번호(또는 학번) 입력<br>- 사용자 유형(학생, 교수) 입력<br>- 실명 인증 외부 API 연동<br>- 인증 성공 시 다음 화면 진행<br>- 인증 실패 시 에러 메시지 출력 |
 | 권한        | 학생, 교수        |
-－다이어그램 추가할 예정입니다¡
 
-| 항목        | 내용                                                                                                                                     |
-| --------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| 요구사항 고유번호 | FN-FAU-001                                                                                                                             |
-| 요구사항 명칭   | 로그인 기능                                                                                                                                 |
-| 요구사항 분류   | 기능 요구사항                                                                                                                                |
-| 정의        | 사용자 인증을 통해 기능 접근을 제어하는 기능                                                                                                              |
-| 세부내용      | - 사용자 ID 입력<br>- 비밀번호 입력<br>- 사용자 데이터베이스 또는 인증 시스템 연동<br>- 로그인 성공 여부 출력<br>- 로그인 성공 시 메인 페이지 이동 또는 권한 별 기능 활성화<br>- 로그인 실패 시 에러 메시지 출력 |
-| 권한        | 모두                                                                                                                                     |
-－다이어그램 추가할 예정입니다¡
+| 항목             | 내용                                                                                              |
+|------------------|---------------------------------------------------------------------------------------------------|
+| 요구사항 고유번호 | FAM-001                                                                                           |
+| 요구사항 명칭      | 관리자 콘텐츠 관리 기능                                                                               |
+| 요구사항 분류      | 기능 요구사항                                                                                        |
+| 정의              | 관리자 권한으로 콘텐츠의 생성, 수정, 삭제가 가능한 기능                                    |
+| 세부내용           | - 콘텐츠 등록/수정/삭제 기능<br>- 공지사항, 연구 성과 등 연동 대상 선택<br>- 관리 대상 항목 선택 UI 제공<br>- 수정 내역 로그 기록 |
+| 권한              | 최고 관리자                                                                                          |
+
 
 ## 5. 디자인 요구사항
 
