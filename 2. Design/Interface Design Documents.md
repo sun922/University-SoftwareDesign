@@ -155,6 +155,7 @@
 | 기능명 | 학과 소개 |
 | 목적 | 학과 비전, 연혁, 구성 정보를 사용자에게 제공 |
 | 대상 사용자 | 모두 |
+| 연관 요구사항 | NMM-001, NFT-001 |
 | 연관 UI | UI-FDO-001 |
 | 연관 시나리오 | 없음 (정적 페이지) |
 | 다이어그램 |![image](https://github.com/user-attachments/assets/0bcbdcca-1640-4a6c-82f8-47d34587de3a)|
@@ -167,6 +168,7 @@
 | 기능명 | 교수진 소개 |
 | 목적 | 교수 개별 정보(이름, 연락처, 전공 등)를 시각적으로 제공 |
 | 대상 사용자 | 모두 |
+| 연관 요구사항 | NMM-001, NFT-001 |
 | 연관 UI | UI-FPR-001 |
 | 연관 시나리오 | 없음 (정적 페이지) |
 | 다이어그램 |![image](https://github.com/user-attachments/assets/c9fd7511-d0b5-403a-b835-bfe7abfbe6db) |
@@ -179,6 +181,7 @@
 | 기능명 | 커리큘럼 정보 제공 |
 | 목적 | 교육과정, 수업정보를 구조적으로 제공 |
 | 대상 사용자 | 모두 |
+| 연관 요구사항 | NMM-001, NFT-001 |
 | 연관 UI | UI-FCC-001 |
 | 연관 시나리오 | SC-FCC-001 |
 | 다이어그램 | ![image](https://github.com/user-attachments/assets/9f1bb75b-dd22-4352-88ce-54368e68b90d)|
@@ -192,6 +195,7 @@
 | 기능명 | 공지사항 게시 기능 |
 | 목적 | 관리자가 공지사항을 등록하고 사용자가 열람 |
 | 대상 사용자 | 일반 관리자(작성), 모두(열람) |
+| 연관 요구사항 | NMM-001, NFT-001 |
 | 연관 UI | UI-FNN-001, UI-FNN-002 |
 | 연관 시나리오 | SC-FNN-001 |
 | 다이어그램 | ![image](https://github.com/user-attachments/assets/f3f51015-04a2-4ab4-8eba-28b014d4d4ee) |
@@ -205,6 +209,7 @@
 | 기능명 | 연구 성과 공유 |
 | 목적 | 논문, 특허, 프로젝트 등의 연구 결과 공유 |
 | 대상 사용자 | 모두 |
+| 연관 요구사항 | NMM-001, NFT-001 |
 | 연관 UI | UI-FRS-001 |
 | 연관 시나리오 | 없음 (정적 페이지) |
 | 다이어그램 | ![image](https://github.com/user-attachments/assets/eaa7ce06-1f19-4de2-9e24-2b3e520bf2fa) |
@@ -217,6 +222,7 @@
 | 기능명 | 입학 안내 |
 | 목적 | 입학 일정 및 전형 정보 제공 |
 | 대상 사용자 | 모두 |
+| 연관 요구사항 | NMM-001, NFT-001 |
 | 연관 UI | UI-FAD-001 |
 | 연관 시나리오 | 없음 (정적 페이지) |
 | 다이어그램 | ![image](https://github.com/user-attachments/assets/334f3e03-ef8b-432a-a564-df8e1fdbf98b)|
@@ -229,6 +235,7 @@
 | 기능명 | 커뮤니티 게시판 |
 | 목적 | 학생, 교수가 자유롭게 게시글을 작성/열람하고, 댓글을 통해 소통할 수 있는 공간을 제공 |
 | 대상 사용자 | 학생, 교수 (작성), 일반 관리자 (고정/삭제) |
+| 연관 요구사항 | NMM-001, NAM-001, NFT-001 |
 | 연관 UI | UI-FCM-001, UI-FCM-002, UI-FCM-003 |
 | 연관 시나리오 | SC-FCM-001, SC-FCM-002 |
 | 다이어그램 |![image](https://github.com/user-attachments/assets/534dac2f-c636-4613-b5b3-a41ce1588e40) |
@@ -241,6 +248,7 @@
 | 기능명 | 로그인 기능 |
 | 목적 | 사용자 인증을 통해 기능 접근 제어 |
 | 대상 사용자 | 모두 |
+| 연관 요구사항 | NAM-001, NFT-001, NAC-001 |
 | 연관 UI | UI-FAU-001 |
 | 연관 시나리오 | SC-FCM-001, SC-FNN-001 |
 | 다이어그램 |![image](https://github.com/user-attachments/assets/8490a622-710b-42fe-beed-1ed2fa8953bc) |
@@ -253,6 +261,7 @@
 | 기능명 | 사용자 권한 분리 |
 | 목적 | 사용자 역할별로 기능 접근 제한 |
 | 대상 사용자 | 학생, 교수, 일반 관리자 |
+| 연관 요구사항 | NAM-001 |
 | 연관 UI | UI-FAR-001 |
 | 연관 시나리오 | 없음 |
 | 권한 표 | ![image](https://github.com/user-attachments/assets/a6097290-b1b2-40ff-a8b4-c8905d628482)|
@@ -265,6 +274,7 @@
 | 기능명 | 실명 인증 기능 |
 | 목적 | 사용자 실명 기반 가입 및 보안 강화 |
 | 대상 사용자 | 학생, 교수 |
+| 연관 요구사항 | NAM-001, NAC-001 |
 | 연관 UI | UI-FAA-001 |
 | 연관 시나리오 | SC-FAA-001 |
 | 다이어그램 | ![image](https://github.com/user-attachments/assets/fdd82311-8511-41c9-97f4-31bba9428a86)|
@@ -277,6 +287,7 @@
 | 기능명 | 콘텐츠 관리 |
 | 목적 | 공지사항 및 정적 콘텐츠 등록/수정 UI 제공 |
 | 대상 사용자 | 최고 관리자 |
+| 연관 요구사항 | NAM-001, NFT-001 |
 | 연관 UI | UI-FAM-001 |
 | 연관 시나리오 | SC-FNN-001, SC-FAM-001 |
 | 다이어그램 |![image](https://github.com/user-attachments/assets/90bd5616-db8f-464d-b425-8a09ed392676)|
