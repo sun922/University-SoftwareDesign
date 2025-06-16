@@ -906,9 +906,6 @@ classDiagram
 
 ## 9. 보안 요구사항
 
-| 대분류 코드 | 의미                                    |
-| ------- | ------------------ |
-| **NSC** | 보안 (Security)      |
 
 | 중분류 코드  | 의미                 |
 | ------- | ------------------ |
@@ -918,421 +915,201 @@ classDiagram
 | **ACC** | 접근 제어 (Access Control)      |
 | **LOG** | 보안 로깅 및 추적 (Audit Log)      |
 
-| 구분                                 | 고유번호        | 요구사항 명칭          | 권한      |
-| ---------------------------------- | ----------- | ---------------- | ------- |
-| **보안 - 암호화 (NSC-ENC)**             | NSC-ENC-001 | 개인정보 저장 시 암호화    | 사용자 개개인 |
-|                                    | NSC-ENC-002 | 비밀번호 해시 저장       | 사용자 개개인 |
-| **보안 - SSL/HTTPS 통신 보안 (NSC-SSL)** | NSC-SSL-001 | SSL 인증서 적용       | 모두      |
-|                                    | NSC-SSL-002 | 자동 리디렉션 구성       | 모두      |
-|                                    | NSC-SSL-003 | 인증서 만료 모니터링      | 최고 관리자  |
-| **보안 - 실명 인증 (NSC-RIV)**           | NSC-RIV-001 | 외부 실명 인증 API 연동  | 학생, 교수  |
-|                                    | NSC-RIV-002 | 인증 실패 시 재시도 제한   | 학생, 교수  |
-|                                    | NSC-RIV-003 | 인증 로그 기록         | 최고 관리자  |
-| **보안 - 접근 제어 (NSC-ACC)**           | NSC-ACC-001 | 권한 기반의 페이지 접근 제어 | 모두      |
-|                                    | NSC-ACC-002 | 관리자 기능 접근 제한     | 최고 관리자  |
-| **보안 - 보안 로깅 및 추적 (NSC-LOG)**      | NSC-LOG-001 | 로그인 기록 저장        | 최고 관리자  |
-|                                    | NSC-LOG-002 | 이상 접근 탐지 알림      | 최고 관리자  |
-
-| 보안         | NSC  | Non-functional - Security             |
+| 구분         | 고유번호        | 요구사항 명칭          | 권한      |
+| ---------| ----------- | ---------------- | ------- |
+| **ENC**   | ENC-001 | 개인정보 저장 시 암호화    | 사용자 개개인 |
+|                | ENC-002 | 비밀번호 해시 저장       | 사용자 개개인 |
+|  **SSL** |  SSL-001 | SSL 인증서 적용       | 모두      |
+|                | SSL-002 | 자동 리디렉션 구성       | 모두      |
+|                | SSL-003 | 인증서 만료 모니터링      | 최고 관리자  |
+| **RIV**  | RIV-001 | 외부 실명 인증 API 연동  | 학생, 교수  |
+|                | RIV-002 | 인증 실패 시 재시도 제한   | 학생, 교수  |
+|                | RIV-003 | 인증 로그 기록         | 최고 관리자  |
+| **ACC**  | ACC-001 | 권한 기반의 페이지 접근 제어 | 모두      |
+|                 | ACC-002 | 관리자 기능 접근 제한     | 최고 관리자  |
+| **LOG** | LOG-001 | 로그인 기록 저장        | 최고 관리자  |
+|                | LOG-002 | 이상 접근 탐지 알림      | 최고 관리자  |
+—--
 
 | 항목        | 내용                                                           |
 | --------- | ------------------------------------------------------------ |
-| 요구사항 고유번호 | NSC-ENC-001                                                      |
+| 요구사항 고유번호 | ENC-001                                                      |
 | 요구사항 명칭   | 개인정보 저장 시 암호화                                                  |
 | 요구사항 분류   | 보안 요구사항                                                      |
 | 정의        | 사용자 정보 보호를 위한 암호화 저장 제공                                      |
 | 세부내용      | - 이름, 이메일, 전화번호 등 개인정보를 DB에 저장 시 AES256 등으로 암호화 |
 | 권한        | 사용자 개개인                                                      |
 
-```mermaid
-classDiagram
-    class EncryptionManager_NSC-ENC-001 {
-        <<Security>>
-        +encryptPersonalData(data: String): String
-    }
-
-    class User {
-        -name: String
-        -email: String
-        -phone: String
-        +submitInfo(): void
-    }
-```
 
 | 항목        | 내용                                                           |
 | --------- | ------------------------------------------------------------ |
-| 요구사항 고유번호 | NSC-ENC-002                                                      |
+| 요구사항 고유번호 | ENC-002                                                      |
 | 요구사항 명칭   | 비밀번호 해시 저장                                                  |
 | 요구사항 분류   | 보안 요구사항                                                      |
 | 정의        | 사용자 정보 보호를 위한 비밀번호 저장 제공                                      |
 | 세부내용      | - SHA-256 또는 bcrypt 방식으로 해시 저장 |
 | 권한        | 사용자 개개인                                                      |
 
-```mermaid
-classDiagram
-    class EncryptionManager_NSC-ENC-002 {
-        <<Security>>
-        +hashPassword(password: String): String
-    }
-
-    class User {
-        -password: String
-        +register(): void
-    }
-```
 
 | 항목        | 내용                                                           |
 | --------- | ------------------------------------------------------------ |
-| 요구사항 고유번호 | NSC-SSL-001                                                      |
+| 요구사항 고유번호 | SSL-001                                                      |
 | 요구사항 명칭   | SSL 인증서 적용                                                 |
 | 요구사항 분류   | 보안 요구사항                                                      |
 | 정의        | SSL 인증서를 통한 HTTPS 통신 적용                                     |
 | 세부내용      | - 사이트가 HTTPS를 통한 암호화된 통신을 하도록 함으로서 보안 강화 |
 | 권한        | 모두                                                      |
 
-```mermaid
-classDiagram
-    class SSLManager_NSC-SSL-001 {
-        <<Security>>
-        +applySSL(): void
-    }
-
-    class WebServer_NSC_SSL_001 {
-        +serve(): void
-    }
-```
 
 | 항목        | 내용                                                           |
 | --------- | ------------------------------------------------------------ |
-| 요구사항 고유번호 | NSC-SSL-002                                                      |
+| 요구사항 고유번호 | SSL-002                                                      |
 | 요구사항 명칭   | 자동 리디렉션 구성                                                 |
 | 요구사항 분류   | 보안 요구사항                                                      |
 | 정의        | HTTPS 자동 리디렉션 설정                                     |
 | 세부내용      | - HTTP로 접근해도 HTTPS로 리디렉션 됨으로써 암호화되지 않은 경로로의 접근 차단 및 보안 유지 |
 | 권한        | 모두                                                     |
 
-```mermaid
-classDiagram
-    class SSLManager_NSC-SSL-002 {
-        <<Security>>
-        +setupAutoRedirect(): void
-    }
-
-    class RequestHandler {
-        +handleRequest(url: String): void
-    }
-```
 
 | 항목        | 내용                                                           |
 | --------- | ------------------------------------------------------------ |
-| 요구사항 고유번호 | NSC-SSL-003                                                      |
+| 요구사항 고유번호 | SSL-003                                                      |
 | 요구사항 명칭   | 인증서 만료 모니터링                                                |
 | 요구사항 분류   | 보안 요구사항                                                      |
 | 정의        | SSL 인증서 유효 기간 및 만료 알림                                     |
 | 세부내용      | - Certbot등 자동화 도구 사용으로 인증서 만료로 인한 보안 위험 예방 |
 | 권한        | 최고 관리자                                                      |
 
-```mermaid
-classDiagram
-    class SSLManager_NSC-SSL-003 {
-        <<Security>>
-        +monitorCertificate(): void
-    }
-
-    class Admin {
-        +reviewStatus(): void
-    }
-```
 
 | 항목        | 내용                                                           |
 | --------- | ------------------------------------------------------------ |
-| 요구사항 고유번호 | NSC-RIV-001                                                      |
+| 요구사항 고유번호 | RIV-001                                                      |
 | 요구사항 명칭   | 외부 실명 인증 API 연동                                                |
 | 요구사항 분류   | 보안 요구사항                                                      |
 | 정의        | 학교 포털 정보를 통한 인증                                     |
 | 세부내용      | - 학교 인증 포털과의 연동을 통해 학교 구성원만이 회원가입이 가능하도록 함 |
 | 권한        | 학생, 교수                                                      |
 
-```mermaid
-classDiagram
-    class RealNameAuth_NSC-RIV-001 {
-        <<Security>>
-        +verifyWithExternalAPI(id: String): boolean
-    }
-
-    class PortalAPI {
-        +validateUser(name: String, studentId: String): boolean
-    }
-```
 
 | 항목        | 내용                                                           |
 | --------- | ------------------------------------------------------------ |
-| 요구사항 고유번호 | NSC-RIV-002                                                      |
+| 요구사항 고유번호 | RIV-002                                                      |
 | 요구사항 명칭   | 인증 실패 시 재시도 제한                                                |
 | 요구사항 분류   | 보안 요구사항                                                      |
 | 정의        | 지속적 실패로 인한 패널티 부여                                     |
 | 세부내용      | - 실명 인증에 대해 일정 횟수(ex 5회) 이상 실패 시 일정 시간 동안 차단 및 최고 관리자 알림 |
 | 권한        | 학생, 교수                                                      |
 
-```mermaid
-classDiagram
-    class RealNameAuth_NSC-RIV-002 {
-        <<Security>>
-        +limitRetry(userId: String): void
-    }
-
-    class User {
-        +requestVerification(): void
-    }
-```
 
 | 항목        | 내용                                                           |
 | --------- | ------------------------------------------------------------ |
-| 요구사항 고유번호 | NSC-RIV-003                                                      |
+| 요구사항 고유번호 | RIV-003                                                      |
 | 요구사항 명칭   | 인증 로그 기록                                                |
 | 요구사항 분류   | 보안 요구사항                                                      |
 | 정의        | 인증 관련 모든 로그를 저장                                     |
 | 세부내용      | - 최고 관리자만 열람 가능한 파일 또는 DB 저장을 통해 관리 |
 | 권한        | 최고 관리자                                                      |
 
-```mermaid
-classDiagram
-    class RealNameAuth_NSC-RIV-003 {
-        <<Security>>
-        +logVerification(userId: String): void
-    }
-
-    class Admin {
-        +viewLogs(): void
-    }
-```
 
 | 항목        | 내용                                                           |
 | --------- | ------------------------------------------------------------ |
-| 요구사항 고유번호 | NSC-ACC-001                                                      |
+| 요구사항 고유번호 | ACC-001                                                      |
 | 요구사항 명칭   | 권한 기반의 페이지 접근 제어                                                |
 | 요구사항 분류   | 보안 요구사항                                                      |
 | 정의        | 권한에 따른 접근 페이지 및 기능 제어                                     |
 | 세부내용      | - 역할 기반 액세스 제어(RBAC)를 통한 권한 부여 |
 | 권한        | 모두                                                      |
 
-```mermaid
-classDiagram
-    class AccessController_NSC-ACC-001 {
-        <<Security>>
-        +checkPermission(user: User, page: String): boolean
-    }
-
-    class Page
-    class User
-```
 
 | 항목        | 내용                                                           |
 | --------- | ------------------------------------------------------------ |
-| 요구사항 고유번호 | NSC-ACC-002                                                      |
+| 요구사항 고유번호 | ACC-002                                                      |
 | 요구사항 명칭   | 관리자 기능 접근 제한                                                |
 | 요구사항 분류   | 보안 요구사항                                                      |
 | 정의        | 최고 관리자의 권한 보호                                     |
 | 세부내용      | - 관리자 등급 구분, 추가 인증 및 차단 로직 설계 |
 | 권한        | 최고 관리자                                                      |
 
-```mermaid
-classDiagram
-    class AccessController_NSC-ACC-002 {
-        <<Security>>
-        +restrictAdminFeatures(user: Admin): void
-    }
-
-    class Admin
-```
 
 | 항목        | 내용                                                           |
 | --------- | ------------------------------------------------------------ |
-| 요구사항 고유번호 | NSC-LOG-001                                                      |
+| 요구사항 고유번호 | LOG-001                                                      |
 | 요구사항 명칭   | 로그인 기록 저장                                                |
 | 요구사항 분류   | 보안 요구사항                                                      |
 | 정의        | 사용자의 접속시간 등 정보들을 로그 형식으로 저장                                    |
 | 세부내용      | - DB 저장 또는 ELK 등을 통한 통합 로그 관리 |
 | 권한        | 최고 관리자                                                      |
 
-```mermaid
-classDiagram
-    class AuditLogger_NSC-LOG-001 {
-        <<Security>>
-        +logLogin(userId: String): void
-    }
-
-    class Admin {
-        +reviewLogs(): void
-    }
-```
 
 | 항목        | 내용                                                           |
 | --------- | ------------------------------------------------------------ |
-| 요구사항 고유번호 | NSC-LOG-002                                                      |
+| 요구사항 고유번호 | LOG-002                                                      |
 | 요구사항 명칭   | 이상 접근 탐지 알림                                                |
 | 요구사항 분류   | 보안 요구사항                                                      |
 | 정의        | 비정상 접근 등의 이상 징후 발생 시 경고 알림                                    |
 | 세부내용      | - IP 기반 차단 또는 메일 등의 알림 시스템 연동 |
 | 권한        | 최고 관리자                                                      |
 
-```mermaid
-classDiagram
-    class AuditLogger_NSC-LOG-002 {
-        <<Security>>
-        +detectAnomalies(): void
-    }
 
-    class SecurityAlertSystem_NSC-LOG-002 {
-        +sendAlert(message: String): void
-    }
-```
 
 ## 10. 품질 요구사항
 
-| 대분류 코드  | 의미                      |
-| ------- | ----------------------- |
-| **GEN** | 일반 품질 (General Quality) |
 
 | 중분류 코드  | 의미                                      | 설명                       |
-| --- | --------------------------------------- | ------------------------ |
-| **NMQ** | 유지보수 용이성 (Maintainability)              | CMS 기반 콘텐츠 수정, UI 직관성 확보 |
-| **NEX** | 기능 확장성 확보 (Extensibility)               | 메뉴/기능 추가 시 구조적 확장 가능     |
-| **NUX** | 사용자 편의성 (User Experience)               | UX 최적화 및 불필요한 클릭 최소화     |
-| **NPR** | 빠른 응답 속도 (Performance / Responsiveness) | 주요 페이지 로딩 시간 2초 이내 목표 설정 |
+| --------- | --------------------------------------- | ------------------------ |
+| **NMT** | 유지보수 용이성 (Maintainability)              | CMS 기반 콘텐츠 수정, UI 직관성 확보 |
+| **NEX**| 기능 확장성 확보 (Extensibility)               | 메뉴/기능 추가 시 구조적 확장 가능     |
+| **NUX**  | 사용자 편의성 (User Experience)               | UX 최적화 및 불필요한 클릭 최소화     |
+| **NPR**   | 빠른 응답 속도 (Performance / Responsiveness) | 주요 페이지 로딩 시간 2초 이내 목표 설정 |
 
 | 구분           | 고유번호        | 요구사항 명칭               | 권한 |
 | ------------ | ----------- | --------------------- | -- |
-| **일반 (GEN)** | GEN-NMQ-001 | 장애 발생 시 10초 이내 복구     | 모두 |
-|              | GEN-NEX-001 | 시스템 가용성 보장 기능         | 모두 |
-|              | GEN-NUX-001 | 에러 발생 시 사용자 피드백 제공 기능 | 모두 |
-|              | GEN-NPR-001 | 시스템 반응 시간 제한 기능       | 모두 |
+| **NMT** | NMT-001 | 장애 발생 시 10초 이내 복구     | 모두 |
+| **NEX**  | NEX-001 | 시스템 가용성 보장 기능         | 모두 |
+| **NUX** | NUX-001 | 에러 발생 시 사용자 피드백 제공 기능 | 모두 |
+| **NPR** | NPR-001 | 시스템 반응 시간 제한 기능       | 모두 |
 
-
-<품질 - 유지보수 용이성 (GEN-NMQ)>
+—--
 | 항목        | 내용                       |
 | --------- | ------------------------ |
-| 요구사항 고유번호 | GEN-NMQ-001      |
+| 요구사항 고유번호 | NMT-001      |
 | 요구사항 명칭   | 장애 발생 시 10초 이내 복구        |
 | 요구사항 분류   | 품질 요구사항 - 유지보수 용이성       |
 | 정의        | 장애 복구 시 응답 대기 최소화        |
 | 세부내용      | - 이중화 서버 자동 전환 등으로 즉각 대응 |
 | 권한        | 모두                       |
 
-```mermaid
-classDiagram
-    class FaultRecoveryFeature_GEN-NMQ-001 {
-        <<Maintainability>>
-        -isPrimaryServerActive: boolean
-        -isFailoverInProgress: boolean
-        -recoveryTimeThreshold: int
-        -serverId: string
-        -status: string
-        -ipAddress: string
 
-        +detectFailure(): void
-        +triggerAutomaticFailover(): void
-        +switchToBackupServer(): void
-        +verifyRecoveryWithinThreshold(threshold: int): boolean
-        +activate(): void
-        +deactivate(): void
-        +checkStatus(): string
-    }
-
-```
-
-<품질 - 기능 확장성 확보 (GEN-NEX)>
 | 항목        | 내용                                    |
 | --------- | ------------------------------------- |
-| 요구사항 고유번호 | GEN-NEX-001                   |
+| 요구사항 고유번호 | NEX-001                   |
 | 요구사항 명칭   | 시스템 가용성 보장 기능                         |
 | 요구사항 분류   | 품질 요구사항 - 기능 확장성 확보                   |
 | 정의        | 연중무휴 최소 99.5% 가동률 유지                  |
 | 세부내용      | - 서버 이중화 및 모니터링 구성<br>- 유지보수 시간 사전 공지 |
 | 권한        | 모두                                    |
 
-```mermaid
-classDiagram
-    class AvailabilityFeature_GEN-NEX-001 {
-        <<Extensibility>>
-        -uptimePercentage: float
-        -redundantServerIds: string[]
-        -monitoringSystemId: string
-        -monitoringSystemStatus: string
-        -maintenanceStartTime: DateTime
-        -maintenanceEndTime: DateTime
-        -maintenanceDescription: string
-        -serverStatusMap: map[string]string  // 서버ID별 상태 저장
 
-        +ensureHighAvailability(targetUptime: float): void
-        +configureRedundancy(serverIds: string[]): void
-        +monitorSystemHealth(): void
-        +notifyMaintenance(startTime: DateTime, endTime: DateTime, description: string): void
-        +activateServer(serverId: string): void
-        +deactivateServer(serverId: string): void
-        +checkServerStatus(serverId: string): string
-        +startMonitoring(): void
-        +alertOnFailure(): void
-        +generateHealthReport(): string
-        +notifyUsers(): void
-    }
-
-```
-
-<품질 - 사용자 편의성 (GEN-NUX)>
 | 항목        | 내용                                                 |
 | --------- | -------------------------------------------------- |
-| 요구사항 고유번호 | GEN-NUX-001                                |
+| 요구사항 고유번호 | NUX-001                                |
 | 요구사항 명칭   | 에러 발생 시 사용자 피드백 제공 기능                              |
 | 요구사항 분류   | 품질 요구사항 - 사용자 편의성                                  |
 | 정의        | 오류 발생 시 사용자에게 안내 메시지 제공                            |
 | 세부내용      | - 사용자에게 원인, 조치 방법 등 제공<br>- UI에 알림 팝업 또는 경고 메시지 출력 |
 | 권한        | 모두                                                 |
 
-```mermaid
-classDiagram
-    class UserErrorFeedbackFeature_GEN-NUX-001 {
-        <<Usability>>
-        -errorCode: string
-        -errorMessage: string
-        -userFriendlyMessage: string
-        -isPopupVisible: boolean
-
-        +detectError(code: string, message: string): void
-        +generateUserFeedback(): void
-        +showAlertPopup(): void
-        +logErrorDetails(): void
-    }
-```
 
 | 항목        | 내용                                           |
 | --------- | -------------------------------------------- |
-| 요구사항 고유번호 | GEN-NPR-001                       |
+| 요구사항 고유번호 | NPR-001                       |
 | 요구사항 명칭   | 시스템 반응 시간 제한 기능                              |
 | 요구사항 분류   | 품질 요구사항 - 빠른 응답 속도                           |
 | 정의        | 사용자 요청에 2초 이내 반응                             |
 | 세부내용      | - 주요 기능 클릭 시 2초 이내 응답<br>- DB 조회/입력 시 병목 최소화 |
 | 권한        | 모두                                           |
 
-```mermaid
-classDiagram
-    class ResponseTimeControlFeature_GEN-NPR-001 {
-        <<Performance>>
-        -maxResponseTimeSeconds: int
-        -currentResponseTime: int
-        -isWithinThreshold: boolean
-        -requestId: string
-        -requestType: string
-        -payload: object
 
-        +measureResponseTime(): int
-        +validateResponseTime(): boolean
-        +optimizeDatabaseAccess(): void
-        +handleUserRequest(): void
-        +processRequest(): void
-    }
-
-```
 
 ## 11. 제약 사항
 
