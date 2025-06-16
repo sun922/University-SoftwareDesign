@@ -627,23 +627,19 @@ classDiagram
 
 ## 7. 소프트웨어 요구사항
 
-| 대분류 코드 | 의미                                    |
-| ------ | ------------------------------------- |         
-| **NSW** | 소프트웨어 (Software)  |
-
 | 중분류 코드 | 의미                                     |
 | ------ | -------------------------------------------|    
-| NFE    | 프론트엔드 프레임워크 (React/Vue.js 기반 SPA)      |
-| NBE    | 백엔드 프레임워크 (Django/Node.js 기반 REST API) |
-| NAP    | API 통신 방식 (RESTful API 설계)             |
-| NJS    | 인증 및 세션 관리 (JWT 토큰 기반 인증 및 세션 관리)      |
+| NFE    | 프론트엔드 프레임워크(Frontend Framework Environment) (React/Vue.js 기반 SPA)      |
+| NBE    | 백엔드 프레임워크(Backend Framework Environment) (Django/Node.js 기반 REST API) |
+| NAP    | API 통신 방식(Network API Protocol) (RESTful API 설계)             |
+| NJS    | 인증 및 세션 관리(JWT-based Session Management) (JWT 토큰 기반 인증 및 세션 관리)      |
 
 | 구분                 | 고유번호        | 요구사항 명칭     | 권한  |
 | ------------------ | ----------- | ----------- | --- |
-| **네트워크/시스템 (NSW)** | NSW-NFE-001 | 프론트엔드 프레임워크 | 관리자 |
-|                    | NSW-NBE-001 | 백엔드 프레임워크   | 관리자 |
-|                    | NSW-NAP-001 | API 통신 방식   | 관리자 |
-|                    | NSW-NJS-001 | 인증 및 세션 관리  | 관리자 |
+|   NFE        | NFE-001 | 프론트엔드 프레임워크 | 관리자 |
+|   NBE        | NBE-001 | 백엔드 프레임워크   | 관리자 |
+|   NAP        | NAP-001 | API 통신 방식   | 관리자 |
+|   NJS        | NJS-001 | 인증 및 세션 관리  | 관리자 |
 
 | 항목        | 내용                                          |
 | --------- | ------------------------------------------- |
