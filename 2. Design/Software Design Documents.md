@@ -728,7 +728,7 @@ classDiagram
 
 ```mermaid
 classDiagram
-class AdmissionInfoFeature_FN-FAD-001 {
+class AdmissionInfoFeature_FAD-001 {
         <<Feature>>
         -admissionList: List
         -staticContent: Content
@@ -739,7 +739,7 @@ class AdmissionInfoFeature_FN-FAD-001 {
     }
 ```
 
-- **변수 설명**
+**-변수 설명**
 
 | 변수명           | 타입      | 설명                                    |
 | ------------- | ------- | ------------------------------------- |
@@ -747,7 +747,7 @@ class AdmissionInfoFeature_FN-FAD-001 {
 | staticContent | Content | 관리자가 등록한 정적 콘텐츠                       |
 | keyword       | string  | 검색 시 사용되는 키워드                         |
 
-–  **함수 설명**
+**-함수 설명**
 
 | 함수명                                  | 파라미터             | 반환형  | 설명                           |
 | ------------------------------------ | ---------------- | ---- | ---------------------------- |
@@ -755,7 +755,7 @@ class AdmissionInfoFeature_FN-FAD-001 {
 | searchAdmission()                    | keyword: string  | List | 키워드로 입학 정보를 검색하여 반환          |
 | serveStaticPageBasedOnAdminContent() | content: Content | void | 등록된 정적 콘텐츠를 기반으로 정적 페이지를 렌더링 |
 
-- **시스템 구성요소**
+**-시스템 구성요소**
 
 | 구성요소                    | 역할                            |
 | ----------------------- | ----------------------------- |
@@ -765,7 +765,7 @@ class AdmissionInfoFeature_FN-FAD-001 {
 | 클라이언트(브라우저)             | 사용자 요청 및 입학 안내 페이지 렌더링        |
 | AdmissionInfoFeature 모듈 | 콘텐츠 정렬, 검색, 렌더링을 담당하는 기능 단위   |
 
-- **시스템 동작과정**
+**-시스템 동작과정**
 
 | 단계        | 설명                                                |
 | --------- | ------------------------------------------------- |
@@ -774,7 +774,7 @@ class AdmissionInfoFeature_FN-FAD-001 {
 | 3. 콘텐츠 처리 | 웹서버가 AdmissionInfoFeature를 호출하여 콘텐츠 로딩 및 정렬/검색 수행 |
 | 4. 페이지 제공 | 사용자 브라우저에 완성된 페이지 응답 및 렌더링                        |
 
-- **시스템 상호작용**
+**-시스템 상호작용**
 
 관리자
  └─> 관리자 UI
@@ -792,7 +792,7 @@ class AdmissionInfoFeature_FN-FAD-001 {
 사용자 브라우저
  └─> 페이지 렌더링 및 표시
 
- - **설계적 고려사항**
+**-설계적 고려사항**
 
  | 고려 항목     | 설명                                    |
 | --------- | ------------------------------------- |
@@ -814,7 +814,7 @@ class AdmissionInfoFeature_FN-FAD-001 {
 
 ```mermaid
 classDiagram
-class ResearchShowcaseFeature_FN-FRS-001 {
+class ResearchShowcaseFeature_FRS-001 {
         <<Feature>>
         -researchList: List
         -staticContent: Content
@@ -825,7 +825,7 @@ class ResearchShowcaseFeature_FN-FRS-001 {
     }
 ```
 
-- **변수 설명**
+**-변수 설명**
 
 | 변수명           | 타입      | 설명                          |
 | ------------- | ------- | --------------------------- |
@@ -833,7 +833,7 @@ class ResearchShowcaseFeature_FN-FRS-001 {
 | staticContent | Content | 관리자가 등록한 정적 콘텐츠 (소개 문구 등)   |
 | keyword       | string  | 사용자가 입력한 검색 키워드             |
 
-- **함수 설명**
+**-함수 설명**
 
 | 함수명                                  | 파라미터             | 반환형  | 설명                              |
 | ------------------------------------ | ---------------- | ---- | ------------------------------- |
@@ -841,7 +841,7 @@ class ResearchShowcaseFeature_FN-FRS-001 {
 | searchResearch()                     | keyword: string  | List | 키워드 기반으로 연구 성과 검색하여 반환          |
 | serveStaticPageBasedOnAdminContent() | content: Content | void | 관리자가 등록한 정적 콘텐츠 기반으로 페이지 렌더링 수행 |
 
-- **시스템 구성요소**
+**-시스템 구성요소**
 
 | 구성요소                       | 역할                         |
 | -------------------------- | -------------------------- |
@@ -851,7 +851,7 @@ class ResearchShowcaseFeature_FN-FRS-001 {
 | 클라이언트 (브라우저)               | 사용자 요청 및 UI 렌더링 수행         |
 | ResearchShowcaseFeature 모듈 | 성과 정렬, 검색, 정적 콘텐츠 렌더링 담당   |
 
-- **시스템 동작과정**
+**-시스템 동작과정**
 
 | 단계        | 설명                                        |
 | --------- | ----------------------------------------- |
@@ -861,7 +861,7 @@ class ResearchShowcaseFeature_FN-FRS-001 {
 | 4. 콘텐츠 처리 | 정적 콘텐츠를 기반으로 소개 문구, 구조 등 렌더링              |
 | 5. 결과 표시  | 정렬된 리스트 + 소개 콘텐츠가 사용자에게 웹 페이지로 표시됨        |
 
-- **시스템 상호작용**
+**-시스템 상호작용**
 
 사용자
  └─> 연구 성과 페이지 접속 (UI-FRS-001)
@@ -876,7 +876,7 @@ class ResearchShowcaseFeature_FN-FRS-001 {
 사용자 브라우저
  └─> 최신 연구 성과 + 정적 콘텐츠 페이지 렌더링
 
-- **설계적 고려사항**
+**-설계적 고려사항**
 
 | 고려 항목        | 설명                                         |
 | ------------ | ------------------------------------------ |
