@@ -629,10 +629,10 @@ classDiagram
 
 | 중분류 코드 | 의미                                     |
 | ------ | -------------------------------------------|    
-| NFE    | 프론트엔드 프레임워크(Frontend Framework Environment) (React/Vue.js 기반 SPA)      |
-| NBE    | 백엔드 프레임워크(Backend Framework Environment) (Django/Node.js 기반 REST API) |
-| NAP    | API 통신 방식(Network API Protocol) (RESTful API 설계)             |
-| NJS    | 인증 및 세션 관리(JWT-based Session Management) (JWT 토큰 기반 인증 및 세션 관리)      |
+| NFE    | 프론트엔드 프레임워크(Frontend Framework Environment)       |
+| NBE    | 백엔드 프레임워크(Backend Framework Environment)  |
+| NAP    | API 통신 방식(Network API Protocol)             |
+| NJS    | 인증 및 세션 관리(JWT-based Session Management)       |
 
 | 구분                 | 고유번호        | 요구사항 명칭     | 권한  |
 | ------------------ | ----------- | ----------- | --- |
