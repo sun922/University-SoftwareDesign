@@ -787,6 +787,8 @@ classDiagram
 | OSS | OSS-001 |    오픈소스 사용 제한    |  관리자  |
 | FRW | FRW-001 |   언어 및 프레임워크 조건 | 관리자  |
 
+***
+
 | 항목        | 내용                            |
 | --------- | ----------------------------- |
 | 요구사항 고유번호 | NEX-001               |
@@ -843,118 +845,46 @@ classDiagram
           
 ## 12. 유지보수 요구사항
 
-| 중분류 코드  | 의미                 |
+| 코드  | 의미                 |
 | ------- | ------------------ |
-| **MTN** | 유지보수 (Maintenance) |
+| RPM | 정기 유지보수 기능 |
+| EMG | 긴급 장애 대응 기능 |
+| CMS | CMS 제공 기능 |
 
 | 구분             | 고유번호    | 요구사항 명칭     | 권한  |
 | -------------- | ------- | ----------- | --- |
-| **유지보수 (MTN)** | MTN-RPM-001 | 정기 유지보수 기능  | 모두  |
-|                | MTN-EMG-001 | 긴급 장애 대응 기능 | 모두  |
-|                | MTN-CMS-001 | CMS 제공 기능   | 관리자 |
+| RPM | RPM-001 | 정기 유지보수 기능  | 모두  |
+| EMG | EMG-001 | 긴급 장애 대응 기능 | 모두  |
+| CMS | CMS-001 | CMS 제공 기능   | 관리자 |
 
+***
 
 | 항목        | 내용                             |
 | --------- | ------------------------------ |
-| 요구사항 고유번호 | MTN-RPM-001                        |
+| 요구사항 고유번호 | RPM-001                        |
 | 요구사항 명칭   | 정기 유지보수 기능                     |
 | 요구사항 분류   | 유지보수 요구사항                      |
 | 정의        | 시스템 정기 점검 및 기능 개선 제공           |
 | 세부내용      | - 최소 월 1회 유지보수<br>- 사전 공지 후 수행 |
 | 권한        | 모두                             |
 
-```mermaid
-classDiagram
-    class MaintenanceScheduler_MTN-RPM-001 {
-        <<Maintenance>>
-        +scheduleMonthlyMaintenance(): void
-        +notifyUsers(): void
-    }
-
-    class MaintenanceNotice_MTN-RPM-001 {
-        <<Maintenance>>
-        -title: String
-        -date: Date
-        -message: String
-        +publish(): void
-    }
-
-    class SystemAdmin {
-        +initiateMaintenance(): void
-        +editSchedule(): void
-    }
-```
-
 | 항목        | 내용                                          |
 | --------- | ------------------------------------------- |
-| 요구사항 고유번호 | MTN-EMG-001                                     |
+| 요구사항 고유번호 | EMG-001                                     |
 | 요구사항 명칭   | 긴급 장애를 대응하는 기능                              |
 | 요구사항 분류   | 유지보수 요구사항                                   |
 | 정의        | 시스템 오류 발생 시 24시간 내 대응 제공                    |
 | 세부내용      | - 예: 서버 장애, 로그인 오류, 업로드 불가<br>- 비상 연락 체계 수립 |
 | 권한        | 모두                                          |
 
-```mermaid
-classDiagram
-    class IncidentHandler_MTN-EMG-001 {
-        <<Maintenance>>
-        +detectFailure(): boolean
-        +dispatchAlert(): void
-        +resolveIncident(): void
-    }
-
-    class EmergencyContact_MTN-EMG-001 {
-        <<Maintenance>>
-        -name: String
-        -role: String
-        -phone: String
-        -email: String
-        +notify(): void
-    }
-
-    class SystemMonitor {
-        +monitorHealth(): void
-        +generateAlert(): void
-    }
-```
-
 | 항목        | 내용                                                               |
 | --------- | ---------------------------------------------------------------- |
-| 요구사항 고유번호 | MTN-CMS-001                                                          |
+| 요구사항 고유번호 | CMS-001                                                          |
 | 요구사항 명칭   | CMS 제공 기능                                                        |
 | 요구사항 분류   | 유지보수 요구사항                                                        |
 | 정의        | 관리자용 콘텐츠 관리 시스템 제공                                               |
 | 세부내용      | - 로그인 기반 관리자 화면<br>- 게시판/페이지 콘텐츠 등록/수정 UI<br>- 미리보기, 임시 저장 기능 포함 |
 | 권한        | 관리자                                                              |
-
-```mermaid
-classDiagram
-    class CMS_MTN-CMS-001 {
-        <<Maintenance>>
-        +login(username: String, password: String): boolean
-        +logout(): void
-        +previewContent(contentId: int): Content_MTN_CMS_003
-        +saveDraft(content: Content_MTN_CMS_003): boolean
-        +publishContent(content: Content_MTN_CMS_003): boolean
-    }
-
-    class Content_MTN-CMS-001 {
-        <<Maintenance>>
-        -id: int
-        -title: String
-        -body: String
-        -status: String
-        +edit(title: String, body: String): void
-        +getSummary(): String
-    }
-
-    class Admin {
-        -adminId: String
-        -name: String
-        +manageContent(): void
-        +viewDashboard(): void
-    }
-```
 
 ---
 ---
