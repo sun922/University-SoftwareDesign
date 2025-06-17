@@ -12,15 +12,7 @@
 
 ### 2.1 시스템 구성도
 
-```
-[사용자 (학생/교수/관리자)]
-         ↓
-[웹 브라우저 (React, HTML)]
-         ↓↑ REST API
-[서버 (Django/Node.js)]
-         ↓↑ ORM / SQL
-[DB 서버 (MySQL/PostgreSQL)]
-```
+![image](https://github.com/user-attachments/assets/a6dd510f-8893-490c-b00d-f006e53bf2ce)
 
 - 사용자: 학생, 교수, 관리자
 - 프론트엔드: React.js or HTML 기반
