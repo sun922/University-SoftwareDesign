@@ -50,6 +50,294 @@
 
 ## 3. 기능별 상세 정의
 
+| 항목          | 설명                                                                                                           |
+| ----------- | ------------------------------------------------------------------------------------------------------------------ |
+| 코드        | FDO                                                                                                             |
+| 기능명     | 학과 소개 페이지                                                                                               |
+| 목적     | 학과의 비전, 연혁, 구성 정보를 사용자에게 제공하여 학과에 대한 전반적인 이해를 돕는다.                                |
+| 사용자  | 웹사이트 방문자 모두 (학생, 교직원, 외부인 등)                                                                  |
+| 연관 모듈   | SW-FDO-001                                                                                                      |
+| 연관 시나리오 | 없음 (정적 페이지로 관리자에 의해 콘텐츠가 미리 등록됨)                                                         |
+| 입력      | 학과 비전 설명 텍스트, 학과 연혁 설명 텍스트, 학과 구성 설명 텍스트, 학과 로고 이미지, 캠퍼스 전경 이미지, 모바일 문단 구조 적용 여부, 관리자 등록 정적 콘텐츠 |
+| 출력      | 학과 소개 페이지 (텍스트 및 이미지 포함 완성 페이지)                                                              |
+| 외부 연동   | 콘텐츠 저장소 (정적 콘텐츠 DB 또는 파일 서버)                                                                 |
+| UI 처리   | 사용자 요청 시 학과 소개 콘텐츠를 정적 페이지 형태로 화면에 출력                                                |
+
+```mermaid
+classDiagram
+    class DepartmentIntroductionFeature {
+        <<Feature>>
+        -visionText: string
+        -historyText: string
+        -structureText: string
+        -logoImage: Image
+        -campusViewImage: Image
+        -mobileParagraphStructureEnabled: boolean
+        -staticContent: Content
+
+        +viewIntroductionText(vision: string, history: string, structure: string): void
+        +viewIntroductionImages(logo: Image, campusView: Image): void
+        +applyMobileParagraphStructure(): void
+        +serveStaticPageBasedOnAdminContent(content: Content): void
+    }
+```
+
+**–변수 설명**
+
+| 변수명                             | 타입      | 설명                |
+| ------------------------------- | ------- | ----------------- |
+| visionText                      | string  | 학과 비전 텍스트         |
+| historyText                     | string  | 학과 연혁 텍스트         |
+| structureText                   | string  | 학과 구성 설명 텍스트      |
+| logoImage                       | Image   | 학과 로고 이미지         |
+| campusViewImage                 | Image   | 캠퍼스 전경 이미지        |
+| mobileParagraphStructureEnabled | boolean | 모바일에서 문단 구조 적용 여부 |
+| staticContent                   | Content | 관리자가 등록한 정적 콘텐츠   |
+
+**–함수 설명**
+
+| 함수명                                  | 파라미터                               | 반환형  | 설명                         |
+| ------------------------------------ | ---------------------------------- | ---- | -------------------------- |
+| viewIntroductionText()               | vision, history, structure: string | void | 학과 비전, 연혁, 구성 텍스트를 화면에 출력  |
+| viewIntroductionImages()             | logo, campusView: Image            | void | 로고 및 캠퍼스 이미지를 화면에 출력       |
+| applyMobileParagraphStructure()      | 없음                                 | void | 모바일 화면에서 문단 구조 적용 (가독성 향상) |
+| serveStaticPageBasedOnAdminContent() | content: Content                   | void | 등록된 정적 콘텐츠를 기반으로 페이지 렌더링   |
+
+**-시스템 구성요소**
+
+| 구성요소                             | 역할                       |
+| -------------------------------- | ------------------------ |
+| 웹서버                              | 사용자의 페이지 요청 처리 및 콘텐츠 전달  |
+| 콘텐츠 저장소                          | 정적 콘텐츠(텍스트, 이미지 등)를 저장   |
+| 관리자 UI                           | 관리자용 콘텐츠 등록/수정 웹 인터페이스   |
+| 클라이언트(브라우저)                      | 사용자 요청 및 최종 웹페이지 렌더링     |
+| DepartmentIntroductionFeature 모듈 | 콘텐츠 가공, 모바일 최적화 처리 기능 모듈 |
+
+**-시스템 동작 과정**
+
+| 단계         | 설명                                                  |
+| ---------- | --------------------------------------------------- |
+| 1. 콘텐츠 준비  | 관리자가 Admin UI를 통해 학과 소개 콘텐츠 입력 및 저장                 |
+| 2. 사용자 요청  | 사용자가 웹 브라우저에서 학과 소개 페이지 접속                          |
+| 3. 페이지 생성  | 웹서버가 콘텐츠를 불러와 DepartmentIntroductionFeature 모듈로 렌더링 |
+| 4. 모바일 최적화 | 모바일 기기 또는 설정에 따라 문단 구조 최적화 수행                       |
+| 5. 페이지 제공  | 사용자 브라우저에 완성된 페이지 응답 및 렌더링                          |
+
+**–시스템 상호작용**
+
+관리자
+ └─> 관리자 UI
+     └─> 콘텐츠 저장소 (텍스트, 이미지 저장)
+
+사용자
+ └─> 웹 브라우저
+     └─> 웹서버
+         └─> DepartmentIntroductionFeature
+              ├─> 콘텐츠 저장소에서 로드
+              ├─> viewIntroductionText()
+              ├─> viewIntroductionImages()
+              └─> applyMobileParagraphStructure()
+         └─> HTML, CSS, 이미지 사용자에게 응답
+사용자 브라우저
+ └─> 페이지 렌더링 및 표시
+
+**–설계적 고려사항**
+
+| 고려 항목         | 설명                                         |
+| ------------- | ------------------------------------------ |
+| 정적 콘텐츠 기반 | 자주 변경되지 않는 콘텐츠를 정적으로 관리하여 서버 부하 최소화        |
+| 모바일 최적화   | 모바일 환경에서 가독성 향상을 위한 문단 구조 적용 기능 설계         |
+| 확장성       | 향후 영상, 다국어, 추가 이미지 등 기능 확장 가능하도록 유연한 구조 설계 |
+| 보안        | 관리자 UI 접근 권한 제어, 콘텐츠 무결성 검증, 안전한 콘텐츠 제공 보장 |
+
+---
+
+| 항목          | 설명                              |
+| ----------- | ------------------------------- |
+| 코드   | FPR                             |
+| 기능명     | 교수진 정보 페이지                       |
+| 목적      | 학과 교수진 정보를 사용자에게 제공       |
+| 사용자  | 모두(학생, 교수, 일반인 등)                          |
+| 연관 모듈   | SW-FPR-001                      |
+| 연관 시나리오 | SC-FPR-001                      |
+| 입력      | 메뉴 클릭, 교수 클릭(상세보기)       |
+| 출력      | 교수 리스트, 교수 상세 정보 |
+| 외부 연동   | 없음             |
+| UI 처리   | 클릭 시 리스트 표시, 교수 선택 시 상세 정보 및 이미지 출력           |
+
+```mermaid
+classDiagram
+class FacultyIntroductionFeature {
+    -facultyList: List<Professor>
+    +viewFacultyList(): List<Professor>
+    +viewFacultyDetail(professorId: int): Professor
+}
+
+class Professor {
+    -name: string
+    -position: string
+    -officeLocation: string
+    -majorField: string
+    -contactNumber: string
+    -emailAddress: string
+    -profileImage: Image
+}
+FacultyIntroductionFeature --> Professor
+```
+**-변수 설명**
+
+| 변수명        | 타입      | 설명          |
+| ---------- | ------- | ----------- |
+| `facultyList`     | List<Professor>  | 전체 교수 목록      |
+| `professorName`     | string  | 교수 이름      |
+| `position` | string  | 직책    |
+| `officeLocation` | string | 연구실 위치 |
+| `majorField` | string | 전공 분야 |
+| `contactNumber` | string | 전화번호 |
+| `emailAddress` | string | 이메일 |
+| `profileImage` | image | 프로필 이미지 |
+
+**–함수 설명**
+| 함수명                   | 파라미터                           | 반환형        | 설명                     |
+| --------------------- | ------------------------------ | ---------- | ---------------------- |
+| `viewFacultyList()`    | 없음                          | List<Professor>| 전체 교수 목록 반환   |
+| `viewFacultyDetail()`  | professorId: int           | Professor       | 선택한 교수의 상세 정보 반환               |
+
+**–시스템 구성요소** 
+
+| 구성요소                               | 역할                  |
+| ---------------------------------- | ------------------- |
+| 웹서버                          | 교수 정보 요청 처리 및 HTML 콘텐츠 제공 |
+| 사용자 브라우저                       | 메뉴 클릭, 교수 목록 및 상세 정보 조회 요청/표시   |
+| FacultyIntroductionFeature 모듈 | 교수 데이터 조회 및 처리 수행      |
+| DB 서버               | 교수 정보 저장 및 제공 |
+
+**–시스템 동작 과정** 
+| 단계        | 설명                                                                |
+| --------- | ----------------------------------------------------------------- |
+| 1. 메뉴 선택 | 사용자가 '교수진 소개'메뉴 클릭                                 |
+| 2. 목록 요청  | 웹서버에서 교수 목록 조회 |
+| 3. 상세 요청  | 사용자가 교수 선택 시 상세 정보 요청      |
+| 4. 데이터 반환  | 교수 상세 정보(이름, 직책, 전공 등) 출력           |
+
+**–시스템 상호작용**
+
+사용자
+  └─> 브라우저 ──> 웹서버 ──> FacultyIntroductionFeature
+                                   └─> 교수 정보 DB
+웹서버
+  └─> 교수 목록 or 상세 정보 반환
+  
+**–설계적 고려사항**
+
+| 고려 항목      | 설명                                   |
+| ---------- | ------------------------------------ |
+| 접근성    | 누구나 교수 정보를 찾을 수 있는 UI 설계 필요 |
+| 정확성     | 관리자에 의한 최신 정보 업데이트 유지     |
+| 확장성    | 교수별 강의, 연구 실적 등 추가 정보 연동 고려    |
+| 정적처리 | 관리자 입력 기반 정적 콘텐츠로 처리 시 속도 우수   |
+
+---
+
+| 항목          | 설명                              |
+| ----------- | ------------------------------- |
+| 코드   | FCC                             |
+| 기능명     | 커리큘럼 정보 제공                        |
+| 목적      | 학년별 커리큘럼, 강의 정보, 담당 교수 정보 등을 사용자에게 제공 |
+| 사용자  | 모두(학생, 교수, 일반인 등)                          |
+| 연관 모듈   | SW-FCC-001                      |
+| 연관 시나리오 | SC-FCC-001                      |
+| 입력      | 학년 선택, 강의 선택       |
+| 출력      | 강의명, 학점, 수업 방식, 교수 정보, 강의계획서 링크      |
+| 외부 연동   | 없음             |
+| UI 처리   | 강의 목록 표시 및 선택 시 강의계획서 링크 제공           |
+
+```mermaid
+classDiagram
+class CurriculumAndClassInfoFeature {
+  -gradeToSubjectsMap: Map<int, List<Subject>>
+  +viewCurriculumByGrade(grade: int): List~Subject~
+  +viewSubjectDetail(subjectId: int): Subject
+}
+
+class Subject {
+  -name: string
+  -credit: int
+  -classMethod: string
+  -syllabusLink: string
+  -professor: Professor
+}
+
+class Professor {
+  -name: string
+  -position: string
+  -majorField: string
+  -officeLocation: string
+  -contactNumber: string
+  -emailAddress: string
+  -profileImage: Image
+}
+
+CurriculumAndClassInfoFeature --> Subject
+Subject --> Professor
+```
+**–변수 설명**
+
+| 변수명        | 타입      | 설명          |
+| ---------- | ------- | ----------- |
+| `gradeToSubjectsMap`     | Map<int, List<Subject>>  | 학년별 커리큘럼 목록      |
+| `name`     | string  | 강의의명      |
+| `credit` | int  | 학점    |
+| `classMethod` | string | 수업 방식 |
+| `syllabusLink` | string | 강의계획서 링크 |
+| `professor` | Professor | 담당 교수 정보 |
+
+**–함수 설명**
+| 함수명                   | 파라미터                           | 반환형        | 설명                     |
+| --------------------- | ------------------------------ | ---------- | ---------------------- |
+| `viewCurriculumByGrade()`    | grade: int             | List<Subject> | 선택한 학년의 커리큘럼 목록 반환 |
+| `viewSubjectDetail()`  | subjectId: int           | Subject       | 강의 상세 정보 반환          |
+| `getSyllabusLink()` | subjectId: int               | string     | 강의계획서 PDF 링크 반환 |
+
+**–시스템 구성요소** 
+
+| 구성요소                               | 역할                  |
+| ---------------------------------- | -------------------------- |
+| 웹서버                         | 커리큘럼 정보 요청 처리 및 HTML 콘텐츠 제공 |
+| 사용자 브라우저                | 학년 선택, 강의 조회, PDF 열람   |
+| CurriculumAndClassInfoFeature 모듈 | 강의 정보 처리 수행      |
+| DB 서버               | 강의, 교수 정보 저장 및 조회 |
+| 파일 서버                | 강의계획서(PDF) 저장 및 제공 |
+
+**–시스템 동작 과정** 
+| 단계        | 설명                                                                |
+| --------- | ----------------------------------------------------------------- |
+| 1. 메뉴 선택 | 사용자가 '커리큘럼 안내'메뉴 선택                                 |
+| 2. 학년 선택 | 탭 또는 드롭다운으로 학년 선택 |
+| 3. 과목 목록 조회  | 선택 학년의 강의 리스트 출력      |
+| 4. 과목 상세 클릭  | 교수 정보, 수업 방식, 강의계획서 링크 제공           |
+| 5. 강의계획서 열람  | PDF 다운로드 또는 새 창에서 강의계획서 열람           |
+
+**-시스템 상호작용**
+
+사용자
+  └─> 브라우저 ──> 웹서버 ──> CurriculumAndClassInfoFeature
+                                   └─> 강의, 교수 DB
+웹서버
+  └─> 강의계획서 PDF 경로 전달
+  
+**–설계적 고려사항**
+
+| 고려 항목      | 설명                                   |
+| ---------- | ------------------------------------ |
+| 정확성    | 학년별 강의와 교수 정보 최신 상태 유지 |
+| 확장성     | 교양/전공/선택 구분 추가     |
+| 가독성    | 사용자 친화적 탭 또는 필터 UI 제공    |
+| 연동성 | 각 강의별 교수 상세 정보와 연계 가능   |
+| 파일 보안 | 강의계획서 PDF 링크 접근 권한 제한 고려 가능   |
+
+---
+
 | 항목 | 설명 |
 |------|------|
 | 코드 | FAA  |
@@ -90,7 +378,7 @@ RealNameAuthService --> AuthResult
 | `idNumber` | string  | 사용자 식별번호    |
 | `verified` | boolean | 실명 인증 여부 결과 |
 
-**- 함수 설명**
+**-함수 설명**
 | 함수명                   | 파라미터                           | 반환형        | 설명                     |
 | --------------------- | ------------------------------ | ---------- | ---------------------- |
 | `verifyRealName()`    | name: string, idNumber: string | AuthResult | 이름과 주민번호 기반 실명 인증 수행   |
@@ -132,6 +420,7 @@ RealNameAuthService --> AuthResult
 | 보안     | 사용자 개인정보(이름, 생년월일 등) 전송 시 암호화 필수     |
 | 연계성    | 로그인, 회원가입 등 다른 기능들과 연계된 플로우 설계 필요    |
 | 속도 최적화 | 외부 API 응답 시간 지연을 고려한 비동기 처리 가능성 고려   |
+
 ---
 
 | 항목          | 설명                                                |
