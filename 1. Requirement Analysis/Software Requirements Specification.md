@@ -847,9 +847,9 @@ classDiagram
 
 | 코드  | 의미                 |
 | ------- | ------------------ |
-| RPM | 정기 유지보수 기능 |
-| EMG | 긴급 장애 대응 기능 |
-| CMS | CMS 제공 기능 |
+| RPM | 정기 유지보수 기능(Regular Preventive Maintenance) |
+| EMG | 긴급 장애 대응 기능(Emergency Maintenance) |
+| CMS | CMS 제공 기능(Content Management System) |
 
 | 구분             | 고유번호    | 요구사항 명칭     | 권한  |
 | -------------- | ------- | ----------- | --- |
