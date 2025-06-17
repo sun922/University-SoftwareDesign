@@ -778,14 +778,14 @@ classDiagram
 | OSS | 오픈소스 사용 제한 (Open Source Software Restriction) |
 | FRW | 언어 및 프레임워크 조건 (Framework Requirement) |
 
-| 구분 |     고유번호        | 요구사항 명칭           | 설명                                         |  권한   |
-| --- |--------------------- |------------- | --------------------------------------------------------- | ----- |
-| NEX | NEX-001 |   구현 제외 조건      | 과제 목적상 실제 구현은 수행하지 않음                          | 모두  |
-| NDL | NDL-001 |    제출 일정 제약      | 학기 내 보고서 제출 일정 엄수 필요                           | 모두  |
-| NTM | NTM-001 |   팀 구성 제한       | 외부 인력 참여 없이 팀 내 작성 수행 *(외부 전문가 참여 금지 및 팀 내부 작성 필수)*       | 모두  |
-| BRC | BRC-001 |   브라우저 호환성 제약   | 크롬, 엣지, 사파리 최신 버전에서만 완전 지원<br>IE 미지원 및 기능·화면 동일 유지 필요     | 모두  |
-| OSS | OSS-001 |    오픈소스 사용 제한    | 검증된 오픈소스만 사용 가능<br>GPL 등 상업적 제약 라이선스 금지 및 관리자 승인 필요       |  관리자  |
-| FRW | FRW-001 |   언어 및 프레임워크 조건 | 백엔드는 Python, 프론트엔드는 React.js 기반 구현<br>다른 스택 사용 시 사전 협의 필요 | 관리자  |
+| 구분 |  고유번호  | 요구사항 명칭   |  권한   |
+| --- |----------- |------------------| ----- |
+| NEX | NEX-001 |   구현 제외 조건      |  모두  |
+| NDL | NDL-001 |    제출 일정 제약      |  모두  |
+| NTM | NTM-001 |   팀 구성 제한       |  모두  |
+| BRC | BRC-001 |   브라우저 호환성 제약   |  모두  |
+| OSS | OSS-001 |    오픈소스 사용 제한    |  관리자  |
+| FRW | FRW-001 |   언어 및 프레임워크 조건 | 관리자  |
 
 | 항목        | 내용                            |
 | --------- | ----------------------------- |
@@ -795,18 +795,6 @@ classDiagram
 | 정의        | 과제 목적상 실제 구현은 수행하지 않음         |
 | 세부내용      | - 실제 기능 구현 대신 설계 및 문서 작성에 집중함 |
 | 권한        | 모두                            |
-```mermaid
-classDiagram
-    class ImplementationExclusionConstraint_NEX-001 {
-        <<Constraint>>
-        -isImplementationExcluded: boolean
-        -focusArea: string
-        -documentationEmphasis: boolean
-
-        +skipImplementation(): void
-        +focusOnDesignAndDocs(): void
-    }
-```
 
 | 항목        | 내용                       |
 | --------- | ------------------------ |
@@ -816,129 +804,42 @@ classDiagram
 | 정의        | 학기 내 보고서 제출 일정 엄수 필요     |
 | 세부내용      | - 제출 기한 엄수 필수<br>- 연장 불가 |
 | 권한        | 모두                       |
-```mermaid
-classDiagram
-    class BrowserCompatibilityConstraint_ENV-BRC-001 {
-        <<Constraint>>
-        -supportedBrowsers: string[]
-        -isIESupported: boolean
-        -compatibilityStatus: string
-
-        +checkBrowserSupport(browserName: string, version: string): boolean
-        +enforceCompatibility(): void
-        +reportIncompatibility(): void
-    }
-```
 
 | 항목        | 내용                             |
 | --------- | ------------------------------ |
-| 요구사항 고유번호 | ENV-NTM-001                |
+| 요구사항 고유번호 | NTM-001                |
 | 요구사항 명칭   | 팀 구성 제한                        |
 | 요구사항 분류   | 제약 사항                          |
 | 정의        | 외부 인력 참여 없이 팀 내 작성 수행          |
 | 세부내용      | - 외부 전문가 참여 금지<br>- 팀 내부 작성 필수 |
 | 권한        | 모두                             |
-```mermaid
-classDiagram
-    class OpenSourceUsageRestriction_TEC-OSS-001 {
-        <<Constraint>>
-        -allowedLicenses: string[]
-        -isAdminApproved: boolean
-        -restrictedLicenses: string[]
-
-        +validateLicense(license: string): boolean
-        +requireAdminApproval(): void
-        +checkLibraryApproval(libraryName: string): boolean
-    }
-
-```
 
 | 항목        | 내용                                 |
 | --------- | ---------------------------------- |
-| 요구사항 고유번호 | ENV-BRC-001                    |
+| 요구사항 고유번호 | BRC-001                    |
 | 요구사항 명칭   | 브라우저 호환성 제약                        |
 | 요구사항 분류   | 제약 사항                              |
 | 정의        | 크롬, 엣지, 사파리 최신 버전에서만 완전 지원         |
 | 세부내용      | - IE 미지원<br>- 브라우저별 화면/기능 동일 유지 필요 |
 | 권한        | 모두                                 |
-```mermaid
-classDiagram
-    class LanguageFrameworkConstraint_TEC-FRW-001 {
-        <<Constraint>>
-        -backendLanguage: string
-        -frontendFramework: string
-        -requiresPriorApproval: boolean
-        -maintenanceConsiderations: string
-
-        +validateTechStack(backend: string, frontend: string): boolean
-        +requestApprovalForChange(): void
-        +considerMaintenanceAndStaffing(): void
-    }
-```
 
 | 항목        | 내용                                                |
 | --------- | ------------------------------------------------- |
-| 요구사항 고유번호 | TEC-OSS-001                                   |
+| 요구사항 고유번호 | OSS-001                                   |
 | 요구사항 명칭   | 오픈소스 사용 제한                                        |
 | 요구사항 분류   | 제약 사항                                             |
 | 정의        | 검증된 오픈소스만 사용 가능                                   |
 | 세부내용      | - GPL 등 상업적 제약 라이선스 금지<br>- 관리자 승인 없는 라이브러리 도입 불가 |
 | 권한        | 관리자                                               |
-```mermaid
-classDiagram
-    class FaultRecoveryFeature_GEN-NMQ-001 {
-        <<Maintainability>>
-        -isPrimaryServerActive: boolean
-        -isFailoverInProgress: boolean
-        -recoveryTimeThreshold: int
-        -serverId: string
-        -status: string
-        -ipAddress: string
-
-        +detectFailure(): void
-        +triggerAutomaticFailover(): void
-        +switchToBackupServer(): void
-        +verifyRecoveryWithinThreshold(threshold: int): boolean
-        +activate(): void
-        +deactivate(): void
-        +checkStatus(): string
-    }
-```
 
 | 항목        | 내용                                         |
 | --------- | ------------------------------------------ |
-| 요구사항 고유번호 | TEC-FRW-001                            |
+| 요구사항 고유번호 | FRW-001                            |
 | 요구사항 명칭   | 언어 및 프레임워크 조건                              |
 | 요구사항 분류   | 제약 사항                                      |
 | 정의        | 백엔드는 Python, 프론트엔드는 React.js 기반 구현         |
 | 세부내용      | - 다른 스택 사용 시 사전 협의 필요<br>- 유지보수 및 인력 기준 고려 |
 | 권한        | 관리자                                        |
-```mermaid
-classDiagram
-    class AvailabilityFeature_GEN-NEX-001 {
-        <<Extensibility>>
-        -uptimePercentage: float
-        -redundantServerIds: string[]
-        -monitoringSystemId: string
-        -monitoringSystemStatus: string
-        -maintenanceStartTime: DateTime
-        -maintenanceEndTime: DateTime
-        -maintenanceDescription: string
-        -serverStatusMap: map[string]string  // 서버ID별 상태 저장
-
-        +ensureHighAvailability(targetUptime: float): void
-        +configureRedundancy(serverIds: string[]): void
-        +monitorSystemHealth(): void
-        +notifyMaintenance(startTime: DateTime, endTime: DateTime, description: string): void
-        +activateServer(serverId: string): void
-        +deactivateServer(serverId: string): void
-        +checkServerStatus(serverId: string): string
-        +startMonitoring(): void
-        +alertOnFailure(): void
-        +generateHealthReport(): string
-        +notifyUsers(): void
-    }
-```
           
 ## 12. 유지보수 요구사항
 
