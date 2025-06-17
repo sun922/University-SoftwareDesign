@@ -422,6 +422,237 @@ RealNameAuthService --> AuthResult
 | 속도 최적화 | 외부 API 응답 시간 지연을 고려한 비동기 처리 가능성 고려   |
 
 ---
+| 항목 | 설명 |
+|------|------|
+| 코드 | FNN  |
+| 기능명 | 공지사항 기능  |
+| 목적 | 사용자의 공지사항 열람과 관리자의 공지사항 작성 및 수정 기능 |
+| 사용자 | 학생, 교수 |
+| 연관 모듈 | SW-FNN-001,  SW-FNN-002|
+| 연관 시나리오 | SC-FNN-001 |
+| 입력      | 제목, 본문, 상단 고정 여부, 파일 리스트, 검색 키워드, 정렬기준, 페이지 정보, 인증 토큰      |
+| 출력      | 공지사항 요약 목록,  상세 정보, 요청 성공 여부, 성공/실패 메세지, 게시글 ID, 수정 시각, 오류 메세지         |
+| 외부 연동   | 파일 저장소, 인증/권한 시스템  |
+| UI 처리   | 사용자에게 목록 중심화면, 관리자에게는 편집화면 제공  |
+
+```mermaid
+classDiagram
+%% ---------- Entity ----------
+class Notice {
+  -id: int
+  -title: string
+  -content: string
+  -createdDate: Date
+  -isPinned: boolean
+  -attachments: List<Attachment>
+  -images: List<Image>
+}
+
+class Attachment {
+  -fileName: string
+  -filePath: string
+}
+
+class Image {
+  -fileName: string
+  -imagePath: string
+}
+
+class Content
+
+%% ---------- Feature ----------
+class NoticeAndNewsViewFeature {
+  -title: string
+  -content: string
+  -createdDate: Date
+  -attachments: List<Attachment>
+  -staticContent: Content
+  +viewNoticesSortedByLatest(): List<Notice>
+  +searchNotices(keyword: string): List<Notice>
+  +serveStaticPageBasedOnAdminContent(content: Content): void
+}
+
+class NoticeAndNewsEditFeature {
+  -isPinned: boolean
+  -attachments: List<Attachment>
+  -images: List<Image>
+  +createPost(title: string, content: string): void
+  +editPost(id: int, newContent: string): void
+  +deletePost(id: int): void
+  +setPinStatus(id: int, isPinned: boolean): void
+}
+
+%% ---------- Relationships ----------
+NoticeAndNewsViewFeature --> Notice : reads
+NoticeAndNewsEditFeature --> Notice : creates/updates
+
+Notice *-- Attachment
+Notice *-- Image
+
+NoticeAndNewsViewFeature ..> Content : uses
+NoticeAndNewsEditFeature ..> Attachment : uploads
+NoticeAndNewsEditFeature ..> Image : uploads
+```
+**-변수 설명**
+
+| 변수명        | 타입      | 설명          |
+| ---------- | ------- | ----------- |
+| `title`     | string  | 게시글 제목     |
+| `content` | string  | 게시글 본문    |
+| `createdDate` | Date | 생성 일시 |
+| `attachments`     | List<File>  | 첨부파일 리스트      |
+| `images` | List<image>  | 이미지 리스트  |
+| `isPinned` | boolean | 상단 고정 여부 |
+| `staticContent`     | Content  | 관리자 등록 기반 정적 콘텐츠     |
+
+
+**-함수 설명**
+| 함수명                   | 파라미터                           | 반환형        | 설명                     |
+| --------------------- | ------------------------------ | ---------- | ---------------------- |
+| `viewNoticesSortedByLastest()`    | 없음 | List<Notice | 최신순으로 공지/뉴스 게시글 목록을 조회   |
+| `searchNotices()`      | keyword: string        | List<Notice>  | 제목 또는 내용에 포함된 키워드로 게시글 검색  |
+| `serveStaticPageBasedOnAdminContent()` | content: Content  | void |관리자 등록 정보를 기반으로 정적 페이지 제공 |
+| `createPost()`    | title: string, content: string | void | 새로운 공지사항/뉴스 게시글 생성   |
+| `editPost()`        | id: int, newContent: string  | void   | 특정 게시글의 내용을 수정               |
+| `deletePost()` | id: int  | void     | 특정 게시글 삭제 |
+| `setPinStatus()` | id: int, isPinned: boolean  | void   | 게시글의 상단 고정 여부를 설정 |
+
+**-시스템 구성요소** 
+
+| 구성요소                               | 역할                  |
+| ---------------------------------- | ------------------- |
+| Frontend UI    | 게시글 목록,상세,작성 기능 |
+| Backend API    | 게시글 CRUD 및 검색 기능 처리 |
+| Database(RDBMS) | 공지/뉴스 게시글 및 파일/이미지 메타데이터 저장     |
+| File Storage | S3 또는 로컬 파일시스템을 사용한 첨부파일/이미지 저장소     |
+| Authentication Service | 사용자 인증 및 관리자 권한 검증 |
+| Admin Console | 관리자가 공지/뉴스를 등록/수정/삭제할 수 있는 UI |
+
+**-시스템 동작 과정** 
+| 단계        | 설명                                                                |
+| --------- | ----------------------------------------------------------------- |
+| 1. 사용자 접근 | 사용자가 웹/앱 클라이언트를 통해 공지사항 기능 페이지에 접속|
+| 2. 권한 확인  | 시스템은 로그인 상태와 권한(일반 사용자/일반 관리자/최고 관리자)을 확인 |
+| 3. 공지사항 목록 조회  | 사용자 권한에 따라 공지사항 목록을 서버에서 조회하고, 최신순으로 정렬된 결과를 반환     |
+| 4. 검색 또는 필터 적용  | 사용자가 키워드를 입력하거나 정렬 조건을 선택하면 해당 조건에 맞는 목록을 다시 조회   |
+| 5. 상세 보기 요청  | 사용자가 특정 공지사항을 클릭하면 서버에서 해당 게시글의 상세 내용을 불러와 표시  |
+| 6. 정적 페이지 제공 | 관리자 등록 기반 콘텐츠는 별도 정적 페이지로 제공되며, HTML 렌더링 |
+| 7. 관리자 게시글 등록 요청 | 관리자 사용자가 ‘새 공지 등록’ 버튼을 클릭하여 입력 폼에 제목, 본문, 이미지/첨부파일, 고정 여부를 작성 |
+| 8. 게시글 저장 처리 | 서버는 관리자 입력 정보를 검증하고, 파일 업로드 처리 후 게시글을 DB에 저장    |
+| 9. 게시글 수정 및 삭제 처리 |관리자는 기존 게시글을 수정하거나 삭제할 수 있으며, 수정 시에는 기존 데이터 업데이트 및 로그 기록, 삭제 시 관련 리소스도 함께 정리 |
+| 10. 사용자에게 갱신된 정보 제공  | 등록/수정/삭제된 결과는 다시 목록 조회에 반영되며, 사용자에게 최신 상태의 공지사항이 제공  |
+
+
+**-시스템 상호작용**
+
+[사용자] → [Frontend] → [API Server] → [Database]
+   ↓                                ↑
+[File Upload] → [S3/File Server] ← 첨부파일/이미지
+
+  
+**-설계적 고려사항**
+
+| 고려 항목      | 설명                                   |
+| ---------- | ------------------------------------ |
+| 보안     | 관리자 인증(JWT), 업로드 시 MIME/확장자 검사, XSS 필터링  |
+| 성능    | 공지 조회 시 캐시 적용 가능 (Redis 등), Full-Text Index 활용   |
+| 확장성 | 정적 콘텐츠 CDN 활용, Read Replica 구성 가능   |
+| 유지보수성    | CQRS 방식으로 읽기/쓰기 서비스 분리 고려 |
+| 접근성     | 모바일 반응형 UI, 스크린리더 친화적 설계    |
+| 감사/로깅    | 게시글 등록/수정/삭제시 사용자/시간 기록 필요    |
+
+---
+
+
+
+| 항목 | 설명 |
+|------|------|
+| 코드 | FRS     |
+| 기능명 | 연구 성과 공유 페이지   |
+| 목적 | 문, 특허, 프로젝트 등 연구 성과를 사용자에게 연도별로 제공하고, 검색 기능을 통해 원하는 성과를 쉽게 찾도록 지원 |
+| 사용자 | 웹사이트 방문자 모두 (학생, 교수, 외부인 등)  |
+| 연관 모듈 | SW-FRS-001|
+| 연관 시나리오 | 없음 |
+| 입력      | 검색 키워드, 정렬 요청, 정적 콘텐츠 요청      |
+| 출력      | 연구 성과 목록, 상세 정보, 정적 페이지  |
+| 외부 연동   | DB(Research DB, 파일 스토리지, 검색 인덱싱 시스템  |
+| UI 처리   | 최신순 정렬과 키워드 검색을 통해 목록을 탐색하고, 항목의 상세 내용을 열람하거나 관리자 등록 기반의 정적 페이지를 확인  |
+
+
+```mermaid
+classDiagram
+class ResearchShowcaseFeature {
+        -researchList: List
+        -staticContent: Content
+
+        +viewResearchSortedByLatest(): List
+        +searchResearch(keyword: string): List
+        +serveStaticPageBasedOnAdminContent(content: Content): void
+    }
+```
+
+**-변수 설명**
+
+| 변수명           | 타입      | 설명                          |
+| ------------- | ------- | --------------------------- |
+| researchList  | List    | 논문, 특허, 프로젝트 등 연구 성과 항목 리스트 |
+| staticContent | Content | 관리자가 등록한 정적 콘텐츠 (소개 문구 등)   |
+| keyword       | string  | 사용자가 입력한 검색 키워드             |
+
+**-함수 설명**
+
+| 함수명                                  | 파라미터             | 반환형  | 설명                              |
+| ------------------------------------ | ---------------- | ---- | ------------------------------- |
+| viewResearchSortedByLatest()         | 없음               | List | 연구 성과를 연도 기준 최신순으로 정렬하여 반환      |
+| searchResearch()                     | keyword: string  | List | 키워드 기반으로 연구 성과 검색하여 반환          |
+| serveStaticPageBasedOnAdminContent() | content: Content | void | 관리자가 등록한 정적 콘텐츠 기반으로 페이지 렌더링 수행 |
+
+**-시스템 구성요소**
+
+| 구성요소                       | 역할                         |
+| -------------------------- | -------------------------- |
+| 웹서버                        | 사용자 요청을 처리하고 렌더링된 페이지를 응답  |
+| 성과 DB                      | 논문, 특허, 프로젝트 등 연구 성과 정보 저장 |
+| API 서버                     | DB 질의 및 정렬/검색된 결과 전달       |
+| 클라이언트 (브라우저)               | 사용자 요청 및 UI 렌더링 수행         |
+| ResearchShowcaseFeature 모듈 | 성과 정렬, 검색, 정적 콘텐츠 렌더링 담당   |
+
+**– 시스템 동작과정**
+
+| 단계        | 설명                                        |
+| --------- | ----------------------------------------- |
+| 1. 데이터 준비 | 성과 DB에 연구 성과 항목들이 저장됨 (연도, 제목, 설명 등)      |
+| 2. 사용자 요청 | 사용자가 연구 성과 페이지에 접속                        |
+| 3. 성과 처리  | API 서버가 DB에서 성과 정보를 최신순 정렬하거나 키워드 기반으로 검색 |
+| 4. 콘텐츠 처리 | 정적 콘텐츠를 기반으로 소개 문구, 구조 등 렌더링              |
+| 5. 결과 표시  | 정렬된 리스트 + 소개 콘텐츠가 사용자에게 웹 페이지로 표시됨        |
+
+**-시스템 상호작용**
+
+사용자
+ └─> 연구 성과 페이지 접속 (UI-FRS-001)
+     └─> API 서버
+         └─> 성과 DB (SELECT * FROM achievements ORDER BY year DESC)
+     └─> ResearchShowcaseFeature
+         ├─> viewResearchSortedByLatest()
+         ├─> searchResearch(keyword)
+         └─> serveStaticPageBasedOnAdminContent()
+웹서버
+ └─> 사용자에게 완성된 HTML 페이지 응답
+사용자 브라우저
+ └─> 최신 연구 성과 + 정적 콘텐츠 페이지 렌더링
+
+**- 설계적 고려사항**
+
+| 고려 항목        | 설명                                         |
+| ------------ | ------------------------------------------ |
+| 정적 + 반동적 콘텐츠 | 소개 문구 등은 정적 콘텐츠로 유지하며, 성과 리스트는 동적 조회       |
+| 검색 및 정렬 기능   | 최신순 정렬 및 키워드 검색 기능 제공으로 사용자 탐색 효율 향상       |
+| 확장성          | 성과 유형별 필터, 다국어 지원, 외부 연구기관 연계 등 향후 확장 가능   |
+| 보안           | DB 수정/등록은 관리자만 가능하며, 사용자에게는 읽기 전용 인터페이스 제공 |
+
+---
+
 
 | 항목          | 설명                                                |
 | ------------- | ------------------------------------------------- |
@@ -717,90 +948,7 @@ User --> RolePermissionService : 역할 조회
 
 ---
 
-**FRS – 연구 성과 공유 페이지**
 
-| 항목      | 설명                                                                 |
-| ------- | ------------------------------------------------------------------ |
-| 기능 ID   | FRS                                                                |
-| 기능명     | 연구 성과 공유 페이지                                                       |
-| 목적      | 논문, 특허, 프로젝트 등 연구 성과를 사용자에게 연도별로 제공하고, 검색 기능을 통해 원하는 성과를 쉽게 찾도록 지원 |
-| 대상 사용자  | 웹사이트 방문자 모두 (학생, 교수, 외부인 등)                                        |
-| 연관 SW   | UI-FRS-001                                                         |
-| 연관 시나리오 | 없음 (정적 콘텐츠 기반의 페이지이나, 일부 동적 리스트는 내부 모듈 또는 API 서버를 통해 제공 가능)        |
-
-```mermaid
-classDiagram
-class ResearchShowcaseFeature {
-        -researchList: List
-        -staticContent: Content
-
-        +viewResearchSortedByLatest(): List
-        +searchResearch(keyword: string): List
-        +serveStaticPageBasedOnAdminContent(content: Content): void
-    }
-```
-
-**FRS – 연구 성과 공유 페이지 변수 설명**
-
-| 변수명           | 타입      | 설명                          |
-| ------------- | ------- | --------------------------- |
-| researchList  | List    | 논문, 특허, 프로젝트 등 연구 성과 항목 리스트 |
-| staticContent | Content | 관리자가 등록한 정적 콘텐츠 (소개 문구 등)   |
-| keyword       | string  | 사용자가 입력한 검색 키워드             |
-
-**FRS – 연구 성과 공유 페이지 함수 설명**
-
-| 함수명                                  | 파라미터             | 반환형  | 설명                              |
-| ------------------------------------ | ---------------- | ---- | ------------------------------- |
-| viewResearchSortedByLatest()         | 없음               | List | 연구 성과를 연도 기준 최신순으로 정렬하여 반환      |
-| searchResearch()                     | keyword: string  | List | 키워드 기반으로 연구 성과 검색하여 반환          |
-| serveStaticPageBasedOnAdminContent() | content: Content | void | 관리자가 등록한 정적 콘텐츠 기반으로 페이지 렌더링 수행 |
-
-**FRS – 연구 성과 공유 페이지 시스템 구성요소**
-
-| 구성요소                       | 역할                         |
-| -------------------------- | -------------------------- |
-| 웹서버                        | 사용자 요청을 처리하고 렌더링된 페이지를 응답  |
-| 성과 DB                      | 논문, 특허, 프로젝트 등 연구 성과 정보 저장 |
-| API 서버                     | DB 질의 및 정렬/검색된 결과 전달       |
-| 클라이언트 (브라우저)               | 사용자 요청 및 UI 렌더링 수행         |
-| ResearchShowcaseFeature 모듈 | 성과 정렬, 검색, 정적 콘텐츠 렌더링 담당   |
-
-**FRS – 연구 성과 공유 페이지 시스템 동작과정**
-
-| 단계        | 설명                                        |
-| --------- | ----------------------------------------- |
-| 1. 데이터 준비 | 성과 DB에 연구 성과 항목들이 저장됨 (연도, 제목, 설명 등)      |
-| 2. 사용자 요청 | 사용자가 연구 성과 페이지에 접속                        |
-| 3. 성과 처리  | API 서버가 DB에서 성과 정보를 최신순 정렬하거나 키워드 기반으로 검색 |
-| 4. 콘텐츠 처리 | 정적 콘텐츠를 기반으로 소개 문구, 구조 등 렌더링              |
-| 5. 결과 표시  | 정렬된 리스트 + 소개 콘텐츠가 사용자에게 웹 페이지로 표시됨        |
-
-**FRS – 연구 성과 공유 페이지 시스템 상호작용**
-
-사용자
- └─> 연구 성과 페이지 접속 (UI-FRS-001)
-     └─> API 서버
-         └─> 성과 DB (SELECT * FROM achievements ORDER BY year DESC)
-     └─> ResearchShowcaseFeature
-         ├─> viewResearchSortedByLatest()
-         ├─> searchResearch(keyword)
-         └─> serveStaticPageBasedOnAdminContent()
-웹서버
- └─> 사용자에게 완성된 HTML 페이지 응답
-사용자 브라우저
- └─> 최신 연구 성과 + 정적 콘텐츠 페이지 렌더링
-
-**FRS – 연구 성과 공유 페이지 설계적 고려사항항**
-
-| 고려 항목        | 설명                                         |
-| ------------ | ------------------------------------------ |
-| 정적 + 반동적 콘텐츠 | 소개 문구 등은 정적 콘텐츠로 유지하며, 성과 리스트는 동적 조회       |
-| 검색 및 정렬 기능   | 최신순 정렬 및 키워드 검색 기능 제공으로 사용자 탐색 효율 향상       |
-| 확장성          | 성과 유형별 필터, 다국어 지원, 외부 연구기관 연계 등 향후 확장 가능   |
-| 보안           | DB 수정/등록은 관리자만 가능하며, 사용자에게는 읽기 전용 인터페이스 제공 |
-
------------------------------
 
 | 항목      | 설명                                                        |
 | ------- | --------------------------------------------------------- |
