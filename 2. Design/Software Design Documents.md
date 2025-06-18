@@ -170,7 +170,7 @@ class FacultyIntroductionFeature {
 }
 
 class Professor {
-    -name: string
+    -professorName: string
     -position: string
     -officeLocation: string
     -majorField: string
@@ -255,10 +255,12 @@ class CurriculumAndClassInfoFeature {
   -gradeToSubjectsMap: Map<int, List<Subject>>
   +viewCurriculumByGrade(grade: int): List~Subject~
   +viewSubjectDetail(subjectId: int): Subject
+  +getSyllabusLink(subjectId: int): string
 }
 
 class Subject {
-  -name: string
+  -subjectId: int
+  -subjectName: string
   -credit: int
   -classMethod: string
   -syllabusLink: string
@@ -266,7 +268,7 @@ class Subject {
 }
 
 class Professor {
-  -name: string
+  -professorName: string
   -position: string
   -majorField: string
   -officeLocation: string
@@ -278,24 +280,27 @@ class Professor {
 CurriculumAndClassInfoFeature --> Subject
 Subject --> Professor
 ```
+
 **– 변수 설명**
 
-| 변수명        | 타입      | 설명          |
-| ---------- | ------- | ----------- |
-| `gradeToSubjectsMap`     | Map<int, List<Subject>>  | 학년별 커리큘럼 목록      |
-| `name`     | string  | 강의의명      |
-| `credit` | int  | 학점    |
-| `classMethod` | string | 수업 방식 |
-| `syllabusLink` | string | 강의계획서 링크 |
-| `professor` | Professor | 담당 교수 정보 |
+| 변수명                  | 타입                       | 설명           |
+| -------------------- | ------------------------ | ------------ |
+| `gradeToSubjectsMap` | Map\<int, List<Subject>> | 학년별 강의 리스트   |
+| `subjectId`          | int                      | 강의 고유 ID     |
+| `subjectName`        | string                   | 강의명          |
+| `credit`             | int                      | 학점           |
+| `classMethod`        | string                   | 수업 방식        |
+| `syllabusLink`       | string                   | 강의계획서 PDF 링크 |
+| `professor`          | Professor                | 담당 교수 객체 정보  |
+| `professorName`      | string                   | 교수 이름        |
 
 **– 함수 설명** 
 
-| 함수명                   | 파라미터                           | 반환형        | 설명                     |
-| --------------------- | ------------------------------ | ---------- | ---------------------- |
-| `viewCurriculumByGrade()`    | grade: int             | List<Subject> | 선택한 학년의 커리큘럼 목록 반환 |
-| `viewSubjectDetail()`  | subjectId: int           | Subject       | 강의 상세 정보 반환          |
-| `getSyllabusLink()` | subjectId: int               | string     | 강의계획서 PDF 링크 반환 |
+| 함수명                       | 파라미터             | 반환형           | 설명                  |
+| ------------------------- | ---------------- | ------------- | ------------------- |
+| `viewCurriculumByGrade()` | `grade: int`     | List<Subject> | 선택한 학년의 강의 리스트 반환   |
+| `viewSubjectDetail()`     | `subjectId: int` | Subject       | 선택한 강의의 상세 정보 반환    |
+| `getSyllabusLink()`       | `subjectId: int` | string        | 선택한 강의의 강의계획서 링크 반환 |
 
 **– 시스템 구성요소** 
 
@@ -495,13 +500,23 @@ NoticeAndNewsEditFeature ..> Image : uploads
 ```mermaid
 classDiagram
 class ResearchShowcaseFeature {
-        -researchList: List
-        -staticContent: Content
+    -researchList: List<Research>
+    -staticContent: Content
 
-        +viewResearchSortedByLatest(): List
-        +searchResearch(keyword: string): List
-        +serveStaticPageBasedOnAdminContent(content: Content): void
-    }
+    +viewResearchSortedByLatest(): List<Research>
+    +searchResearch(keyword: string): List<Research>
+    +serveStaticPageBasedOnAdminContent(content: Content): void
+}
+
+class Research {
+    -title: string
+    -type: string  %% 논문, 특허, 프로젝트 등
+    -year: int
+    -authors: List<string>
+    -link: string
+}
+
+ResearchShowcaseFeature --> Research
 ```
 
 **- 변수 설명**
@@ -584,13 +599,22 @@ class ResearchShowcaseFeature {
 ```mermaid
 classDiagram
 class AdmissionInfoFeature {
-        -admissionList: List
-        -staticContent: Content
+    -admissionList: List<AdmissionInfo>
+    -staticContent: Content
 
-        +viewAdmissionSortedByLatest(): List
-        +searchAdmission(keyword: string): List
-        +serveStaticPageBasedOnAdminContent(content: Content): void
-    }
+    +viewAdmissionSortedByLatest(): List<AdmissionInfo>
+    +searchAdmission(keyword: string): List<AdmissionInfo>
+    +serveStaticPageBasedOnAdminContent(content: Content): void
+}
+
+class AdmissionInfo {
+    -title: string
+    -category: string  
+    -content: string
+    -date: Date
+}
+
+AdmissionInfoFeature --> AdmissionInfo
 ```
 
 **- 변수 설명**
@@ -673,90 +697,89 @@ class AdmissionInfoFeature {
 
 ```mermaid
 classDiagram
-    class User {
-        +Long id
-        +String name
-        +Role role
-        +canEdit(post: Post): boolean
-        +canDelete(post: Post): boolean
-    }
+class User {
+    +Long id
+    +String name
+    +Role role
+    +canEdit(post: Post): boolean
+    +canDelete(post: Post): boolean
+}
 
-    class Post {
-        +Long id
-        +String title
-        +String content
-        +boolean isPinned
-        +int views
-        +List~Comment~ comments
-        +List~File~ attachments
-        +User author
-        +increaseView(): void
-    }
+class Post {
+    +Long id
+    +String title
+    +String content
+    +boolean isPinned
+    +int views
+    +List~Comment~ comments
+    +List~File~ attachments
+    +User author
+    +increaseView(): void
+}
 
-    class Comment {
-        +Long id
-        +String content
-        +User author
-        +Date createdAt
-    }
+class Comment {
+    +Long id
+    +String content
+    +User author
+    +Date createdAt
+}
 
-    class File {
-        +String fileName
-        +String fileUrl
-    }
+class File {
+    +String fileName
+    +String fileUrl
+}
 
-    class PostService {
-        +createPost(title: String, content: String, files: List~File~, user: User): Post
-        +editOwnPost(postId: Long, newContent: String, user: User): void
-        +deleteOwnPost(postId: Long, user: User): void
-        +pinPost(postId: Long, user: User): void
-        +unpinPost(postId: Long, user: User): void
-        +viewPost(postId: Long, user: User): Post
-    }
+class PostService {
+    +createPost(title: String, content: String, files: List~File~, user: User): Post
+    +reflectSortingAfterCreation(): void
+    +editOwnPost(postId: Long, newContent: String, user: User): void
+    +deleteOwnPost(postId: Long, user: User): void
+    +pinPost(postId: Long, user: User): void
+    +unpinPost(postId: Long, user: User): void
+    +viewPost(postId: Long, user: User): Post
+}
 
-    class PostRepository {
-        +save(post: Post): Post
-        +findById(id: Long): Post
-        +delete(post: Post): void
-        +findAll(): List~Post~
-        +findPinned(): List~Post~
-    }
+class PostRepository {
+    +save(post: Post): Post
+    +findById(id: Long): Post
+    +delete(post: Post): void
+    +findAll(): List~Post~
+    +findPinned(): List~Post~
+}
 
-    class AuthService {
-        +getUserFromToken(token: String): User
-        +hasPermission(user: User, action: String): boolean
-    }
+class AuthService {
+    +getUserFromToken(token: String): User
+    +hasPermission(user: User, action: String): boolean
+}
 
-    class FileStorageService {
-        +upload(files: List~File~): List~File~
-        +delete(file: File): void
-    }
+class FileStorageService {
+    +upload(files: List~File~): List~File~
+    +delete(file: File): void
+}
 
-    class PostController {
-        +createPost(request: PostCreateRequest): Post
-        +getPost(id: Long): Post
-        +updatePost(id: Long, request: PostEditRequest): void
-        +deletePost(id: Long): void
-        +pinPost(id: Long): void
-    }
+class PostController {
+    +createPost(request: PostCreateRequest): Post
+    +getPost(id: Long): Post
+    +updatePost(id: Long, request: PostEditRequest): void
+    +deletePost(id: Long): void
+    +pinPost(id: Long): void
+}
 
-    class UI {
-        +renderPostList(posts: List~Post~)
-        +renderPostDetail(post: Post)
-        +renderPostForm()
-    }
+class UI {
+    +renderPostList(posts: List~Post~)
+    +renderPostDetail(post: Post)
+    +renderPostForm()
+}
 
-    %% 관계 설정
-    Post --> "1" User : author
-    Post --> "*" Comment
-    Post --> "*" File
-    PostController --> PostService
-    PostService --> PostRepository
-    PostService --> AuthService
-    PostService --> FileStorageService
-    UI --> PostController
-    PostController --> AuthService
-
+Post --> "1" User : author
+Post --> "*" Comment
+Post --> "*" File
+PostController --> PostService
+PostService --> PostRepository
+PostService --> AuthService
+PostService --> FileStorageService
+UI --> PostController
+PostController --> AuthService
 ```
 
 **- 변수 설명**
@@ -879,6 +902,7 @@ PostController
 classDiagram
 class AuthService {
   +login(userId: string, password: string): AuthResult
+  +createSession(user: User): Session
 }
 
 class UserRepository {
@@ -899,8 +923,16 @@ class AuthResult {
   +user: User
 }
 
+class Session {
+  +sessionId: string
+  +userId: string
+  +createdAt: Date
+  +expireAt: Date
+}
+
 AuthService --> UserRepository
 AuthService --> AuthResult
+AuthService --> Session
 UserRepository --> User
 AuthResult --> User
 ```
@@ -980,6 +1012,9 @@ AuthResult --> User
 ```mermaid
 classDiagram
 class RolePermissionService {
+  -allowedMenus: List<string>
+  -deniedAccess: boolean
+
   +getUserRole(userId: string): string
   +filterUIByRole(role: string): List<string>
   +checkAccess(role: string, resource: string): boolean
@@ -1077,14 +1112,18 @@ classDiagram
 class RealNameAuthService {
     -verifier: RealNameVerifier
     +verify(name: string, identifier: string, userType: string): AuthResult
+    +verifyRealName(name: string, identifier: string): AuthResult
 }
+
 class RealNameVerifier {
     +sendRequest(name: string, identifier: string): boolean
+    +fetchExternalData(identifier: string): string
 }
 
 class AuthResult {
     +verified: boolean
     +errorMessage: string
+    +isVerified(): boolean
 }
 
 RealNameAuthService --> RealNameVerifier
@@ -1179,7 +1218,13 @@ class Content {
   -lastModified: datetime
 }
 
+class Result {
+  +success: boolean
+  +message: string
+}
+
 AdminContentManager --> Content
+AdminContentManager --> Result
 ```
 
 **- 변수 설명**
