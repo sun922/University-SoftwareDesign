@@ -100,8 +100,6 @@
 | 세부내용      | - 게시글 상단 고정 여부 설정 가능<br> - 게시글 등록 가능<br> - 게시글 수정 가능<br> - 게시글 삭제 가능<br> - 첨부파일 등록 가능<br> - 이미지 등록 가능 |
 | 권한        | 일반 관리자, 최고 관리자                                                   |
 
-
-
 | 항목        | 내용                                                               |
 | --------- | ---------------------------------------------------------------- |
 | 요구사항 고유번호 | FRS-001                                                       |
@@ -192,20 +190,21 @@
 | 세부내용           | - 콘텐츠 등록/수정/삭제 기능<br>- 공지사항, 연구 성과 등 연동 대상 선택<br>- 관리 대상 항목 선택 UI 제공<br>- 수정 내역 로그 기록 |
 | 권한              | 최고 관리자                                                                                          |
 
-
 ## 5. 디자인 요구사항
 
-| 중분류 코드  | 의미                 |
+| 코드  | 의미                 |
 | ------- | ------------------ |
-| **UIC** | UI 일관성 (User Interface Consistency)       |
-| **RWD** | 반응형 웹 (Responsive Web Design)       |
+| UIC | UI 일관성 (User Interface Consistency)       |
+| RWD | 반응형 웹 (Responsive Web Design)       |
 
 | 구분                         | 고유번호        | 요구사항 명칭             | 권한 |
 | -------------------------- | ----------- | ------------------- | -- |
-| **UI 일관성 (NDG-UIC)** | UIC-001 | 디자인 일관성 제공 기능       | 모두 |
-| **반응형 웹 (NDG-RWD)**  | RWD-001 | 해상도별 레이아웃 최적화       | 모두 |
+| UI 일관성 (UIC) | UIC-001 | 디자인 일관성 제공 기능       | 모두 |
+| 반응형 웹 (RWD)  | RWD-001 | 해상도별 레이아웃 최적화       | 모두 |
 |                            | RWD-002 | 모바일 전용 메뉴 제공        | 모두 |
 |                            | RWD-003 | 터치 기반 요소 크기 및 간격 조절 | 모두 |
+
+***
 
 | 항목        | 내용                                        |
 | --------- | ----------------------------------------- |
@@ -215,22 +214,6 @@
 | 정의        | 깔끔하고 전문적인 디자인 제공                          |
 | 세부내용      | - 학교 로고 기반<br>- 폰트, 버튼, 여백 등 일관된 UI 요소 제공 <br> ![서울대 참고 이미지](https://github.com/HBNU-COME2105/webtf-faier-team-2/blob/main/1.%20Requirement%20Analysis/Figures/%EC%84%9C%EC%9A%B8%EB%8C%80%20%EC%B0%B8%EA%B3%A0%20%EA%B5%AC%EC%83%81%EB%8F%84.png?raw=true) <br> ![kaist](https://github.com/HBNU-COME2105/webtf-faier-team-2/blob/main/1.%20Requirement%20Analysis/Figures/KAIST%20%EC%B0%B8%EA%B3%A0%20%EA%B5%AC%EC%83%81%EB%8F%84.png?raw=true)|
 | 권한        | 모두  |
-```mermaid
-classDiagram
-    class ConsistentDesignFeature_NDG-RUL-001 {
-        <<VisualDesign>>
-        -schoolLogoImage: Image
-        -fontStyle: string
-        -buttonStyle: string
-        -spacingUnit: int
-        -referenceDesigns: Image[]
-
-        +applyConsistentDesign(font: string, button: string, spacing: int): void
-        +setSchoolLogo(logo: Image): void
-        +loadReferenceDesigns(images: Image[]): void
-        +renderUIElements(): void
-    }
-```
 
 | 항목        | 내용                                                    |
 | --------- | ----------------------------------------------------- |
@@ -241,28 +224,6 @@ classDiagram
 | 세부내용      | - 화면 크기에 따라 자동으로 레이아웃 조정 |
 | 권한        | 모두       
 
-```mermaid
-classDiagram
-    class ResponsiveLayoutFeature_NDG-RWD-001 {
-        <<VisualDesign>>
-        -deviceType: string
-        -screenWidth: int
-        -screenHeight: int
-        -currentLayout: string
-        -mobileLayoutEnabled: boolean
-        -tabletLayoutEnabled: boolean
-        -desktopLayoutEnabled: boolean
-
-        +adjustLayout(width: int, height: int): void
-        +detectDeviceType(width: int, height: int): string
-        +renderResponsiveLayout(deviceType: string): void
-        +optimizeForMobile(): void
-        +optimizeForTablet(): void
-        +optimizeForDesktop(): void
-    }
-
-```
-
 | 항목        | 내용                                                    |
 | --------- | ----------------------------------------------------- |
 | 요구사항 고유번호 | UIC-002                                               |
@@ -271,23 +232,6 @@ classDiagram
 | 정의        | 모바일 모드 지원                                |
 | 세부내용      | - 햄버거 메뉴, 모바일 메뉴 지원 및 가독성 높은 폰트 자동 배치 |
 | 권한        | 모두 
-
-```mermaid
-classDiagram
-    class MobileMenuFeature_NDG-RWD-002 {
-        <<VisualDesign>>
-        -isMobileMode: boolean
-        -hamburgerMenuVisible: boolean
-        -mobileMenuItems: string[]
-        -fontStyle: string
-        -fontSize: int
-
-        +enableMobileMode(): void
-        +showHamburgerMenu(): void
-        +renderMobileMenu(items: string[]): void
-        +applyReadableFontStyle(): void
-    }
-```
 
 | 항목        | 내용                                                    |
 | --------- | ----------------------------------------------------- |
@@ -298,153 +242,61 @@ classDiagram
 | 세부내용      | - 버튼 간격, 크기 모바일 기준 이상 확보 |
 | 권한        | 모두 |
 
-```mermaid
-classDiagram
-    class TouchOptimizedUIFeature_NDG-RWD-003 {
-        <<VisualDesign>>
-        -buttonSpacing: int
-        -buttonSize: int
-        -minimumTouchTargetSize: int
-        -isMobileDevice: boolean
-
-        +adjustButtonSpacing(spacing: int): void
-        +adjustButtonSize(size: int): void
-        +applyMinimumTouchTargets(): void
-        +enableTouchOptimization(): void
-    }
-```
-
 ## 6. 인터페이스 요구사항
-| 대분류 코드 | 의미                                    |
-| ------- | ----------------- |
-| **NUI** | 인터페이스 (Interface) |
 
-| 중분류 코드 | 의미                                     |
+| 코드 | 의미                                     |
 | ------ | -------------------------------------- |
-| NMM    | 메뉴 구성 방식 (상단 고정 메뉴 + 드롭다운 서브메뉴 구조)     |
-| NAM    | 권한별 메뉴 표시 (로그인 및 권한에 따라 메뉴 동적 변경)      |
-| NFT    | 페이지 전환 흐름 (게시글 목록 → 상세 → 댓글 구조 명확화)    |
-| NAC    | 접근성 보장 UI (권한별 UI 차등 구성)               |
+| NMM    | 메뉴 구성 방식 (Navigation Menu Mechanism))     |
+| NAM    | 권한별 메뉴 표시 (Navigation Access Management)      |
+| NFT    | 페이지 전환 흐름 (Navigation Flow Template)    |
+| NAC    | 접근성 보장 UI (Navigational Accessibility Configuration)               |
 
-| 구분                        | 고유번호        | 요구사항 명칭   | 권한    |
-| ------------------------- | ----------- | --------- | ----- |
-| **UI - 메뉴 및 내비게이션 (NUI)** | NUI-NMM-001 | 메뉴 구성 방식  | 모두    |
-|                           | NUI-NAM-001 | 권한별 메뉴 표시 | 모두    |
-|                           | NUI-NFT-001 | 페이지 전환 흐름 | 모두    |
-|                           | NUI-NAC-001 | 접근성 보장 UI | 관리자 외 |
+| 구분 | 고유번호  | 요구사항 명칭   | 권한        |
+| ------| ---------| --------------- | ---------- |
+| NMM | NMM-001 | 메뉴 구성 방식       | 모두    |
+| NAM | NAM-001 | 권한별 메뉴 표시     | 모두    |
+| NFT | NFT-001 | 페이지 전환 흐름     | 모두    |
+| NAC | NAC-001 | 접근성 보장 UI      | 관리자 외 |
+
+***
 
 | 항목        | 내용                                  |
 | --------- | ----------------------------------- |
-| 요구사항 고유번호 | NUI-NMM-001                          |
+| 요구사항 고유번호 | NMM-001                          |
 | 요구사항 명칭   | 메뉴 구성 방식                            |
 | 요구사항 분류   | 인터페이스 요구사항                          |
 | 정의        | 상단 고정 메뉴와 드롭다운 서브메뉴 구성 방식 적용        |
 | 세부내용      | - 주요 메뉴는 상단 고정<br>- 서브메뉴는 드롭다운으로 구성 |
 | 권한        | 모두                                  |
 
-```mermaid
-classDiagram
-    class MenuConfigurationFeature_NUI-NMM-001 {
-        <<Interface>>
-        -requirementID: string
-        -requirementName: string
-        -category: string
-        -definition: string
-        -isTopMenuFixed: boolean
-        -isDropdownSubmenuEnabled: boolean
-        -permission: string
-
-        +enableTopFixedMenu(): void
-        +enableDropdownSubmenu(): void
-        +applyMenuConfiguration(): void
-    }
-```
-
 | 항목        | 내용                                     |
 | --------- | -------------------------------------- |
-| 요구사항 고유번호 | NUI-NAM-001                             |
+| 요구사항 고유번호 | NAM-001                             |
 | 요구사항 명칭   | 권한별 메뉴 표시                              |
 | 요구사항 분류   | 인터페이스 요구사항                             |
 | 정의        | 로그인 여부 및 권한에 따라 메뉴 항목이 동적으로 변경됨        |
 | 세부내용      | - 비로그인 시 제한 메뉴 숨김<br>- 관리자 전용 메뉴 별도 구성 |
 | 권한        | 모두                                     |
 
-```mermaid
-classDiagram
-    class PermissionBasedMenuFeature_NUI-NAM-001 {
-        <<Interface>>
-        -requirementID: string
-        -requirementName: string
-        -category: string
-        -definition: string
-        -hideMenusWhenNotLoggedIn: boolean
-        -adminMenuAvailable: boolean
-        -permission: string
-
-        +applyPermissionBasedMenu(): void
-        +hideRestrictedMenus(): void
-        +showAdminMenus(): void
-    }
-```
-
 | 항목        | 내용                                   |
 | --------- | ------------------------------------ |
-| 요구사항 고유번호 | NUI-NFT-001                           |
+| 요구사항 고유번호 | NFT-001                           |
 | 요구사항 명칭   | 페이지 전환 흐름                            |
 | 요구사항 분류   | 인터페이스 요구사항                           |
 | 정의        | 게시글 목록 → 상세 → 댓글의 명확한 페이지 전환 구조 제공   |
 | 세부내용      | - 전환 흐름이 직관적일 것<br>- 버튼/링크 구분 명확히 표기 |
 | 권한        | 모두                                   |
 
-```mermaid
-classDiagram
-    class PageTransitionFlowFeature_NUI-NFT-001 {
-        <<Interface>>
-        -requirementID: string
-        -requirementName: string
-        -category: string
-        -definition: string
-        -isFlowIntuitive: boolean
-        -areButtonsAndLinksDistinguished: boolean
-        -permission: string
-
-        +applyPageTransitionFlow(): void
-        +verifyIntuitiveFlow(): void
-        +distinguishButtonsAndLinks(): void
-    }
-
-```
-
 | 항목        | 내용                                  |
 | --------- | ----------------------------------- |
-| 요구사항 고유번호 | NUI-NAC-001                          |
+| 요구사항 고유번호 | NAC-001                          |
 | 요구사항 명칭   | 접근성 보장 UI                           |
 | 요구사항 분류   | 인터페이스 요구사항                          |
 | 정의        | 교수, 관리자 등 사용자 유형에 따라 UI를 차등 구성      |
 | 세부내용      | - 불필요한 정보 최소화<br>- 권한별 중요도 중심 UI 구성 |
 | 권한        | 모두                                  |
 
-```mermaid
-classDiagram
-    class AccessibleUIFeature_NUI-NAC-001 {
-        <<Interface>>
-        -requirementID: string
-        -requirementName: string
-        -category: string
-        -definition: string
-        -minimizeUnnecessaryInformation: boolean
-        -roleBasedUIPriorityEnabled: boolean
-        -permission: string
-
-        +applyAccessibleUI(): void
-        +filterUnnecessaryInformation(): void
-        +configureUIByUserRole(): void
-    }
-```
-
-
 ## 7. 소프트웨어 요구사항
-
 
 | 코드 | 의미                                     |
 | ------ | -------------------------------------------|    
@@ -496,9 +348,7 @@ classDiagram
 | 세부내용      | - 토큰 기반 로그인 인증<br>- 세션 만료 시간 설정 |
 | 권한        | 모두                              |
 
-
 ## 8. 테스트 요구사항
-
 
 | 코드 | 의미                                     |
 | ------------- | ---------------------------------- | 
@@ -561,9 +411,7 @@ classDiagram
 | 세부내용      | - 일반 사용자와 관리자 구분 테스트<br>- 접근 제한 기능 검증 |
 | 권한        | 모두                                    |
 
-
 ## 9. 보안 요구사항
-
 
 | 중분류 코드  | 의미                 |
 | ------- | ------------------ |
@@ -599,7 +447,6 @@ classDiagram
 | 세부내용      | - 이름, 이메일, 전화번호 등 개인정보를 DB에 저장 시 AES256 등으로 암호화 |
 | 권한        | 사용자 개개인                                                      |
 
-
 | 항목        | 내용                                                           |
 | --------- | ------------------------------------------------------------ |
 | 요구사항 고유번호 | ENC-002                                                      |
@@ -608,7 +455,6 @@ classDiagram
 | 정의        | 사용자 정보 보호를 위한 비밀번호 저장 제공                                      |
 | 세부내용      | - SHA-256 또는 bcrypt 방식으로 해시 저장 |
 | 권한        | 사용자 개개인                                                      |
-
 
 | 항목        | 내용                                                           |
 | --------- | ------------------------------------------------------------ |
@@ -619,7 +465,6 @@ classDiagram
 | 세부내용      | - 사이트가 HTTPS를 통한 암호화된 통신을 하도록 함으로서 보안 강화 |
 | 권한        | 모두                                                      |
 
-
 | 항목        | 내용                                                           |
 | --------- | ------------------------------------------------------------ |
 | 요구사항 고유번호 | SSL-002                                                      |
@@ -628,7 +473,6 @@ classDiagram
 | 정의        | HTTPS 자동 리디렉션 설정                                     |
 | 세부내용      | - HTTP로 접근해도 HTTPS로 리디렉션 됨으로써 암호화되지 않은 경로로의 접근 차단 및 보안 유지 |
 | 권한        | 모두                                                     |
-
 
 | 항목        | 내용                                                           |
 | --------- | ------------------------------------------------------------ |
@@ -639,7 +483,6 @@ classDiagram
 | 세부내용      | - Certbot등 자동화 도구 사용으로 인증서 만료로 인한 보안 위험 예방 |
 | 권한        | 최고 관리자                                                      |
 
-
 | 항목        | 내용                                                           |
 | --------- | ------------------------------------------------------------ |
 | 요구사항 고유번호 | RIV-001                                                      |
@@ -648,7 +491,6 @@ classDiagram
 | 정의        | 학교 포털 정보를 통한 인증                                     |
 | 세부내용      | - 학교 인증 포털과의 연동을 통해 학교 구성원만이 회원가입이 가능하도록 함 |
 | 권한        | 학생, 교수                                                      |
-
 
 | 항목        | 내용                                                           |
 | --------- | ------------------------------------------------------------ |
@@ -659,7 +501,6 @@ classDiagram
 | 세부내용      | - 실명 인증에 대해 일정 횟수(ex 5회) 이상 실패 시 일정 시간 동안 차단 및 최고 관리자 알림 |
 | 권한        | 학생, 교수                                                      |
 
-
 | 항목        | 내용                                                           |
 | --------- | ------------------------------------------------------------ |
 | 요구사항 고유번호 | RIV-003                                                      |
@@ -668,7 +509,6 @@ classDiagram
 | 정의        | 인증 관련 모든 로그를 저장                                     |
 | 세부내용      | - 최고 관리자만 열람 가능한 파일 또는 DB 저장을 통해 관리 |
 | 권한        | 최고 관리자                                                      |
-
 
 | 항목        | 내용                                                           |
 | --------- | ------------------------------------------------------------ |
@@ -679,7 +519,6 @@ classDiagram
 | 세부내용      | - 역할 기반 액세스 제어(RBAC)를 통한 권한 부여 |
 | 권한        | 모두                                                      |
 
-
 | 항목        | 내용                                                           |
 | --------- | ------------------------------------------------------------ |
 | 요구사항 고유번호 | ACC-002                                                      |
@@ -688,7 +527,6 @@ classDiagram
 | 정의        | 최고 관리자의 권한 보호                                     |
 | 세부내용      | - 관리자 등급 구분, 추가 인증 및 차단 로직 설계 |
 | 권한        | 최고 관리자                                                      |
-
 
 | 항목        | 내용                                                           |
 | --------- | ------------------------------------------------------------ |
@@ -699,7 +537,6 @@ classDiagram
 | 세부내용      | - DB 저장 또는 ELK 등을 통한 통합 로그 관리 |
 | 권한        | 최고 관리자                                                      |
 
-
 | 항목        | 내용                                                           |
 | --------- | ------------------------------------------------------------ |
 | 요구사항 고유번호 | LOG-002                                                      |
@@ -709,10 +546,7 @@ classDiagram
 | 세부내용      | - IP 기반 차단 또는 메일 등의 알림 시스템 연동 |
 | 권한        | 최고 관리자                                                      |
 
-
-
 ## 10. 품질 요구사항
-
 
 | 중분류 코드  | 의미                                      | 
 | --------- | --------------------------------------- | 
@@ -720,7 +554,6 @@ classDiagram
 | **NEX**| 기능 확장성 확보 (Extensibility)               | 
 | **NUX**  | 사용자 편의성 (User Experience)               |
 | **NPR**   | 빠른 응답 속도 (Performance / Responsiveness) | 
-
 
 | 구분           | 고유번호        | 요구사항 명칭          | 권한 |
 | ------------ | ----------- | --------------------- | -- |
@@ -740,7 +573,6 @@ classDiagram
 | 세부내용      | - 이중화 서버 자동 전환 등으로 즉각 대응 |
 | 권한        | 모두                       |
 
-
 | 항목        | 내용                                    |
 | --------- | ------------------------------------- |
 | 요구사항 고유번호 | NEX-001                   |
@@ -749,7 +581,6 @@ classDiagram
 | 정의        | 연중무휴 최소 99.5% 가동률 유지                  |
 | 세부내용      | - 서버 이중화 및 모니터링 구성<br>- 유지보수 시간 사전 공지 |
 | 권한        | 모두                                    |
-
 
 | 항목        | 내용                                                 |
 | --------- | -------------------------------------------------- |
@@ -760,7 +591,6 @@ classDiagram
 | 세부내용      | - 사용자에게 원인, 조치 방법 등 제공<br>- UI에 알림 팝업 또는 경고 메시지 출력 |
 | 권한        | 모두                                                 |
 
-
 | 항목        | 내용                                           |
 | --------- | -------------------------------------------- |
 | 요구사항 고유번호 | NPR-001                       |
@@ -769,8 +599,6 @@ classDiagram
 | 정의        | 사용자 요청에 2초 이내 반응                             |
 | 세부내용      | - 주요 기능 클릭 시 2초 이내 응답<br>- DB 조회/입력 시 병목 최소화 |
 | 권한        | 모두                                           |
-
-
 
 ## 11. 제약 사항
 
@@ -892,7 +720,6 @@ classDiagram
 | 권한        | 관리자                                                              |
 
 ---
-
 
 ## 기능 추적 매핑 표
 
