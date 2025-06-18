@@ -330,6 +330,202 @@ Subject --> Professor
 
 ---
 
+| 항목          | 설명                                |
+| ----------- | --------------------------------- |
+| 코드   | FAU                               |
+| 기능명     | 로그인 기능                            |
+| 목적      | 사용자 인증을 통해 기능 접근 제어               |
+| 사용자  | 모두                                |
+| 연관 요구사항 | NFE-001, NBE-001, NAP-001, NJS-001                         |
+| 연관 모듈 | SW-FAA-001 |
+| 연관 시나리오 | SC-FCM-001, SC-FNN-001            |
+| 입력      | 사용자 ID, 비밀번호                      |
+| 출력      | 로그인 성공 여부, 사용자 정보, 에러 메시지         |
+| 외부 연동   | 사용자 데이터베이스 또는 인증 시스템              |
+| UI 처리   | 로그인 성공 시 메인 페이지 이동 또는 권한 별 기능 활성화 |
+
+```mermaid
+classDiagram
+class AuthService {
+  +login(userId: string, password: string): AuthResult
+}
+
+class UserRepository {
+  +findUserById(userId: string): User
+}
+
+class User {
+  -id: string
+  -password: string
+  -name: string
+  -role: string
+  +verifyPassword(password: string): boolean
+}
+
+class AuthResult {
+  +success: boolean
+  +errorMessage: string
+  +user: User
+}
+
+AuthService --> UserRepository
+AuthService --> AuthResult
+UserRepository --> User
+AuthResult --> User
+```
+
+**-변수 설명**
+
+| 변수명             | 타입     | 설명              |
+| --------------- | ------ | --------------- |
+| userId        | string | 사용자 아이디         |
+| password      | string | 사용자 비밀번호 (암호화됨) |
+| authenticated | bool   | 인증 성공 여부        |
+
+**-함수 설명**
+
+| 함수명                  | 파라미터                             | 반환형        | 설명                    |
+| -------------------- | -------------------------------- | ---------- | --------------------- |
+| login()            | userId: string, password: string | AuthResult | ID와 비밀번호 기반 로그인 처리    |
+| validatePassword() | rawPassword: string              | bool       | 비밀번호 일치 여부 확인         |
+| findUserById()     | userId: string                   | User       | 해당 ID에 해당하는 사용자 정보 조회 |
+| createSession()    | user: User                       | Session    | 로그인 성공 시 세션 생성 및 반환   |
+
+**-시스템 구성요소**
+
+| 구성요소                 | 역할                         |
+| -------------------- | -------------------------- |
+| 웹서버              | 로그인 요청을 받아 서버 내부 인증 모듈과 통신 |
+| 사용자 브라우저 (클라이언트) | 로그인 정보를 입력하고 결과를 확인        |
+| LoginFeature 모듈 | 사용자의 입력을 받아 검증하고 인증 처리     |
+| 사용자 계정 DB        | 사용자 ID, 비밀번호 해시 정보 저장      |
+| SessionManager   | 인증 완료 시 세션을 생성 및 관리        |
+
+**-시스템 동작 과정**
+
+| 단계        | 설명                                                      |
+| --------- | ------------------------------------------------------- |
+| 1. 사용자 입력 | 사용자가 ID와 비밀번호를 입력함                                      |
+| 2. 입력 처리  | `LoginFeature` 클래스가 `inputCredentials` 메서드를 통해 입력값을 저장  |
+| 3. 인증 처리  | `authenticate()` 메서드를 호출하여, 사용자 정보와 DB 내 계정 정보 일치 여부 검증 |
+| 4. 세션 생성  | 인증 성공 시 `SessionManager`가 세션을 생성하여 사용자 상태를 유지함          |
+| 5. 인증 결과  | 성공 시 사용자 정보를 세션에 담고 다음 기능(메인화면 등)으로 이동, 실패 시 오류 메시지 출력  |
+
+**-시스템 상호작용**
+
+사용자
+  └─> 브라우저 ──> 웹서버 ──> LoginFeature
+                                 └─> 사용자 계정 DB 조회
+                                 └─> 인증 성공 시 SessionManager
+웹서버
+  └─> 사용자에게 로그인 결과 응답
+
+**-설계적 고려사항**
+
+| 고려 항목     | 설명                                   |
+| --------- | ------------------------------------ |
+| 보안    | 비밀번호는 해시 방식으로 저장하고, 통신은 HTTPS로 암호화   |
+| 세션 관리 | 인증 성공 시 세션 생성, 세션 타임아웃 및 갱신 로직 필요    |
+| 확장성   | 소셜 로그인(Google, Kakao 등) 추가를 위한 구조 고려 |
+| 에러 처리 | 잘못된 로그인 정보, DB 연결 오류 등에 대한 예외 처리 필수  |
+
+---
+
+| 항목          | 설명                                                      |
+|---------------|-----------------------------------------------------------|
+| 코드     | FAR                                                      |
+| 기능명       | 사용자 권한 분리 기능                                         |
+| 목적        | 사용자 역할별로 시스템 내 기능 접근 권한을 차등화하여 보안과 운영 효율성을 강화 |
+| 사용자  | 전체 사용자 (일반, 교수, 관리자, 최고 관리자)                     |
+| 연관 요구사항 | FAU-001, FAA-001, NAM-001, NAC-001 |
+| 연관 모듈     | SW-FAR-001                                           |
+| 연관 시나리오 | SC-FAR-001                                               |
+| 입력        | 로그인한 사용자 ID, 역할 정보                                   |
+| 출력        | 권한에 따른 기능 노출/차단 여부                                 |
+| 외부 연동    | 인증 시스템 또는 사용자 DB                                     |
+| UI 처리     | 권한에 따라 메뉴/버튼/페이지 노출 여부를 제어함                       |
+
+```mermaid
+classDiagram
+class RolePermissionService {
+  +getUserRole(userId: string): string
+  +filterUIByRole(role: string): List<string>
+  +checkAccess(role: string, resource: string): boolean
+}
+
+class User {
+  -userId: string
+  -role: string
+  +getRole(): string
+}
+
+class Resource {
+  -resourceId: string
+  -resourceName: string
+  -requiredRole: string
+}
+
+RolePermissionService --> User : 관리 대상
+RolePermissionService --> Resource : 접근 검증
+User --> RolePermissionService : 역할 조회
+```
+
+**- 변수 설명**
+
+| 변수명         | 타입     | 설명                              |
+|----------------|----------|-----------------------------------|
+| userId       | string   | 사용자 ID                         |
+| role         | string   | 사용자 역할 (general, professor, admin, superAdmin) |
+| allowedMenus | list     | 접근 가능한 메뉴 또는 기능 목록               |
+| deniedAccess | boolean  | 차단된 접근 여부 플래그                   |
+
+**- 함수 설명**
+
+| 함수명              | 파라미터                   | 반환형         | 설명                                        |
+|--------------------|----------------------------|----------------|---------------------------------------------|
+| getUserRole()     | userId: string             | string         | 사용자 ID 기반 역할 조회                             |
+| filterUIByRole()  | role: string               | list           | 역할에 따라 노출할 UI 요소 목록 반환                   |
+| checkAccess()     | role: string, resource: string | boolean        | 특정 리소스에 대해 접근 가능 여부 확인               |
+
+**- 시스템 구성요소**
+
+| 구성요소                 | 역할                                |
+|--------------------------|-------------------------------------|
+| 웹서버                | 로그인된 사용자 정보 기반 권한 처리 수행          |
+| 사용자 브라우저         | 사용자 메뉴 및 기능 접근 요청, UI 렌더링            |
+| RolePermission 모듈   | 사용자 권한 조회 및 접근 제어 로직 수행              |
+| 사용자 계정 DB          | 사용자 역할(role) 정보 저장                        |
+
+**- 시스템 동작 과정**
+
+| 단계        | 설명                                                             |
+|-------------|------------------------------------------------------------------|
+| 1. 로그인      | 사용자가 로그인하고 사용자 ID를 서버에 전달함                            |
+| 2. 역할 조회    | `getUserRole()` 함수를 통해 해당 사용자의 역할(role)을 조회함             |
+| 3. 권한 확인    | `checkAccess()`로 사용자의 역할이 접근 가능한 리소스인지 확인함            |
+| 4. UI 필터링    | `filterUIByRole()` 함수로 UI 요소(버튼, 메뉴 등)를 제한하거나 표시함         |
+| 5. 접근 허용/차단 | 접근 허용 시 기능 활성화, 차단 시 메시지 출력 또는 이동 제한              |
+
+**- 시스템 상호작용**
+
+사용자  
+└─> 브라우저 ──> 웹서버 ──> RolePermission 모듈  
+                    └─> 사용자 역할 DB  
+웹서버  
+└─> 허용된 메뉴 반환 또는 접근 차단 메시지 반환
+
+
+**- 설계적 고려사항**
+
+| 고려 항목     | 설명                                                                 |
+|---------------|----------------------------------------------------------------------|
+| 보안 강화   | 중요한 기능(공지 편집, 회원 관리 등)에 대해 권한이 없는 사용자의 접근 방지 필요         |
+| 유연한 권한 구조 | 역할은 enum 또는 별도 테이블로 정의하여 향후 권한 계층 확대가 가능해야 함               |
+| UI/UX 일관성 | 권한이 없는 요소는 아예 숨기거나 비활성화하여 사용자 경험 혼란 방지                       |
+| 통합 인증 연계 | 로그인 시 인증 시스템과 연계하여 역할을 자동으로 부여하거나 연동 가능성 고려              |
+
+---
+
 | 항목 | 설명 |
 |------|------|
 | 코드 | FAA  |
@@ -740,206 +936,7 @@ AdminContentManager --> Content
 
 --- 
  -----(수정 후 ↑)---------------------
-
----
-### FAU – 로그인 기능
-
-| 항목          | 설명                                |
-| ----------- | --------------------------------- |
-| **기능 ID**   | FAU                               |
-| **기능명**     | 로그인 기능                            |
-| **목적**      | 사용자 인증을 통해 기능 접근 제어               |
-| **대상 사용자**  | 모두                                |
-| **연관 UI**   | UI-FAU-001                        |
-| **연관 시나리오** | SC-FCM-001, SC-FNN-001            |
-| **입력**      | 사용자 ID, 비밀번호                      |
-| **출력**      | 로그인 성공 여부, 사용자 정보, 에러 메시지         |
-| **외부 연동**   | 사용자 데이터베이스 또는 인증 시스템              |
-| **UI 처리**   | 로그인 성공 시 메인 페이지 이동 또는 권한 별 기능 활성화 |
-
-```mermaid
-classDiagram
-class AuthService {
-  +login(userId: string, password: string): AuthResult
-}
-
-class UserRepository {
-  +findUserById(userId: string): User
-}
-
-class User {
-  -id: string
-  -password: string
-  -name: string
-  -role: string
-  +verifyPassword(password: string): boolean
-}
-
-class AuthResult {
-  +success: boolean
-  +errorMessage: string
-  +user: User
-}
-
-AuthService --> UserRepository
-AuthService --> AuthResult
-UserRepository --> User
-AuthResult --> User
-```
-
-**-변수 설명**
-
-| 변수명             | 타입     | 설명              |
-| --------------- | ------ | --------------- |
-| `userId`        | string | 사용자 아이디         |
-| `password`      | string | 사용자 비밀번호 (암호화됨) |
-| `authenticated` | bool   | 인증 성공 여부        |
-
-**FAU – 로그인 기능 함수 설명**
-
-| 함수명                  | 파라미터                             | 반환형        | 설명                    |
-| -------------------- | -------------------------------- | ---------- | --------------------- |
-| `login()`            | userId: string, password: string | AuthResult | ID와 비밀번호 기반 로그인 처리    |
-| `validatePassword()` | rawPassword: string              | bool       | 비밀번호 일치 여부 확인         |
-| `findUserById()`     | userId: string                   | User       | 해당 ID에 해당하는 사용자 정보 조회 |
-| `createSession()`    | user: User                       | Session    | 로그인 성공 시 세션 생성 및 반환   |
-
-**FAU – 로그인 기능 시스템 구성요소**
-
-| 구성요소                 | 역할                         |
-| -------------------- | -------------------------- |
-| **웹서버**              | 로그인 요청을 받아 서버 내부 인증 모듈과 통신 |
-| **사용자 브라우저 (클라이언트)** | 로그인 정보를 입력하고 결과를 확인        |
-| **LoginFeature 모듈**  | 사용자의 입력을 받아 검증하고 인증 처리     |
-| **사용자 계정 DB**        | 사용자 ID, 비밀번호 해시 정보 저장      |
-| **SessionManager**   | 인증 완료 시 세션을 생성 및 관리        |
-
-**FAU – 로그인 기능 시스템 동작 과정**
-
-| 단계        | 설명                                                      |
-| --------- | ------------------------------------------------------- |
-| 1. 사용자 입력 | 사용자가 ID와 비밀번호를 입력함                                      |
-| 2. 입력 처리  | `LoginFeature` 클래스가 `inputCredentials` 메서드를 통해 입력값을 저장  |
-| 3. 인증 처리  | `authenticate()` 메서드를 호출하여, 사용자 정보와 DB 내 계정 정보 일치 여부 검증 |
-| 4. 세션 생성  | 인증 성공 시 `SessionManager`가 세션을 생성하여 사용자 상태를 유지함          |
-| 5. 인증 결과  | 성공 시 사용자 정보를 세션에 담고 다음 기능(메인화면 등)으로 이동, 실패 시 오류 메시지 출력  |
-
-**FAU – 로그인 기능 시스템 상호작용**
-
-사용자
-  └─> 브라우저 ──> 웹서버 ──> LoginFeature
-                                 └─> 사용자 계정 DB 조회
-                                 └─> 인증 성공 시 SessionManager
-웹서버
-  └─> 사용자에게 로그인 결과 응답
-
-**FAU – 로그인 기능 설계적 고려사항**
-
-| 고려 항목     | 설명                                   |
-| --------- | ------------------------------------ |
-| **보안**    | 비밀번호는 해시 방식으로 저장하고, 통신은 HTTPS로 암호화   |
-| **세션 관리** | 인증 성공 시 세션 생성, 세션 타임아웃 및 갱신 로직 필요    |
-| **확장성**   | 소셜 로그인(Google, Kakao 등) 추가를 위한 구조 고려 |
-| **에러 처리** | 잘못된 로그인 정보, DB 연결 오류 등에 대한 예외 처리 필수  |
-
----
-
-**FAR – 사용자 권한 분리 기능**
-
-| 항목          | 설명                                                      |
-|---------------|-----------------------------------------------------------|
-| **기능 ID**     | FAR                                                      |
-| **기능명**       | 사용자 권한 분리 기능                                         |
-| **목적**        | 사용자 역할별로 시스템 내 기능 접근 권한을 차등화하여 보안과 운영 효율성을 강화 |
-| **대상 사용자**  | 전체 사용자 (일반, 교수, 관리자, 최고 관리자)                     |
-| **연관 UI**     | UI-FAR-001                                               |
-| **연관 시나리오** | SC-FAR-001                                               |
-| **입력**        | 로그인한 사용자 ID, 역할 정보                                   |
-| **출력**        | 권한에 따른 기능 노출/차단 여부                                 |
-| **외부 연동**    | 인증 시스템 또는 사용자 DB                                     |
-| **UI 처리**     | 권한에 따라 메뉴/버튼/페이지 노출 여부를 제어함                       |
-
-```mermaid
-classDiagram
-class RolePermissionService {
-  +getUserRole(userId: string): string
-  +filterUIByRole(role: string): List<string>
-  +checkAccess(role: string, resource: string): boolean
-}
-
-class User {
-  -userId: string
-  -role: string
-  +getRole(): string
-}
-
-class Resource {
-  -resourceId: string
-  -resourceName: string
-  -requiredRole: string
-}
-
-RolePermissionService --> User : 관리 대상
-RolePermissionService --> Resource : 접근 검증
-User --> RolePermissionService : 역할 조회
-```
-
-**FAR – 사용자 권한 분리 기능 변수 설명**
-
-| 변수명         | 타입     | 설명                              |
-|----------------|----------|-----------------------------------|
-| `userId`       | string   | 사용자 ID                         |
-| `role`         | string   | 사용자 역할 (general, professor, admin, superAdmin) |
-| `allowedMenus` | list     | 접근 가능한 메뉴 또는 기능 목록               |
-| `deniedAccess` | boolean  | 차단된 접근 여부 플래그                   |
-
-**FAR – 사용자 권한 분리 기능 함수 설명**
-
-| 함수명              | 파라미터                   | 반환형         | 설명                                        |
-|--------------------|----------------------------|----------------|---------------------------------------------|
-| `getUserRole()`     | userId: string             | string         | 사용자 ID 기반 역할 조회                             |
-| `filterUIByRole()`  | role: string               | list           | 역할에 따라 노출할 UI 요소 목록 반환                   |
-| `checkAccess()`     | role: string, resource: string | boolean        | 특정 리소스에 대해 접근 가능 여부 확인                 |
-
-**FAR – 사용자 권한 분리 시스템 구성요소**
-
-| 구성요소                 | 역할                                |
-|--------------------------|-------------------------------------|
-| **웹서버**                | 로그인된 사용자 정보 기반 권한 처리 수행          |
-| **사용자 브라우저**         | 사용자 메뉴 및 기능 접근 요청, UI 렌더링            |
-| **RolePermission 모듈**   | 사용자 권한 조회 및 접근 제어 로직 수행              |
-| **사용자 계정 DB**          | 사용자 역할(role) 정보 저장                        |
-
-**FAR – 사용자 권한 분리 시스템 동작 과정**
-
-| 단계        | 설명                                                             |
-|-------------|------------------------------------------------------------------|
-| 1. 로그인      | 사용자가 로그인하고 사용자 ID를 서버에 전달함                            |
-| 2. 역할 조회    | `getUserRole()` 함수를 통해 해당 사용자의 역할(role)을 조회함             |
-| 3. 권한 확인    | `checkAccess()`로 사용자의 역할이 접근 가능한 리소스인지 확인함            |
-| 4. UI 필터링    | `filterUIByRole()` 함수로 UI 요소(버튼, 메뉴 등)를 제한하거나 표시함         |
-| 5. 접근 허용/차단 | 접근 허용 시 기능 활성화, 차단 시 메시지 출력 또는 이동 제한              |
-
-**FAR – 사용자 권한 분리 시스템 상호작용**
-
-사용자  
-└─> 브라우저 ──> 웹서버 ──> RolePermission 모듈  
-                    └─> 사용자 역할 DB  
-웹서버  
-└─> 허용된 메뉴 반환 또는 접근 차단 메시지 반환
-
-
-**FAR – 사용자 권한 분리 기능능 설계적 고려사항**
-
-| 고려 항목     | 설명                                                                 |
-|---------------|----------------------------------------------------------------------|
-| **보안 강화**   | 중요한 기능(공지 편집, 회원 관리 등)에 대해 권한이 없는 사용자의 접근 방지 필요         |
-| **유연한 권한 구조** | 역할은 enum 또는 별도 테이블로 정의하여 향후 권한 계층 확대가 가능해야 함               |
-| **UI/UX 일관성** | 권한이 없는 요소는 아예 숨기거나 비활성화하여 사용자 경험 혼란 방지                       |
-| **통합 인증 연계** | 로그인 시 인증 시스템과 연계하여 역할을 자동으로 부여하거나 연동 가능성 고려              |
-
----
-
+ 
 
 
 | 항목      | 설명                                                        |
