@@ -558,6 +558,295 @@ class ResearchShowcaseFeature {
 | 확장성          | 성과 유형별 필터, 다국어 지원, 외부 연구기관 연계 등 향후 확장 가능   |
 | 보안           | DB 수정/등록은 관리자만 가능하며, 사용자에게는 읽기 전용 인터페이스 제공 |
 
+
+--- 
+
+ 
+| 항목      | 설명                                                        |
+| ------- | --------------------------------------------------------- |
+| 기능 ID   | FAD                                                       |
+| 기능명     | 입학 안내 페이지                                                 |
+| 목적      | 입학 일정, 지원 자격, 자주 묻는 질문 등의 정보를 제공하여 사용자에게 입학 관련 내용을 명확히 안내 |
+| 대상 사용자  | 웹사이트 방문자 모두 (학생, 학부모, 일반인 등)                              |
+| 연관 SW   | SW-FAD-001                                                |
+| 연관 시나리오 | 없음 (정적 페이지로 관리자가 콘텐츠를 미리 등록함)                             |
+
+```mermaid
+classDiagram
+class AdmissionInfoFeature {
+        -admissionList: List
+        -staticContent: Content
+
+        +viewAdmissionSortedByLatest(): List
+        +searchAdmission(keyword: string): List
+        +serveStaticPageBasedOnAdminContent(content: Content): void
+    }
+```
+
+**-변수 설명**
+
+| 변수명           | 타입      | 설명                                    |
+| ------------- | ------- | ------------------------------------- |
+| admissionList | List    | 입학 관련 정보 항목 리스트 (전형 일정, 지원 자격, FAQ 등) |
+| staticContent | Content | 관리자가 등록한 정적 콘텐츠                       |
+| keyword       | string  | 검색 시 사용되는 키워드                         |
+
+**-함수 설명**
+
+| 함수명                                  | 파라미터             | 반환형  | 설명                           |
+| ------------------------------------ | ---------------- | ---- | ---------------------------- |
+| viewAdmissionSortedByLatest()        | 없음               | List | 최신순으로 정렬된 입학 정보를 반환          |
+| searchAdmission()                    | keyword: string  | List | 키워드로 입학 정보를 검색하여 반환          |
+| serveStaticPageBasedOnAdminContent() | content: Content | void | 등록된 정적 콘텐츠를 기반으로 정적 페이지를 렌더링 |
+
+**-시스템 구성요소**
+
+| 구성요소                    | 역할                            |
+| ----------------------- | ----------------------------- |
+| 웹서버                     | 사용자 요청 처리 및 입학 정보 전달          |
+| 콘텐츠 저장소                 | 입학 일정, 자격 요건, FAQ 등 정적 콘텐츠 저장 |
+| 관리자 UI                  | 관리자가 입학 콘텐츠를 등록/수정하는 인터페이스    |
+| 클라이언트(브라우저)             | 사용자 요청 및 입학 안내 페이지 렌더링        |
+| AdmissionInfoFeature 모듈 | 콘텐츠 정렬, 검색, 렌더링을 담당하는 기능 단위   |
+
+**-시스템 동작과정**
+
+| 단계        | 설명                                                |
+| --------- | ------------------------------------------------- |
+| 1. 콘텐츠 준비 | 관리자가 관리자 UI를 통해 입학 콘텐츠 등록 및 저장                    |
+| 2. 사용자 요청 | 사용자가 웹 브라우저에서 입학 안내 페이지 접속                        |
+| 3. 콘텐츠 처리 | 웹서버가 AdmissionInfoFeature를 호출하여 콘텐츠 로딩 및 정렬/검색 수행 |
+| 4. 페이지 제공 | 사용자 브라우저에 완성된 페이지 응답 및 렌더링                        |
+
+**-시스템 상호작용**
+
+관리자
+ └─> 관리자 UI
+     └─> 콘텐츠 저장소 (입학 정보 저장)
+
+사용자
+ └─> 웹 브라우저
+     └─> 웹서버
+         └─> AdmissionInfoFeature
+              ├─> 콘텐츠 저장소에서 로드
+              ├─> viewAdmissionSortedByLatest()
+              ├─> searchAdmission()
+              └─> serveStaticPageBasedOnAdminContent()
+         └─> HTML, CSS 사용자에게 응답
+사용자 브라우저
+ └─> 페이지 렌더링 및 표시
+
+**-설계적 고려사항**
+
+ | 고려 항목     | 설명                                    |
+| --------- | ------------------------------------- |
+| 정적 콘텐츠 기반 | 자주 변경되지 않는 입학 정보를 정적으로 관리하여 서버 부하 최소화 |
+| 검색/정렬 기능  | 사용자 편의를 위한 검색 및 최신순 정렬 기능 제공          |
+| 확장성       | 입시 영상, 온라인 설명회 등 추가 콘텐츠 통합을 고려한 구조    |
+| 보안        | 관리자 UI는 인증 기반으로 보호되며 콘텐츠 무결성 유지 필요    |
+
+---
+
+| 항목          | 설명                              |
+| ----------- | ------------------------------- |
+| **기능 ID**   | FCM                             |
+| **기능명**     | 학생 커뮤니티 게시판                        |
+| **목적**      | 자유롭게 게시글을 작성 및 열람, 댓글을 통해 상호 소통 |
+| **대상 사용자**  | 학생, 교수, 일반 관리자                |
+| **연관 SW**   | SW-FCM-001, SW-FCM-002, SW-FCM-003 |
+| **연관 시나리오** | SC-FCM-001, SC-FCM-002 |
+| **입력**      | title, content, attachments, userID, role, postId|
+| **출력**      | Post 리스트, Post 상세, API 응답, 파일 URL|
+| **외부 연동**   | 파일 저장소, 인증 서비스, 웬 클라이언트/앱, 알림 서비스 |
+| **UI 처리**   | 게시판 목록, 게시글 상세, 게시글 작성/수정 |
+
+```mermaid
+classDiagram
+    class User {
+        +Long id
+        +String name
+        +Role role
+        +canEdit(post: Post): boolean
+        +canDelete(post: Post): boolean
+    }
+
+    class Post {
+        +Long id
+        +String title
+        +String content
+        +boolean isPinned
+        +int views
+        +List~Comment~ comments
+        +List~File~ attachments
+        +User author
+        +increaseView(): void
+    }
+
+    class Comment {
+        +Long id
+        +String content
+        +User author
+        +Date createdAt
+    }
+
+    class File {
+        +String fileName
+        +String fileUrl
+    }
+
+    class PostService {
+        +createPost(title: String, content: String, files: List~File~, user: User): Post
+        +editOwnPost(postId: Long, newContent: String, user: User): void
+        +deleteOwnPost(postId: Long, user: User): void
+        +pinPost(postId: Long, user: User): void
+        +unpinPost(postId: Long, user: User): void
+        +viewPost(postId: Long, user: User): Post
+    }
+
+    class PostRepository {
+        +save(post: Post): Post
+        +findById(id: Long): Post
+        +delete(post: Post): void
+        +findAll(): List~Post~
+        +findPinned(): List~Post~
+    }
+
+    class AuthService {
+        +getUserFromToken(token: String): User
+        +hasPermission(user: User, action: String): boolean
+    }
+
+    class FileStorageService {
+        +upload(files: List~File~): List~File~
+        +delete(file: File): void
+    }
+
+    class PostController {
+        +createPost(request: PostCreateRequest): Post
+        +getPost(id: Long): Post
+        +updatePost(id: Long, request: PostEditRequest): void
+        +deletePost(id: Long): void
+        +pinPost(id: Long): void
+    }
+
+    class UI {
+        +renderPostList(posts: List~Post~)
+        +renderPostDetail(post: Post)
+        +renderPostForm()
+    }
+
+    %% 관계 설정
+    Post --> "1" User : author
+    Post --> "*" Comment
+    Post --> "*" File
+    PostController --> PostService
+    PostService --> PostRepository
+    PostService --> AuthService
+    PostService --> FileStorageService
+    UI --> PostController
+    PostController --> AuthService
+
+```
+**-변수 설명**
+
+| 변수명        | 타입      | 설명          |
+| ---------- | ------- | ----------- |
+| `title`     | string  | 게시글 제목      |
+| `content` | string  | 게시글 본문 내용    |
+| `attachments` | List<File> | 첨부파일 리스트 |
+| `authorId`     | Long  | 게시글 작성자 ID |
+| `isPinned` | boolean  | 게시글 고정 여부 |
+| `views` | int | 게시글 조회수 |
+| `comments` | List<Comment>  | 해당 게시글의 댓글 리스트  |
+| `userId` | Long  | 현재 요청 사용자 ID(검증용) |
+| `postId` | Long | 게시글 ID |
+
+**-함수 설명**
+| 함수명                   | 파라미터                           | 반환형        | 설명                     |
+| --------------------- | ------------------------------ | ---------- | ---------------------- |
+| `createPost()`        | title: String, content: String, files: List<File>, user: User | Post | 게시글을 새로 생성하고 DB에 저장함  |
+| `reflectSortingAfterCreation()` |  없음    |       | 게시글 생성 후 최신 순 정렬 반영      |
+| `editOwnPost()`       | postId: Long, newContent: String, user: User	| void     | 사용자가 자신의 게시글을 수정함 |
+| `deleteOwnPost()`    |postId: Long, user: User| void | 사용자가 자신의 게시글을 삭제함   |
+| `pinPost()`        | postId: Long, user: User    | void       | 관리자가 게시글을 고정함    |
+| `unpinPost()` | postId: Long, user: User | void     | 관리자가 고정된 게시글을 해제함 |
+| `viewPost()`    | postId: Long, user: User | Post | 게시글을 조회하며 조회수를 1 증가시킴  |
+
+**–시스템 구성요소** 
+
+| 구성요소                               | 역할                  |
+| ---------------------------------- | ------------------- |
+| **Frontend (UI)**       | 게시글 목록, 상세, 작성/수정 UI (React, Android XML 등) |
+| **Controller**          | HTTP 요청을 받아 처리 (REST API 엔드포인트)   |
+| **Service Layer**       | 비즈니스 로직 처리 (권한, 정렬, 조회수 증가 등)      |
+| **Repository/DAO**      | 데이터베이스와의 연결 처리 (JPA, MyBatis 등)    |
+| **Database (DB)**       | 게시글, 사용자, 댓글 등의 영속 데이터 저장소 |
+
+**-시스템 동작 과정** 
+
+**게시글 작성**
+1. 사용자 UI에서 제목/내용/첨부 입력 후 전송
+2. Controller가 Service에 요청 전달
+3. Service에서 권한 검사 및 DB 저장
+4. Repository를 통해 Post, File 테이블에 데이터 삽입
+5. 게시글 리스트 최신순으로 정렬되어 UI에 반영
+
+**게시글 조회**
+1. 사용자가 특정 게시글 상세페이지 요청
+2. Controller → Service → Repository를 통해 DB 조회
+3. Service에서 조회수 증가 처리
+4. 댓글 포함하여 게시글 상세 데이터를 반환
+
+**게시글 고정(관리자)**
+1. 관리자가 고정 버튼 클릭 시 /posts/{id}/pin 호출
+2. Service에서 관리자 권한 확인
+3. isPinned = true로 DB 업데이트
+4. 게시글 목록에 상단 노출
+
+**-시스템 상호작용**
+
+관리자
+ └─> 관리자 UI
+       ├─> 게시글 고정(pinPost)
+       └─> 게시글 삭제(deletePost)
+
+교수/학생
+ └─> 웹 브라우저
+       └─> 웹서버
+             └─> PostController
+                   ├─> createPost(title, content, files, user)
+                   ├─> editOwnPost(postId, newContent, user)
+                   ├─> deleteOwnPost(postId, user)
+                   ├─> viewPost(postId, user)
+                   └─> getAllPostsSorted()
+
+PostController
+ └─> PostService
+       ├─> AuthService.hasPermission(user, action)
+       ├─> FileStorageService.upload(files)
+       ├─> PostRepository.save(post)
+       └─> PostRepository.findById(postId)
+
+웹서버
+ └─> 렌더링된 페이지 응답
+
+사용자 브라우저
+ └─> 게시글 목록/상세/작성 화면 렌더링 및 확인
+
+  
+**-설계적 고려사항**
+
+| 고려 항목      | 설명                                   |
+| ---------- | ------------------------------------ |
+| **권한 관리**    | 학생/교수는 작성만, 관리자는 고정/삭제 가능 → 역할 기반 검증 필요 |
+| **조회수 처리**     | 단일 사용자 반복 조회 제한, 또는 단순 카운트 증가 (설계 선택)    |
+| **정렬 처리**    | 고정된 게시글 우선 정렬 → isPinned 우선, 그 다음 최신순   |
+| **데이터 무결성** | 사용자 본인 외에는 게시글 수정/삭제 불가 (ID 체크 필수)  |
+| **파일 업로드**    | 확장자 및 크기 제한 / 별도 스토리지 저장 고려 (ex. AWS S3) |
+| **보안 처리**     | XSS 방지, SQL Injection 방지, CSRF Token 등 적용    |
+| **트래픽 부하**    | 인기 게시판일 경우 캐시 적용 또는 페이지네이션 처리 필요   |
+
+
 ---
 
 | 항목          | 설명                                |
@@ -932,296 +1221,4 @@ AdminContentManager --> Content
 | 가독성    | 콘텐츠 작성 및 편집 화면은 텍스트, 이미지, 섹션을 시각적으로 명확히 구분 |
 | 확장성     | 향후 콘텐츠 유형 추가(예: 행사, 슬라이드 등) 시 모듈 확장 가능성 고려      |
 | 버전관리   | 콘텐츠 변경 이력 기록(옵션) 또는 되돌리기 기능 고려 가능               |
-
-
-
---- 
- -----(수정 후 ↑)---------------------
- 
-
-
-| 항목      | 설명                                                        |
-| ------- | --------------------------------------------------------- |
-| 기능 ID   | FAD                                                       |
-| 기능명     | 입학 안내 페이지                                                 |
-| 목적      | 입학 일정, 지원 자격, 자주 묻는 질문 등의 정보를 제공하여 사용자에게 입학 관련 내용을 명확히 안내 |
-| 대상 사용자  | 웹사이트 방문자 모두 (학생, 학부모, 일반인 등)                              |
-| 연관 SW   | SW-FAD-001                                                |
-| 연관 시나리오 | 없음 (정적 페이지로 관리자가 콘텐츠를 미리 등록함)                             |
-
-```mermaid
-classDiagram
-class AdmissionInfoFeature {
-        -admissionList: List
-        -staticContent: Content
-
-        +viewAdmissionSortedByLatest(): List
-        +searchAdmission(keyword: string): List
-        +serveStaticPageBasedOnAdminContent(content: Content): void
-    }
-```
-
-**-변수 설명**
-
-| 변수명           | 타입      | 설명                                    |
-| ------------- | ------- | ------------------------------------- |
-| admissionList | List    | 입학 관련 정보 항목 리스트 (전형 일정, 지원 자격, FAQ 등) |
-| staticContent | Content | 관리자가 등록한 정적 콘텐츠                       |
-| keyword       | string  | 검색 시 사용되는 키워드                         |
-
-**-함수 설명**
-
-| 함수명                                  | 파라미터             | 반환형  | 설명                           |
-| ------------------------------------ | ---------------- | ---- | ---------------------------- |
-| viewAdmissionSortedByLatest()        | 없음               | List | 최신순으로 정렬된 입학 정보를 반환          |
-| searchAdmission()                    | keyword: string  | List | 키워드로 입학 정보를 검색하여 반환          |
-| serveStaticPageBasedOnAdminContent() | content: Content | void | 등록된 정적 콘텐츠를 기반으로 정적 페이지를 렌더링 |
-
-**-시스템 구성요소**
-
-| 구성요소                    | 역할                            |
-| ----------------------- | ----------------------------- |
-| 웹서버                     | 사용자 요청 처리 및 입학 정보 전달          |
-| 콘텐츠 저장소                 | 입학 일정, 자격 요건, FAQ 등 정적 콘텐츠 저장 |
-| 관리자 UI                  | 관리자가 입학 콘텐츠를 등록/수정하는 인터페이스    |
-| 클라이언트(브라우저)             | 사용자 요청 및 입학 안내 페이지 렌더링        |
-| AdmissionInfoFeature 모듈 | 콘텐츠 정렬, 검색, 렌더링을 담당하는 기능 단위   |
-
-**-시스템 동작과정**
-
-| 단계        | 설명                                                |
-| --------- | ------------------------------------------------- |
-| 1. 콘텐츠 준비 | 관리자가 관리자 UI를 통해 입학 콘텐츠 등록 및 저장                    |
-| 2. 사용자 요청 | 사용자가 웹 브라우저에서 입학 안내 페이지 접속                        |
-| 3. 콘텐츠 처리 | 웹서버가 AdmissionInfoFeature를 호출하여 콘텐츠 로딩 및 정렬/검색 수행 |
-| 4. 페이지 제공 | 사용자 브라우저에 완성된 페이지 응답 및 렌더링                        |
-
-**-시스템 상호작용**
-
-관리자
- └─> 관리자 UI
-     └─> 콘텐츠 저장소 (입학 정보 저장)
-
-사용자
- └─> 웹 브라우저
-     └─> 웹서버
-         └─> AdmissionInfoFeature
-              ├─> 콘텐츠 저장소에서 로드
-              ├─> viewAdmissionSortedByLatest()
-              ├─> searchAdmission()
-              └─> serveStaticPageBasedOnAdminContent()
-         └─> HTML, CSS 사용자에게 응답
-사용자 브라우저
- └─> 페이지 렌더링 및 표시
-
-**-설계적 고려사항**
-
- | 고려 항목     | 설명                                    |
-| --------- | ------------------------------------- |
-| 정적 콘텐츠 기반 | 자주 변경되지 않는 입학 정보를 정적으로 관리하여 서버 부하 최소화 |
-| 검색/정렬 기능  | 사용자 편의를 위한 검색 및 최신순 정렬 기능 제공          |
-| 확장성       | 입시 영상, 온라인 설명회 등 추가 콘텐츠 통합을 고려한 구조    |
-| 보안        | 관리자 UI는 인증 기반으로 보호되며 콘텐츠 무결성 유지 필요    |
-
----
-
-| 항목          | 설명                              |
-| ----------- | ------------------------------- |
-| **기능 ID**   | FCM                             |
-| **기능명**     | 학생 커뮤니티 게시판                        |
-| **목적**      | 자유롭게 게시글을 작성 및 열람, 댓글을 통해 상호 소통 |
-| **대상 사용자**  | 학생, 교수, 일반 관리자                |
-| **연관 SW**   | SW-FCM-001, SW-FCM-002, SW-FCM-003 |
-| **연관 시나리오** | SC-FCM-001, SC-FCM-002 |
-| **입력**      | title, content, attachments, userID, role, postId|
-| **출력**      | Post 리스트, Post 상세, API 응답, 파일 URL|
-| **외부 연동**   | 파일 저장소, 인증 서비스, 웬 클라이언트/앱, 알림 서비스 |
-| **UI 처리**   | 게시판 목록, 게시글 상세, 게시글 작성/수정 |
-
-```mermaid
-classDiagram
-    class User {
-        +Long id
-        +String name
-        +Role role
-        +canEdit(post: Post): boolean
-        +canDelete(post: Post): boolean
-    }
-
-    class Post {
-        +Long id
-        +String title
-        +String content
-        +boolean isPinned
-        +int views
-        +List~Comment~ comments
-        +List~File~ attachments
-        +User author
-        +increaseView(): void
-    }
-
-    class Comment {
-        +Long id
-        +String content
-        +User author
-        +Date createdAt
-    }
-
-    class File {
-        +String fileName
-        +String fileUrl
-    }
-
-    class PostService {
-        +createPost(title: String, content: String, files: List~File~, user: User): Post
-        +editOwnPost(postId: Long, newContent: String, user: User): void
-        +deleteOwnPost(postId: Long, user: User): void
-        +pinPost(postId: Long, user: User): void
-        +unpinPost(postId: Long, user: User): void
-        +viewPost(postId: Long, user: User): Post
-    }
-
-    class PostRepository {
-        +save(post: Post): Post
-        +findById(id: Long): Post
-        +delete(post: Post): void
-        +findAll(): List~Post~
-        +findPinned(): List~Post~
-    }
-
-    class AuthService {
-        +getUserFromToken(token: String): User
-        +hasPermission(user: User, action: String): boolean
-    }
-
-    class FileStorageService {
-        +upload(files: List~File~): List~File~
-        +delete(file: File): void
-    }
-
-    class PostController {
-        +createPost(request: PostCreateRequest): Post
-        +getPost(id: Long): Post
-        +updatePost(id: Long, request: PostEditRequest): void
-        +deletePost(id: Long): void
-        +pinPost(id: Long): void
-    }
-
-    class UI {
-        +renderPostList(posts: List~Post~)
-        +renderPostDetail(post: Post)
-        +renderPostForm()
-    }
-
-    %% 관계 설정
-    Post --> "1" User : author
-    Post --> "*" Comment
-    Post --> "*" File
-    PostController --> PostService
-    PostService --> PostRepository
-    PostService --> AuthService
-    PostService --> FileStorageService
-    UI --> PostController
-    PostController --> AuthService
-
-```
-**-변수 설명**
-
-| 변수명        | 타입      | 설명          |
-| ---------- | ------- | ----------- |
-| `title`     | string  | 게시글 제목      |
-| `content` | string  | 게시글 본문 내용    |
-| `attachments` | List<File> | 첨부파일 리스트 |
-| `authorId`     | Long  | 게시글 작성자 ID |
-| `isPinned` | boolean  | 게시글 고정 여부 |
-| `views` | int | 게시글 조회수 |
-| `comments` | List<Comment>  | 해당 게시글의 댓글 리스트  |
-| `userId` | Long  | 현재 요청 사용자 ID(검증용) |
-| `postId` | Long | 게시글 ID |
-
-**-함수 설명**
-| 함수명                   | 파라미터                           | 반환형        | 설명                     |
-| --------------------- | ------------------------------ | ---------- | ---------------------- |
-| `createPost()`        | title: String, content: String, files: List<File>, user: User | Post | 게시글을 새로 생성하고 DB에 저장함  |
-| `reflectSortingAfterCreation()` |  없음    |       | 게시글 생성 후 최신 순 정렬 반영      |
-| `editOwnPost()`       | postId: Long, newContent: String, user: User	| void     | 사용자가 자신의 게시글을 수정함 |
-| `deleteOwnPost()`    |postId: Long, user: User| void | 사용자가 자신의 게시글을 삭제함   |
-| `pinPost()`        | postId: Long, user: User    | void       | 관리자가 게시글을 고정함    |
-| `unpinPost()` | postId: Long, user: User | void     | 관리자가 고정된 게시글을 해제함 |
-| `viewPost()`    | postId: Long, user: User | Post | 게시글을 조회하며 조회수를 1 증가시킴  |
-
-**–시스템 구성요소** 
-
-| 구성요소                               | 역할                  |
-| ---------------------------------- | ------------------- |
-| **Frontend (UI)**       | 게시글 목록, 상세, 작성/수정 UI (React, Android XML 등) |
-| **Controller**          | HTTP 요청을 받아 처리 (REST API 엔드포인트)   |
-| **Service Layer**       | 비즈니스 로직 처리 (권한, 정렬, 조회수 증가 등)      |
-| **Repository/DAO**      | 데이터베이스와의 연결 처리 (JPA, MyBatis 등)    |
-| **Database (DB)**       | 게시글, 사용자, 댓글 등의 영속 데이터 저장소 |
-
-**-시스템 동작 과정** 
-
-**게시글 작성**
-1. 사용자 UI에서 제목/내용/첨부 입력 후 전송
-2. Controller가 Service에 요청 전달
-3. Service에서 권한 검사 및 DB 저장
-4. Repository를 통해 Post, File 테이블에 데이터 삽입
-5. 게시글 리스트 최신순으로 정렬되어 UI에 반영
-
-**게시글 조회**
-1. 사용자가 특정 게시글 상세페이지 요청
-2. Controller → Service → Repository를 통해 DB 조회
-3. Service에서 조회수 증가 처리
-4. 댓글 포함하여 게시글 상세 데이터를 반환
-
-**게시글 고정(관리자)**
-1. 관리자가 고정 버튼 클릭 시 /posts/{id}/pin 호출
-2. Service에서 관리자 권한 확인
-3. isPinned = true로 DB 업데이트
-4. 게시글 목록에 상단 노출
-
-**-시스템 상호작용**
-
-관리자
- └─> 관리자 UI
-       ├─> 게시글 고정(pinPost)
-       └─> 게시글 삭제(deletePost)
-
-교수/학생
- └─> 웹 브라우저
-       └─> 웹서버
-             └─> PostController
-                   ├─> createPost(title, content, files, user)
-                   ├─> editOwnPost(postId, newContent, user)
-                   ├─> deleteOwnPost(postId, user)
-                   ├─> viewPost(postId, user)
-                   └─> getAllPostsSorted()
-
-PostController
- └─> PostService
-       ├─> AuthService.hasPermission(user, action)
-       ├─> FileStorageService.upload(files)
-       ├─> PostRepository.save(post)
-       └─> PostRepository.findById(postId)
-
-웹서버
- └─> 렌더링된 페이지 응답
-
-사용자 브라우저
- └─> 게시글 목록/상세/작성 화면 렌더링 및 확인
-
-  
-**-설계적 고려사항**
-
-| 고려 항목      | 설명                                   |
-| ---------- | ------------------------------------ |
-| **권한 관리**    | 학생/교수는 작성만, 관리자는 고정/삭제 가능 → 역할 기반 검증 필요 |
-| **조회수 처리**     | 단일 사용자 반복 조회 제한, 또는 단순 카운트 증가 (설계 선택)    |
-| **정렬 처리**    | 고정된 게시글 우선 정렬 → isPinned 우선, 그 다음 최신순   |
-| **데이터 무결성** | 사용자 본인 외에는 게시글 수정/삭제 불가 (ID 체크 필수)  |
-| **파일 업로드**    | 확장자 및 크기 제한 / 별도 스토리지 저장 고려 (ex. AWS S3) |
-| **보안 처리**     | XSS 방지, SQL Injection 방지, CSRF Token 등 적용    |
-| **트래픽 부하**    | 인기 게시판일 경우 캐시 적용 또는 페이지네이션 처리 필요   |
-
 
