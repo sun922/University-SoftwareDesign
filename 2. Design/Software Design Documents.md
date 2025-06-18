@@ -80,22 +80,22 @@ classDiagram
 
 | 변수명                             | 타입      | 설명                |
 | ------------------------------- | ------- | ----------------- |
-| visionText                      | string  | 학과 비전 텍스트         |
-| historyText                     | string  | 학과 연혁 텍스트         |
-| structureText                   | string  | 학과 구성 설명 텍스트      |
-| logoImage                       | Image   | 학과 로고 이미지         |
-| campusViewImage                 | Image   | 캠퍼스 전경 이미지        |
-| mobileParagraphStructureEnabled | boolean | 모바일에서 문단 구조 적용 여부 |
-| staticContent                   | Content | 관리자가 등록한 정적 콘텐츠   |
+| 'visionText'                      | string  | 학과 비전 텍스트         |
+| 'historyText'                     | string  | 학과 연혁 텍스트         |
+| 'structureText'                   | string  | 학과 구성 설명 텍스트      |
+| 'logoImage'                       | Image   | 학과 로고 이미지         |
+| 'campusViewImage'                 | Image   | 캠퍼스 전경 이미지        |
+| 'mobileParagraphStructureEnabled' | boolean | 모바일에서 문단 구조 적용 여부 |
+| 'staticContent'                   | Content | 관리자가 등록한 정적 콘텐츠   |
 
 **– 함수 설명**
 
 | 함수명                                  | 파라미터                               | 반환형  | 설명                         |
 | ------------------------------------ | ---------------------------------- | ---- | -------------------------- |
-| viewIntroductionText()               | vision, history, structure: string | void | 학과 비전, 연혁, 구성 텍스트를 화면에 출력  |
-| viewIntroductionImages()             | logo, campusView: Image            | void | 로고 및 캠퍼스 이미지를 화면에 출력       |
-| applyMobileParagraphStructure()      | 없음                                 | void | 모바일 화면에서 문단 구조 적용 (가독성 향상) |
-| serveStaticPageBasedOnAdminContent() | content: Content                   | void | 등록된 정적 콘텐츠를 기반으로 페이지 렌더링   |
+| 'viewIntroductionText()'               | vision, history, structure: string | void | 학과 비전, 연혁, 구성 텍스트를 화면에 출력  |
+| 'viewIntroductionImages()'             | logo, campusView: Image            | void | 로고 및 캠퍼스 이미지를 화면에 출력       |
+| 'applyMobileParagraphStructure()'      | 없음                                 | void | 모바일 화면에서 문단 구조 적용 (가독성 향상) |
+| 'serveStaticPageBasedOnAdminContent()' | content: Content                   | void | 등록된 정적 콘텐츠를 기반으로 페이지 렌더링   |
 
 **- 시스템 구성요소**
 
@@ -286,7 +286,8 @@ Subject --> Professor
 | `syllabusLink` | string | 강의계획서 링크 |
 | `professor` | Professor | 담당 교수 정보 |
 
-**– 함수 설명**
+**– 함수 설명** 
+
 | 함수명                   | 파라미터                           | 반환형        | 설명                     |
 | --------------------- | ------------------------------ | ---------- | ---------------------- |
 | `viewCurriculumByGrade()`    | grade: int             | List<Subject> | 선택한 학년의 커리큘럼 목록 반환 |
@@ -472,8 +473,6 @@ NoticeAndNewsEditFeature ..> Image : uploads
 
 ---
 
-
-
 | 항목 | 설명 |
 |------|------|
 | 코드 | FRS     |
@@ -486,7 +485,6 @@ NoticeAndNewsEditFeature ..> Image : uploads
 | 출력      | 연구 성과 목록, 상세 정보, 정적 페이지  |
 | 외부 연동   | DB(Research DB, 파일 스토리지, 검색 인덱싱 시스템  |
 | UI 처리   | 최신순 정렬과 키워드 검색을 통해 목록을 탐색하고, 항목의 상세 내용을 열람하거나 관리자 등록 기반의 정적 페이지를 확인  |
-
 
 ```mermaid
 classDiagram
@@ -504,17 +502,17 @@ class ResearchShowcaseFeature {
 
 | 변수명           | 타입      | 설명                          |
 | ------------- | ------- | --------------------------- |
-| researchList  | List    | 논문, 특허, 프로젝트 등 연구 성과 항목 리스트 |
-| staticContent | Content | 관리자가 등록한 정적 콘텐츠 (소개 문구 등)   |
-| keyword       | string  | 사용자가 입력한 검색 키워드             |
+| 'researchList'  | List    | 논문, 특허, 프로젝트 등 연구 성과 항목 리스트 |
+| 'staticContent' | Content | 관리자가 등록한 정적 콘텐츠 (소개 문구 등)   |
+| 'keyword'       | string  | 사용자가 입력한 검색 키워드             |
 
 **- 함수 설명**
 
 | 함수명                                  | 파라미터             | 반환형  | 설명                              |
 | ------------------------------------ | ---------------- | ---- | ------------------------------- |
-| viewResearchSortedByLatest()         | 없음               | List | 연구 성과를 연도 기준 최신순으로 정렬하여 반환      |
-| searchResearch()                     | keyword: string  | List | 키워드 기반으로 연구 성과 검색하여 반환          |
-| serveStaticPageBasedOnAdminContent() | content: Content | void | 관리자가 등록한 정적 콘텐츠 기반으로 페이지 렌더링 수행 |
+| 'viewResearchSortedByLatest()'         | 없음               | List | 연구 성과를 연도 기준 최신순으로 정렬하여 반환      |
+| 'searchResearch()'                     | keyword: string  | List | 키워드 기반으로 연구 성과 검색하여 반환          |
+| 'serveStaticPageBasedOnAdminContent()' | content: Content | void | 관리자가 등록한 정적 콘텐츠 기반으로 페이지 렌더링 수행 |
 
 **- 시스템 구성요소**
 
@@ -587,17 +585,17 @@ class AdmissionInfoFeature {
 
 | 변수명           | 타입      | 설명                                    |
 | ------------- | ------- | ------------------------------------- |
-| admissionList | List    | 입학 관련 정보 항목 리스트 (전형 일정, 지원 자격, FAQ 등) |
-| staticContent | Content | 관리자가 등록한 정적 콘텐츠                       |
-| keyword       | string  | 검색 시 사용되는 키워드                         |
+| 'admissionList' | List    | 입학 관련 정보 항목 리스트 (전형 일정, 지원 자격, FAQ 등) |
+| 'staticContent' | Content | 관리자가 등록한 정적 콘텐츠                       |
+| 'keyword'       | string  | 검색 시 사용되는 키워드                         |
 
 **- 함수 설명**
 
 | 함수명                                  | 파라미터             | 반환형  | 설명                           |
 | ------------------------------------ | ---------------- | ---- | ---------------------------- |
-| viewAdmissionSortedByLatest()        | 없음               | List | 최신순으로 정렬된 입학 정보를 반환          |
-| searchAdmission()                    | keyword: string  | List | 키워드로 입학 정보를 검색하여 반환          |
-| serveStaticPageBasedOnAdminContent() | content: Content | void | 등록된 정적 콘텐츠를 기반으로 정적 페이지를 렌더링 |
+| 'viewAdmissionSortedByLatest()'        | 없음               | List | 최신순으로 정렬된 입학 정보를 반환          |
+| 'searchAdmission()'                    | keyword: string  | List | 키워드로 입학 정보를 검색하여 반환          |
+| 'serveStaticPageBasedOnAdminContent()' | content: Content | void | 등록된 정적 콘텐츠를 기반으로 정적 페이지를 렌더링 |
 
 **- 시스템 구성요소**
 
@@ -649,16 +647,16 @@ class AdmissionInfoFeature {
 
 | 항목          | 설명                              |
 | ----------- | ------------------------------- |
-| **기능 ID**   | FCM                             |
-| **기능명**     | 학생 커뮤니티 게시판                        |
-| **목적**      | 자유롭게 게시글을 작성 및 열람, 댓글을 통해 상호 소통 |
-| **대상 사용자**  | 학생, 교수, 일반 관리자                |
-| **연관 SW**   | SW-FCM-001, SW-FCM-002, SW-FCM-003 |
-| **연관 시나리오** | SC-FCM-001, SC-FCM-002 |
-| **입력**      | title, content, attachments, userID, role, postId|
-| **출력**      | Post 리스트, Post 상세, API 응답, 파일 URL|
-| **외부 연동**   | 파일 저장소, 인증 서비스, 웬 클라이언트/앱, 알림 서비스 |
-| **UI 처리**   | 게시판 목록, 게시글 상세, 게시글 작성/수정 |
+| 기능 ID   | FCM                             |
+| 기능명     | 학생 커뮤니티 게시판                        |
+| 목적     | 자유롭게 게시글을 작성 및 열람, 댓글을 통해 상호 소통 |
+| 대상 사용자  | 학생, 교수, 일반 관리자                |
+| 연관 SW   | SW-FCM-001, SW-FCM-002, SW-FCM-003 |
+| 연관 시나리오 | SC-FCM-001, SC-FCM-002 |
+| 입력      | title, content, attachments, userID, role, postId|
+| 출력      | Post 리스트, Post 상세, API 응답, 파일 URL|
+| 외부 연동   | 파일 저장소, 인증 서비스, 웬 클라이언트/앱, 알림 서비스 |
+| UI 처리   | 게시판 목록, 게시글 상세, 게시글 작성/수정 |
 
 ```mermaid
 classDiagram
@@ -777,11 +775,11 @@ classDiagram
 
 | 구성요소                               | 역할                  |
 | ---------------------------------- | ------------------- |
-| **Frontend (UI)**       | 게시글 목록, 상세, 작성/수정 UI (React, Android XML 등) |
-| **Controller**          | HTTP 요청을 받아 처리 (REST API 엔드포인트)   |
-| **Service Layer**       | 비즈니스 로직 처리 (권한, 정렬, 조회수 증가 등)      |
-| **Repository/DAO**      | 데이터베이스와의 연결 처리 (JPA, MyBatis 등)    |
-| **Database (DB)**       | 게시글, 사용자, 댓글 등의 영속 데이터 저장소 |
+| Frontend (UI)       | 게시글 목록, 상세, 작성/수정 UI (React, Android XML 등) |
+| Controller          | HTTP 요청을 받아 처리 (REST API 엔드포인트)   |
+| Service Layer       | 비즈니스 로직 처리 (권한, 정렬, 조회수 증가 등)      |
+| Repository/DAO      | 데이터베이스와의 연결 처리 (JPA, MyBatis 등)    |
+| Database (DB)       | 게시글, 사용자, 댓글 등의 영속 데이터 저장소 |
 
 **- 시스템 동작 과정** 
 
@@ -838,13 +836,13 @@ PostController
 
 | 고려 항목      | 설명                                   |
 | ---------- | ------------------------------------ |
-| **권한 관리**    | 학생/교수는 작성만, 관리자는 고정/삭제 가능 → 역할 기반 검증 필요 |
-| **조회수 처리**     | 단일 사용자 반복 조회 제한, 또는 단순 카운트 증가 (설계 선택)    |
-| **정렬 처리**    | 고정된 게시글 우선 정렬 → isPinned 우선, 그 다음 최신순   |
-| **데이터 무결성** | 사용자 본인 외에는 게시글 수정/삭제 불가 (ID 체크 필수)  |
-| **파일 업로드**    | 확장자 및 크기 제한 / 별도 스토리지 저장 고려 (ex. AWS S3) |
-| **보안 처리**     | XSS 방지, SQL Injection 방지, CSRF Token 등 적용    |
-| **트래픽 부하**    | 인기 게시판일 경우 캐시 적용 또는 페이지네이션 처리 필요   |
+| 권한 관리    | 학생/교수는 작성만, 관리자는 고정/삭제 가능 → 역할 기반 검증 필요 |
+| 조회수 처리     | 단일 사용자 반복 조회 제한, 또는 단순 카운트 증가 (설계 선택)    |
+| 정렬 처리    | 고정된 게시글 우선 정렬 → isPinned 우선, 그 다음 최신순   |
+| 데이터 무결성 | 사용자 본인 외에는 게시글 수정/삭제 불가 (ID 체크 필수)  |
+| 파일 업로드    | 확장자 및 크기 제한 / 별도 스토리지 저장 고려 (ex. AWS S3) |
+| 보안 처리     | XSS 방지, SQL Injection 방지, CSRF Token 등 적용    |
+| 트래픽 부하    | 인기 게시판일 경우 캐시 적용 또는 페이지네이션 처리 필요   |
 
 ---
 
@@ -896,18 +894,18 @@ AuthResult --> User
 
 | 변수명             | 타입     | 설명              |
 | --------------- | ------ | --------------- |
-| userId        | string | 사용자 아이디         |
-| password      | string | 사용자 비밀번호 (암호화됨) |
-| authenticated | bool   | 인증 성공 여부        |
+| 'userId'        | string | 사용자 아이디         |
+| 'password'      | string | 사용자 비밀번호 (암호화됨) |
+| 'authenticated' | bool   | 인증 성공 여부        |
 
 **- 함수 설명**
 
 | 함수명                  | 파라미터                             | 반환형        | 설명                    |
 | -------------------- | -------------------------------- | ---------- | --------------------- |
-| login()            | userId: string, password: string | AuthResult | ID와 비밀번호 기반 로그인 처리    |
-| validatePassword() | rawPassword: string              | bool       | 비밀번호 일치 여부 확인         |
-| findUserById()     | userId: string                   | User       | 해당 ID에 해당하는 사용자 정보 조회 |
-| createSession()    | user: User                       | Session    | 로그인 성공 시 세션 생성 및 반환   |
+| 'login()'            | userId: string, password: string | AuthResult | ID와 비밀번호 기반 로그인 처리    |
+| 'validatePassword()' | rawPassword: string              | bool       | 비밀번호 일치 여부 확인         |
+| 'findUserById()'     | userId: string                   | User       | 해당 ID에 해당하는 사용자 정보 조회 |
+| 'createSession()'    | user: User                       | Session    | 로그인 성공 시 세션 생성 및 반환   |
 
 **- 시스템 구성요소**
 
