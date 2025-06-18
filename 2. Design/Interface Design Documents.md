@@ -320,6 +320,7 @@
 | 연관 시나리오 | SC-FAA-001                               |
 | 예외 상황   | 인증 API 실패                                |
 | 대응 방법   | “학교 인증 서버와의 연결이 원활하지 않습니다.” → 재시도 버튼 활성화 |
+| 다이어그램 | (https://www.plantuml.com/plantuml/png/SoWkIImgAStDuKfCBialKdWxTUQRvhaAYSKAmIMbAQbv9L3nLridlEcO0H8FACfFIoqkpY_YuYfAJIv9p4lFILLG2lNKTNDqr3KmCBHIUDEzvFMgLeKtStUyMJPNuTME3Q-xbYefL7CfA9GMfoOd5WELeofvCslAcqrhbK2c1wKcvZYMbcGWAuQgSWpm11dzjcU5mfjDCrulMnEJf_5ctfettNDUzxSelDxKyhPhZyBRcNFUj6nyEtEA9iWua1xNeYAWMskvkA0UKj3LjKDO0_SDgZ1Cdu8UGb31Ii769hMY93KlnSvE8HhXd5Wk1w0OC0m1)
 
 | 항목      | 설명                           |
 | ------- | ---------------------------- |
